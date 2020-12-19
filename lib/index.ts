@@ -8,7 +8,6 @@ export default (opt: TATOptions = {}) => {
   record(opt);
   const btn = renderButton({
     save: () => {
-      console.log(cache.events);
       micoDb.set("touch-and-touch", cache.events);
     },
     replay: async () => {

@@ -1,6 +1,7 @@
 <div>
   <v-set onclick="()=>$hook.state.show = !$hook.state.show"><button>Change If</button></v-set>
   <v-if value="$hook.state.show">
+    <v-new src="./input.html"></v-new>
     <h1>Detail Hello</h1>
   </v-if>
 </div>

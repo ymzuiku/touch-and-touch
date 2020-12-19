@@ -6,19 +6,19 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>test</h1>
+  <h1>page2</h1>
+  <v-set onclick="()=>window.location.href ='/index.html'" >
+    <button>go to index</button>
+  </v-set>
   <div>
     <v-new tat-id="h0" src="./input.html"></v-new>
   </div>
-  <v-set onclick="()=>window.location.href ='/page2.html'" >
-    <button>go to page2</button>
-  </v-set>
   <v-new src="./button.html"></v-new>
   <div>
     <v-new tat-id="h1" src="./input.html"></v-new>
   </div>
   
-  <v-new src="./list.html"></v-new>
+  <!-- <v-new src="./list.html"></v-new> -->
   <script src="https://unpkg.com/mico-db@1.0.1/umd/index.js"></script>
   <script src="./index.js"></script>
   <script>

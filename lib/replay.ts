@@ -41,7 +41,7 @@ function eventType(el: HTMLInputElement, event: IEvent, eventKey: string) {
   el.dispatchEvent(inputEvent);
 }
 
-function getElementReweb(key: string): Promise<HTMLElement> {
+function getElementTAT(key: string): Promise<HTMLElement> {
   return new Promise((res) => {
     const getEl = () => {
       const e = document.querySelector(key);
@@ -87,13 +87,9 @@ export const replayAndReload = (options: IReplay) => {
 };
 
 export const replay = async (options: IReplay) => {
-  if (
-    !micoDb.getLocalStorage(replayKey) &&
-    window.location.href.indexOf("tat=1") === -1
-  ) {
+  if (!micoDb.getLocalStorage(replayKey)) {
     return;
   }
-  micoDb.removeLocalStorage(replayKey);
   const { speed, events } = options;
   events.forEach((item, i) => {
     item.index = i;
@@ -108,7 +104,7 @@ export const replay = async (options: IReplay) => {
       mouseClick(item);
     } else if (item.key) {
       await sleep(50 * cache.speed);
-      const e = await getElementReweb(item.key);
+      const e = await getElementTAT(item.key);
       if (clicks.indexOf(item.event) > -1) {
         getEleCenter(e, item);
         mouseClick(item);
@@ -131,4 +127,5 @@ export const replay = async (options: IReplay) => {
       }
     }
   }
+  micoDb.removeLocalStorage(replayKey);
 };

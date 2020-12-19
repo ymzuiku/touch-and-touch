@@ -3,8 +3,6 @@ import { attrs, submits, listenTags } from "./attrs";
 import { cache } from "./cache";
 import { eventVal } from "./eventVal";
 
-let id = 0;
-
 type OnSet = (event: IEvent) => any;
 
 export interface TATOptions {
@@ -30,14 +28,38 @@ const getKey = (el: any) => {
   );
 };
 
+function getAttrAndCloseAttr(item: HTMLElement, key: string) {
+  let attr = item.getAttribute(key);
+  if (!attr) {
+    const ele = item.closest(`[${key}]`);
+    if (ele) {
+      attr = ele.getAttribute(key);
+    }
+  }
+  return attr || "";
+}
+
 function setId(item: HTMLInputElement, onSet: OnSet) {
   if (item.closest("[tat-ignore]")) {
     return;
   }
 
   if (!item.getAttribute("tat-auto")) {
-    id += 1;
-    item.setAttribute("tat-auto", item.nodeName + "-" + id.toString());
+    const id = getAttrAndCloseAttr(item, "id");
+    const key = getAttrAndCloseAttr(item, "key");
+    const tat = getAttrAndCloseAttr(item, "tat-id");
+    const placeholder = item.getAttribute("placeholder");
+    const name = item.getAttribute("name");
+    const type = item.getAttribute("type");
+
+    // const a = item.getAttribute('id');
+
+    item.setAttribute(
+      "tat-auto",
+      [item.nodeName, placeholder, name, type, id, key, tat]
+        .filter(Boolean)
+        .join("_")
+    );
   }
 
   if (item.getAttribute("tat-seted")) {
