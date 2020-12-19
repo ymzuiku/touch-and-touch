@@ -71,24 +71,30 @@ function sleep(t: number) {
   });
 }
 
-const replay = async (options: IReplay, isAuto?: boolean) => {
-  const { speed, events } = options;
-  if (!isAuto) {
-    const needPlay = micoDb.getLocalStorage(replayKey);
-    const first = events[0];
-    if (!needPlay) {
-      micoDb.setLocalStorage(replayKey, options);
-      if (first && first.href) {
-        if (window.location.href === first.href) {
-          // window.location.href = events[0].href;
-          window.location.reload();
-        } else {
-          window.location.href = first.href;
-        }
-      }
+export const replayAndReload = (options: IReplay) => {
+  const { events } = options;
+  const first = events[0];
+  micoDb.setLocalStorage(replayKey, 1);
+  // return;
+  if (first && first.href) {
+    if (window.location.href === first.href) {
+      // window.location.href = events[0].href;
+      window.location.reload();
+    } else {
+      window.location.href = first.href;
     }
+  }
+};
+
+export const replay = async (options: IReplay) => {
+  if (
+    !micoDb.getLocalStorage(replayKey) &&
+    window.location.href.indexOf("tat=1") === -1
+  ) {
     return;
   }
+  micoDb.removeLocalStorage(replayKey);
+  const { speed, events } = options;
   events.forEach((item, i) => {
     item.index = i;
   });
@@ -126,13 +132,3 @@ const replay = async (options: IReplay, isAuto?: boolean) => {
     }
   }
 };
-
-const lastOptions = micoDb.getLocalStorage(replayKey);
-if (lastOptions) {
-  micoDb.removeLocalStorage(replayKey);
-  setTimeout(() => {
-    replay(lastOptions, true);
-  });
-}
-
-export default replay;

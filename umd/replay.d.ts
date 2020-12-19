@@ -1,4 +1,4 @@
 import "./renderMouse";
 import { IReplay } from "./cache";
-declare const replay: (options: IReplay, isAuto?: boolean | undefined) => Promise<void>;
-export default replay;
+export declare const replayAndReload: (options: IReplay) => void;
+export declare const replay: (options: IReplay) => Promise<void>;

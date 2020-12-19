@@ -1,10 +1,9 @@
 import { IEvent } from "./IEvent";
-import { attrs, submits } from "./attrs";
+import { attrs, submits, listenTags } from "./attrs";
 import { cache } from "./cache";
 import { eventVal } from "./eventVal";
 
 let id = 0;
-let forLenId = 0;
 
 type OnSet = (event: IEvent) => any;
 
@@ -31,27 +30,14 @@ const getKey = (el: any) => {
   );
 };
 
-function setId(item: HTMLInputElement, fn: OnSet) {
+function setId(item: HTMLInputElement, onSet: OnSet) {
   if (item.closest("[tat-ignore]")) {
     return;
   }
+
   if (!item.getAttribute("tat-auto")) {
-    let len = item.getAttribute("len");
-    if (!len) {
-      const lenEl = item.closest("[len]");
-      if (lenEl) {
-        len = lenEl.getAttribute("len");
-      }
-    }
-    if (len || len === "0") {
-      if (len === "0") {
-        forLenId += 1;
-      }
-      item.setAttribute("tat-auto", item.nodeName + forLenId + "-" + len);
-    } else {
-      id += 1;
-      item.setAttribute("tat-auto", id.toString());
-    }
+    id += 1;
+    item.setAttribute("tat-auto", item.nodeName + "-" + id.toString());
   }
 
   if (item.getAttribute("tat-seted")) {
@@ -71,7 +57,7 @@ function setId(item: HTMLInputElement, fn: OnSet) {
       return;
     }
     item.addEventListener(e, function (...args: any[]) {
-      fn({
+      onSet({
         key: getKey(item),
         event: e,
         value: eventVal(args[0]),
@@ -82,9 +68,7 @@ function setId(item: HTMLInputElement, fn: OnSet) {
 
 function eachSetId(el: HTMLElement, onSet?: OnSet) {
   if (onSet) {
-    el.querySelectorAll(
-      "input,button,a,select,textarea,command,option,form,video"
-    ).forEach((item: any) => {
+    el.querySelectorAll(listenTags.join(",")).forEach((item: any) => {
       setId(item, onSet);
     });
   }
@@ -97,7 +81,9 @@ const matchMclicks: any = {
 };
 
 const record = ({ onSet, tags }: TATOptions) => {
+  tags?.forEach((v) => listenTags.push(v));
   document.body.setAttribute("tat", "body");
+
   const lastFn = onSet;
   onSet = (event: IEvent) => {
     cache.events.push(event);
