@@ -4,6 +4,7 @@ import { mouseMove, mouseClick } from "./renderMouse";
 import { clicks } from "./attrs";
 import { cache, IReplay } from "./cache";
 import micoDb from "mico-db";
+import { keys } from "./keys";
 
 function eventClick(el: HTMLElement) {
   if (el.closest("[tat-ignore]")) {
@@ -58,8 +59,6 @@ function getElementTAT(key: string): Promise<HTMLElement> {
   });
 }
 
-const replayKey = "tat-replay";
-
 const getEleCenter = (el: HTMLElement, event: IEvent) => {
   const rect = el.getBoundingClientRect();
   event.clientX = rect.left + rect.width / 2;
@@ -73,9 +72,12 @@ function sleep(t: number) {
 }
 
 export const replayAndReload = (options: IReplay) => {
+  if (!options || !options.events) {
+    return;
+  }
   const { events } = options;
   const first = events[0];
-  micoDb.setSessionStorage(replayKey, options);
+  micoDb.setSessionStorage(keys.replayingData, options);
   // return;
   if (first && first.href) {
     if (window.location.href === first.href) {
@@ -88,11 +90,11 @@ export const replayAndReload = (options: IReplay) => {
 };
 
 export const replay = async () => {
-  micoDb.setSessionStorage("tat-replaying", 1);
-  const options = micoDb.getSessionStorage(replayKey) as IReplay;
+  const options = micoDb.getSessionStorage(keys.replayingData) as IReplay;
   if (!options) {
     return;
   }
+  micoDb.setSessionStorage(keys.replaying, 1);
   const { speed, events } = options;
   events.forEach((item, i) => {
     item.index = i;
@@ -100,6 +102,9 @@ export const replay = async () => {
 
   cache.speed = speed;
   for (const item of events) {
+    if (!micoDb.getSessionStorage(keys.replaying)) {
+      break;
+    }
     if (item.event === "mclick") {
       await new Promise((res) => {
         setTimeout(res, 300 * cache.speed);
@@ -135,8 +140,8 @@ export const replay = async () => {
       nextEvents.push(events[u]);
     }
 
-    micoDb.setSessionStorage(replayKey, { speed, events: nextEvents });
+    micoDb.setSessionStorage(keys.replayingData, { speed, events: nextEvents });
   }
-  micoDb.removeSessionStorage("tat-replaying");
-  micoDb.removeSessionStorage(replayKey);
+  micoDb.removeSessionStorage(keys.replaying);
+  micoDb.removeSessionStorage(keys.replayingData);
 };

@@ -1,97 +1,16 @@
 import { IEvent } from "./IEvent";
-import { attrs, submits, listenTags } from "./attrs";
+import { listenTags } from "./attrs";
 import { cache } from "./cache";
-import { eventVal } from "./eventVal";
+import { RecordOnce, querySetTATId } from "./recordHelps";
 import micoDb from "mico-db";
-
-type OnSet = (event: IEvent) => any;
+import { keys } from "./keys";
 
 export interface TATOptions {
+  hiddenButtons?: boolean;
   tags?: string[];
-  onSet?: OnSet;
-}
-
-// 计算更适合 tat 的querySelector
-const getKey = (el: any) => {
-  if (!el || !el.getAttribute) {
-    return "";
-  }
-  const tatId = el.getAttribute("tat-id");
-  const tag = el.nodeName ? el.nodeName.toLocaleLowerCase() : "";
-  const last = `[tat-auto="${el.getAttribute("tat-auto")}"]`;
-
-  return (
-    (tatId && `[tat-id=${tatId}]`) ||
-    (el.id && `#${el.id}`) ||
-    (el.name && `${tag}[name="${el.name}"]`) ||
-    last
-  );
-};
-
-function getAttrAndCloseAttr(item: HTMLElement, key: string) {
-  let attr = item.getAttribute(key);
-  if (!attr) {
-    const ele = item.closest(`[${key}]`);
-    if (ele) {
-      attr = ele.getAttribute(key);
-    }
-  }
-  return attr || "";
-}
-
-function setId(item: HTMLInputElement, onSet: OnSet) {
-  if (item.closest("[tat-ignore]")) {
-    return;
-  }
-
-  if (!item.getAttribute("tat-auto")) {
-    const id = getAttrAndCloseAttr(item, "id");
-    const key = getAttrAndCloseAttr(item, "key");
-    const tat = getAttrAndCloseAttr(item, "tat-id");
-    const placeholder = item.getAttribute("placeholder");
-    const name = item.getAttribute("name");
-    const type = item.getAttribute("type");
-
-    item.setAttribute(
-      "tat-auto",
-      [item.nodeName, placeholder, name, type, id, key, tat]
-        .filter(Boolean)
-        .join("_")
-    );
-  }
-
-  if (item.getAttribute("tat-seted")) {
-    return;
-  }
-  item.setAttribute("tat-seted", "1");
-  let attrList = attrs;
-  if (item.nodeName === "FORM") {
-    attrList = [...submits];
-  }
-  attrList.forEach((e) => {
-    if ((item as any)["tat-" + e]) {
-      return;
-    }
-    (item as any)["tat-" + e] = true;
-    if (e === "input" && item.type === "checkbox") {
-      return;
-    }
-    item.addEventListener(e, function (...args: any[]) {
-      onSet({
-        key: getKey(item),
-        event: e,
-        value: eventVal(args[0]),
-      });
-    });
-  });
-}
-
-function eachSetId(el: HTMLElement, onSet?: OnSet) {
-  if (onSet) {
-    el.querySelectorAll(listenTags.join(",")).forEach((item: any) => {
-      setId(item, onSet);
-    });
-  }
+  recordOnce?: RecordOnce;
+  events?: any;
+  speed?: number;
 }
 
 const matchMclicks: any = {
@@ -100,24 +19,37 @@ const matchMclicks: any = {
   div: 1,
 };
 
-const record = ({ onSet, tags }: TATOptions) => {
+const record = ({ recordOnce, tags }: TATOptions) => {
   tags?.forEach((v) => listenTags.push(v));
-  document.body.setAttribute("tat", "body");
 
-  const lastFn = onSet;
-  onSet = (event: IEvent) => {
+  document.body.setAttribute(keys.id, "body");
+
+  const lastFn = recordOnce;
+  // 录制数据
+  recordOnce = (event: IEvent) => {
+    if (
+      event.event === "href" &&
+      cache.events[0] &&
+      cache.events[0].event === "href"
+    ) {
+      return;
+    }
+    if (event.event !== "href" && micoDb.getSessionStorage(keys.replaying)) {
+      return;
+    }
     cache.events.push(event);
-    micoDb.setSessionStorage("tat-cache", cache);
+    cache.onUpdate!();
+    micoDb.setSessionStorage(keys.cache, cache);
     if (lastFn) {
       lastFn(event);
     }
   };
-  eachSetId(document.body, onSet);
+  querySetTATId(document.body, recordOnce);
 
   const callback = function (mutationsList: any) {
     for (const mutation of mutationsList) {
       if (mutation.type === "childList") {
-        eachSetId(mutation.target, onSet);
+        querySetTATId(mutation.target, recordOnce);
       }
     }
   };
@@ -129,101 +61,26 @@ const record = ({ onSet, tags }: TATOptions) => {
     subtree: true,
   });
 
-  onSet({ event: "href", href: window.location.href });
+  recordOnce({ event: "href", href: window.location.href });
   window.addEventListener("mousedown", function (event: any) {
     if (matchMclicks[event.target.nodeName]) {
-      onSet &&
-        onSet({
-          event: "mclick",
-          clientX: event.clientX,
-          clientY: event.clientY,
-        });
+      recordOnce!({
+        event: "mclick",
+        clientX: event.clientX,
+        clientY: event.clientY,
+      });
     }
   });
 
   window.addEventListener("touchend", function (event: any) {
     if (matchMclicks[event.target.nodeName]) {
-      onSet &&
-        onSet({
-          event: "mclick",
-          clientX: event.clientX,
-          clientY: event.clientY,
-        });
+      recordOnce!({
+        event: "mclick",
+        clientX: event.clientX,
+        clientY: event.clientY,
+      });
     }
   });
-
-  // if (!micoDb.getSessionStorage("tat-replaying")) {
-  //   window.addEventListener("mousedown", function (event: any) {
-  //     if (matchMclicks[event.target.nodeName]) {
-  //       onSet &&
-  //         onSet({
-  //           event: "mclick",
-  //           clientX: event.clientX,
-  //           clientY: event.clientY,
-  //         });
-  //     }
-  //   });
-
-  //   window.addEventListener("touchend", function (event: any) {
-  //     if (matchMclicks[event.target.nodeName]) {
-  //       onSet &&
-  //         onSet({
-  //           event: "mclick",
-  //           clientX: event.clientX,
-  //           clientY: event.clientY,
-  //         });
-  //     }
-  //   });
-  // } else {
-  //   const waitReplayend = () => {
-  //     setTimeout(() => {
-  //       if (!micoDb.getSessionStorage("tat-replaying")) {
-  //         window.addEventListener("mousedown", function (event: any) {
-  //           if (matchMclicks[event.target.nodeName]) {
-  //             onSet &&
-  //               onSet({
-  //                 event: "mclick",
-  //                 clientX: event.clientX,
-  //                 clientY: event.clientY,
-  //               });
-  //           }
-  //         });
-
-  //         window.addEventListener("touchend", function (event: any) {
-  //           if (matchMclicks[event.target.nodeName]) {
-  //             onSet &&
-  //               onSet({
-  //                 event: "mclick",
-  //                 clientX: event.clientX,
-  //                 clientY: event.clientY,
-  //               });
-  //           }
-  //         });
-  //       } else {
-  //         waitReplayend();
-  //       }
-  //     }, 100);
-  //   };
-  //   waitReplayend();
-  // }
-
-  // window.addEventListener("mousemove", function (event: any) {
-  //   lastMouse.clientX = event.clientX;
-  //   lastMouse.clientY = event.clientY;
-  // });
-  // window.addEventListener("touchmove", function (event: any) {
-  //   lastMouse.clientX = event.clientX;
-  //   lastMouse.clientY = event.clientY;
-  // });
-
-  // window.addEventListener("scroll", function (event: any) {
-  //   fn({
-  //     event: "scroll",
-  //     key: getKey(event.target),
-  //     scrollX: event.target.scrollX || window.scrollX,
-  //     scrollY: event.target.scrollY || window.scrollY,
-  //   });
-  // });
 };
 
 export default record;

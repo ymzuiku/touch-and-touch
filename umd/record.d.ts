@@ -1,8 +1,10 @@
-import { IEvent } from "./IEvent";
-declare type OnSet = (event: IEvent) => any;
+import { RecordOnce } from "./recordHelps";
 export interface TATOptions {
+    hiddenButtons?: boolean;
     tags?: string[];
-    onSet?: OnSet;
+    recordOnce?: RecordOnce;
+    events?: any;
+    speed?: number;
 }
-declare const record: ({ onSet, tags }: TATOptions) => void;
+declare const record: ({ recordOnce, tags }: TATOptions) => void;
 export default record;
