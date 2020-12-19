@@ -25,7 +25,8 @@ function eventType(el: HTMLInputElement, event: IEvent, eventKey: string) {
     return;
   }
   cache.lastFocus = el;
-  if (el.nodeName === "INPUT" || el.nodeName === "TEXTAREA") {
+  const nodeName = el.nodeName.toLocaleLowerCase();
+  if (nodeName === "input" || nodeName === "textarea") {
     el.focus();
   }
 
@@ -57,7 +58,7 @@ function getElementTAT(key: string): Promise<HTMLElement> {
   });
 }
 
-const replayKey = "tat-need-replay";
+const replayKey = "tat-replay";
 
 const getEleCenter = (el: HTMLElement, event: IEvent) => {
   const rect = el.getBoundingClientRect();
@@ -74,7 +75,7 @@ function sleep(t: number) {
 export const replayAndReload = (options: IReplay) => {
   const { events } = options;
   const first = events[0];
-  micoDb.setLocalStorage(replayKey, 1);
+  micoDb.setSessionStorage(replayKey, options);
   // return;
   if (first && first.href) {
     if (window.location.href === first.href) {
@@ -86,8 +87,10 @@ export const replayAndReload = (options: IReplay) => {
   }
 };
 
-export const replay = async (options: IReplay) => {
-  if (!micoDb.getLocalStorage(replayKey)) {
+export const replay = async () => {
+  micoDb.setSessionStorage("tat-replaying", 1);
+  const options = micoDb.getSessionStorage(replayKey) as IReplay;
+  if (!options) {
     return;
   }
   const { speed, events } = options;
@@ -126,6 +129,14 @@ export const replay = async (options: IReplay) => {
         cache.events[i] = events[i];
       }
     }
+
+    const nextEvents = [];
+    for (let u = item.index || 0; u < events.length; u++) {
+      nextEvents.push(events[u]);
+    }
+
+    micoDb.setSessionStorage(replayKey, { speed, events: nextEvents });
   }
-  micoDb.removeLocalStorage(replayKey);
+  micoDb.removeSessionStorage("tat-replaying");
+  micoDb.removeSessionStorage(replayKey);
 };

@@ -18,11 +18,7 @@ export default (opt: TATOptions = {}) => {
       });
     },
   });
-  micoDb.get("touch-and-touch").then((events) => {
-    if (events) {
-      replay({ speed: 1, events });
-    }
-  });
+  replay();
 
   document.body.append(btn);
 };

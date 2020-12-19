@@ -2,6 +2,7 @@ import { IEvent } from "./IEvent";
 import { attrs, submits, listenTags } from "./attrs";
 import { cache } from "./cache";
 import { eventVal } from "./eventVal";
+import micoDb from "mico-db";
 
 type OnSet = (event: IEvent) => any;
 
@@ -50,8 +51,6 @@ function setId(item: HTMLInputElement, onSet: OnSet) {
     const placeholder = item.getAttribute("placeholder");
     const name = item.getAttribute("name");
     const type = item.getAttribute("type");
-
-    // const a = item.getAttribute('id');
 
     item.setAttribute(
       "tat-auto",
@@ -108,6 +107,7 @@ const record = ({ onSet, tags }: TATOptions) => {
   const lastFn = onSet;
   onSet = (event: IEvent) => {
     cache.events.push(event);
+    micoDb.setSessionStorage("tat-cache", cache);
     if (lastFn) {
       lastFn(event);
     }
@@ -130,16 +130,6 @@ const record = ({ onSet, tags }: TATOptions) => {
   });
 
   onSet({ event: "href", href: window.location.href });
-
-  // window.addEventListener("mousemove", function (event: any) {
-  //   lastMouse.clientX = event.clientX;
-  //   lastMouse.clientY = event.clientY;
-  // });
-  // window.addEventListener("touchmove", function (event: any) {
-  //   lastMouse.clientX = event.clientX;
-  //   lastMouse.clientY = event.clientY;
-  // });
-
   window.addEventListener("mousedown", function (event: any) {
     if (matchMclicks[event.target.nodeName]) {
       onSet &&
@@ -161,6 +151,70 @@ const record = ({ onSet, tags }: TATOptions) => {
         });
     }
   });
+
+  // if (!micoDb.getSessionStorage("tat-replaying")) {
+  //   window.addEventListener("mousedown", function (event: any) {
+  //     if (matchMclicks[event.target.nodeName]) {
+  //       onSet &&
+  //         onSet({
+  //           event: "mclick",
+  //           clientX: event.clientX,
+  //           clientY: event.clientY,
+  //         });
+  //     }
+  //   });
+
+  //   window.addEventListener("touchend", function (event: any) {
+  //     if (matchMclicks[event.target.nodeName]) {
+  //       onSet &&
+  //         onSet({
+  //           event: "mclick",
+  //           clientX: event.clientX,
+  //           clientY: event.clientY,
+  //         });
+  //     }
+  //   });
+  // } else {
+  //   const waitReplayend = () => {
+  //     setTimeout(() => {
+  //       if (!micoDb.getSessionStorage("tat-replaying")) {
+  //         window.addEventListener("mousedown", function (event: any) {
+  //           if (matchMclicks[event.target.nodeName]) {
+  //             onSet &&
+  //               onSet({
+  //                 event: "mclick",
+  //                 clientX: event.clientX,
+  //                 clientY: event.clientY,
+  //               });
+  //           }
+  //         });
+
+  //         window.addEventListener("touchend", function (event: any) {
+  //           if (matchMclicks[event.target.nodeName]) {
+  //             onSet &&
+  //               onSet({
+  //                 event: "mclick",
+  //                 clientX: event.clientX,
+  //                 clientY: event.clientY,
+  //               });
+  //           }
+  //         });
+  //       } else {
+  //         waitReplayend();
+  //       }
+  //     }, 100);
+  //   };
+  //   waitReplayend();
+  // }
+
+  // window.addEventListener("mousemove", function (event: any) {
+  //   lastMouse.clientX = event.clientX;
+  //   lastMouse.clientY = event.clientY;
+  // });
+  // window.addEventListener("touchmove", function (event: any) {
+  //   lastMouse.clientX = event.clientX;
+  //   lastMouse.clientY = event.clientY;
+  // });
 
   // window.addEventListener("scroll", function (event: any) {
   //   fn({
