@@ -1,0 +1,12 @@
+<div>
+  <v-set onclick="()=>$hook.state.show = !$hook.state.show"><button>Change If</button></v-set>
+  <v-if value="$hook.state.show">
+    <h1>Detail Hello</h1>
+  </v-if>
+</div>
+
+<script>
+  $hook.state = {
+    show: false
+  }
+</script>
