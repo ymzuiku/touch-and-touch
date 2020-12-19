@@ -1,11 +1,11 @@
-import record from "./record";
+import record, { TATOptions } from "./record";
 import replay from "./replay";
 import { renderButton } from "./renderButton";
 import micoDb from "mico-db";
 import { cache } from "./cache";
 
-export default () => {
-  record();
+export default (opt: TATOptions = {}) => {
+  record(opt);
   const btn = renderButton({
     save: () => {
       micoDb.set("touch-and-touch", cache.events);

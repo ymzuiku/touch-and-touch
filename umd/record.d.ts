@@ -1,4 +1,8 @@
 import { IEvent } from "./IEvent";
-declare type ISetEvent = (event: IEvent) => any;
-declare const record: (fn?: ISetEvent | undefined) => void;
+declare type OnSet = (event: IEvent) => any;
+export interface TATOptions {
+    tags?: string[];
+    onSet?: OnSet;
+}
+declare const record: ({ onSet, tags }: TATOptions) => void;
 export default record;

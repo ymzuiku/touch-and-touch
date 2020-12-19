@@ -1,0 +1,15 @@
+<div>
+  <v-txt>$hook.state.str</v-txt>
+  <v-set oninput="(e)=>$hook.state.str = e.target.value">
+    <input placeholder="hello" />
+</v-set
+  <v-set oninput="(e)=>$hook.state.str = e.target.value">
+      <input placeholder="world" />
+  </v-set>
+</div>
+
+<script>
+  $hook.state = {
+    str: ""
+  }
+</script>
