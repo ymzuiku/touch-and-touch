@@ -23,7 +23,6 @@ const getKey = (el: any) => {
     (tatId && `[tat-id=${tatId}]`) ||
     (el.id && `#${el.id}`) ||
     (el.name && `${tag}[name="${el.name}"]`) ||
-    (el.key && `${tag}[key="${el.key}"]`) ||
     last
   );
 };
