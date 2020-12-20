@@ -1,5 +1,9 @@
 import "dom-jsx";
-import { cancel, record, replay } from "lib/model";
+import { cancel } from "lib/model/cancel";
+import { record } from "lib/model/record";
+import { replay } from "lib/model/replay";
+import { save } from "lib/model/save";
+import { state } from "lib/model/state";
 import { Drag } from "./Drag";
 
 const css = `
@@ -29,11 +33,22 @@ document.head.append(<style>{css}</style>);
 
 export const TouchAndTouchController = () => {
   return (
-    <Drag savePositionKey="tat-drag" class="tat">
-      <div style={{ fontSize: "11px" }}>TouchAndTouch</div>
-      <div>
-        <div class="tat-btn" onclick={record}>
-          Record
+    <div tat-drag-ctrl class="tat">
+      <Drag query="[tat-drag-ctrl]" tat-ignore savePositionKey="tat-drag">
+        <div style={{ fontSize: "11px" }}>TouchAndTouch</div>
+      </Drag>
+      <div class="tat-ctrl">
+        <div
+          class="tat-btn"
+          onclick={() => {
+            if (state.recording.get()) {
+              save();
+            } else {
+              record();
+            }
+          }}
+        >
+          {() => (state.recording.get() ? "Save" : "Record")}
         </div>
         <div class="tat-btn" onclick={replay}>
           Replay
@@ -42,6 +57,6 @@ export const TouchAndTouchController = () => {
           Cancel
         </div>
       </div>
-    </Drag>
+    </div>
   );
 };

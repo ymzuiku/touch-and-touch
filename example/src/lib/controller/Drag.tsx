@@ -2,6 +2,7 @@ interface DragProps extends IProps {
   savePositionKey?: string;
   clientX?: number;
   clientY?: number;
+  query?: string;
 }
 
 function fixPosition(state: { x: number; y: number }) {
@@ -19,20 +20,30 @@ function fixPosition(state: { x: number; y: number }) {
 }
 
 export const Drag = ({
-  style,
   children,
   clientX,
   clientY,
+  query = "[tat-base-drag]",
   savePositionKey,
   ...rest
 }: DragProps) => {
   let saveTime: any;
+  const update = () => {
+    const Ele = document.querySelector(query) as HTMLElement;
+    if (Ele) {
+      Ele.style.position = "fixed";
+      Ele.style.cursor = "move";
+      Ele.style.left = state.x + "px";
+      Ele.style.top = state.y + "px";
+    }
+  };
   window.addEventListener("mousemove", (e) => {
     if (state.onDrag) {
       state.x = e.clientX - state.startX;
       state.y = e.clientY - state.startY;
       fixPosition(state);
-      next("[tat-drag]");
+      // next("[tat-drag]");
+      update();
       if (savePositionKey) {
         if (saveTime) {
           clearTimeout(saveTime);
@@ -67,17 +78,10 @@ export const Drag = ({
     }
   }
   fixPosition(state);
-  console.log(children);
+  dom.waitAppend(query).then(update);
   return (
     <div
-      tat-drag="1"
-      style={() => ({
-        cursor: "move",
-        position: "fixed",
-        left: state.x + "px",
-        top: state.y + "px",
-        ...(style as any),
-      })}
+      tat-base-drag="1"
       onmousedown={(e) => {
         state.onDrag = true;
         state.startX = e.offsetX;
@@ -85,11 +89,6 @@ export const Drag = ({
       }}
       {...rest}
     >
-      {/* {children && children[0]}
-      {children && children[1]}
-      {children && children[2]}
-      {children && children[3]}
-      {children && children[4]} */}
       {children}
     </div>
   );

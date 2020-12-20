@@ -25,7 +25,7 @@ function StatefulExample({ name }: { name: string }) {
         onclick={() => {
           num += 1;
           // next 会使用 document.body.querySelectorAll() 查询并更新 `.add` 匹配的元素及子元素
-          next(".add");
+          dom.next(".add");
         }}
       >
         {name}

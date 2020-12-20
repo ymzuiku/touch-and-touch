@@ -1,4 +1,8 @@
 import { TouchAndTouchController } from "./controller";
-import { cancel, record, replay } from "./model";
+// import { cancel } from "./model/cancel";
+// import { replay } from "./model/replay";
+// import { record } from "./model/record";
+// import { save } from "./model/save";
 
-export { TouchAndTouchController, cancel, replay, record };
+// export { TouchAndTouchController, cancel, replay, record, save };
+export { TouchAndTouchController };
