@@ -9,8 +9,9 @@
     "eject": "dom-jsx-scripts eject"
   },
   "dependencies": {
-    "dom-jsx": "^1.0.4",
-    "dom-jsx-scripts": "^4.0.19"
+    "dom-jsx": "^1.2.2",
+    "dom-jsx-scripts": "^4.0.23",
+    "mico-db": "^1.0.1"
   },
   "devDependencies": {
     "typescript": "^4.1.3"

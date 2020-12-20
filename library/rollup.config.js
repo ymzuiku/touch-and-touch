@@ -30,11 +30,11 @@ function haveArgv(...args) {
 }
 
 clearDir(pwd("umd"));
-fs.copySync(pwd("example/src/lib"), pwd("lib"));
+fs.copySync(pwd("../example/src/lib"), pwd("lib"));
 
 const watchOptions = [
   {
-    external: ["mico-db"],
+    external: ["mico-db", "dom-jsx"],
     input: "./lib/index.ts",
     output: {
       file: "./umd/index.js",
@@ -43,6 +43,7 @@ const watchOptions = [
       sourcemap: true,
       globals: {
         "mico-db": "micoDb",
+        "dom-jsx": "dom",
       },
     },
     plugins: [
