@@ -30,6 +30,7 @@ function haveArgv(...args) {
 }
 
 clearDir(pwd("umd"));
+fs.copySync(pwd("example/src/lib"), pwd("lib"));
 
 const watchOptions = [
   {
@@ -73,7 +74,5 @@ watcher.on("event", (event) => {
     if (!haveArgv("--watch", "-w")) {
       watcher.close();
     }
-
-    fs.copySync(pwd("umd/index.js"), pwd("test/index.js"));
   }
 });

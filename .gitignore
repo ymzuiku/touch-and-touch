@@ -4,13 +4,16 @@
 
 # dependencies
 /node_modules
+**/node_modules
 /.pnp
 .pnp.js
+lib-old
 
 # testing
-/coverage
-/jest-stare
 **/coverage
+**/jest-stare
+**/coverage
+**/doc
 
 # production
 /build
