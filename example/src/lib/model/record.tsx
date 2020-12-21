@@ -3,5 +3,7 @@ import { state } from "./state";
 
 export const record = () => {
   state.recording.set(1);
-  aoife.next(".tat-ctrl");
+  state.showList = false;
+  state.showExpend = false;
+  aoife.next(".tat-plan");
 };

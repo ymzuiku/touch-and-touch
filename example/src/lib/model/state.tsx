@@ -20,7 +20,7 @@ export interface RecordCell {
 interface TATProxy {
   list?: () => Promise<RecordCell[]>;
   save?: (list: RecordCell[]) => Promise<void>;
-  add?: (cell: RecordCell, item: RecordItem) => void;
+  add?: (cell: RecordCell, item: RecordItem[]) => void;
   remove?: (id: string) => Promise<RecordCell>;
   find?: (id: string) => Promise<RecordItem>;
 }
@@ -28,43 +28,45 @@ interface TATProxy {
 export const proxy = {} as TATProxy;
 
 export const state = {
-  _: {
-    recordList: (void 0 as any) as RecordCell[],
-    recordItems: (void 0 as any) as RecordItem[],
+  showList: true,
+  showExpend: true,
+  data: {
+    recordList: [] as RecordCell[],
+    recordItems: [] as RecordItem[],
   },
   recordList: {
-    get: async () => {
+    list: async (): Promise<RecordCell[]> => {
       if (proxy.list) {
         const list = await proxy.list();
         await micoDb.set("record-list", list);
       }
-      state._.recordList = await micoDb.get("record-list");
-      return state._.recordList;
+      state.data.recordList = (await micoDb.get("record-list")) || [];
+      return state.data.recordList;
     },
-    set: async (list: RecordCell[]) => {
+    save: async (list: RecordCell[]) => {
       if (proxy.save) {
         await proxy.save(list);
       }
-      state._.recordList = list;
+      state.data.recordList = list;
       return micoDb.set("record-list", list);
     },
-    add: async (cell: RecordCell, item: RecordItem) => {
-      if (!state._.recordList) {
-        await state.recordList.get();
+    add: async (cell: RecordCell, item: RecordItem[]) => {
+      if (!state.data.recordList) {
+        await state.recordList.list();
       }
-      state._.recordList.push(cell);
+      state.data.recordList.push(cell);
       if (proxy.add) {
         await proxy.add(cell, item);
       }
       micoDb.set(cell.id, item);
-      return micoDb.set("record-list", state._.recordList);
+      return micoDb.set("record-list", state.data.recordList);
     },
-    find: async (id: string): Promise<RecordItem> => {
-      if (!state._.recordList) {
-        await state.recordList.get();
+    find: async (id: string): Promise<RecordItem[]> => {
+      if (!state.data.recordList) {
+        await state.recordList.list();
       }
       let cell: RecordCell = null as any;
-      state._.recordList.forEach((v) => {
+      state.data.recordList.forEach((v) => {
         if (v.id === id) {
           cell = v;
         } else {
@@ -79,15 +81,15 @@ export const state = {
       return null as any;
     },
     remove: async (id: string): Promise<RecordCell> => {
-      if (!state._.recordList) {
-        await state.recordList.get();
+      if (!state.data.recordList) {
+        await state.recordList.list();
       }
-      const list = [...state._.recordList];
-      state._.recordList = [];
+      const list = [...state.data.recordList];
+      state.data.recordList = [];
       let cell: RecordCell = null as any;
       list.forEach((v) => {
         if (v.id !== id) {
-          state._.recordList.push(v);
+          state.data.recordList.push(v);
         } else {
           cell = v;
         }
@@ -95,7 +97,7 @@ export const state = {
       if (proxy.remove) {
         await proxy.remove(id);
       }
-      await micoDb.set("record-list", state._.recordList);
+      await micoDb.set("record-list", state.data.recordList);
       return cell;
     },
   },
@@ -109,29 +111,29 @@ export const state = {
   },
   recordItems: {
     get: () => {
-      state._.recordItems = micoDb.getSessionStorage(
+      state.data.recordItems = (micoDb.getSessionStorage(
         "record-recordEvents"
-      ) as RecordItem[];
-      return state._.recordItems;
+      ) || []) as RecordItem[];
+      return state.data.recordItems;
     },
     set: (events: RecordItem[]) => {
-      state._.recordItems = events;
+      state.data.recordItems = events;
       micoDb.setSessionStorage("tat-recordEvents", events);
     },
     add: (event: RecordItem) => {
-      if (!state._.recordItems) {
+      if (!state.data.recordItems) {
         state.recordItems.get();
       }
-      state._.recordItems.push(event);
-      micoDb.setSessionStorage("tat-recordEvents", state._.recordItems);
+      state.data.recordItems.push(event);
+      micoDb.setSessionStorage("tat-recordEvents", state.data.recordItems);
     },
   },
   recording: {
     get: () => {
-      return micoDb.getSessionStorage("tat-replaying");
+      return micoDb.getSessionStorage("tat-recording");
     },
     set: (replaying: number) => {
-      micoDb.setSessionStorage("tat-replaying", replaying);
+      micoDb.setSessionStorage("tat-recording", replaying);
     },
   },
   replaying: {

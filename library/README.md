@@ -8,7 +8,7 @@
 
 1. tat-id
 2. id
-3. tag + key + name + tat-id(冒泡寻找父元素的 tat-id)
+3. tag + key + type + name + tat-id(冒泡寻找父元素的 tat-id)
 
 其中若无 tat-id, 且无 id，则会冒泡查找父元素，直到找到为止.
 

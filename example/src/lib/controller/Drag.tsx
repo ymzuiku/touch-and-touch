@@ -25,6 +25,7 @@ export const Drag = ({
   clientY,
   query = "[tat-base-drag]",
   savePositionKey,
+  style,
   ...rest
 }: DragProps) => {
   let saveTime: any;
@@ -78,12 +79,15 @@ export const Drag = ({
   fixPosition(state);
   aoife.waitAppend(query).then((ele) => {
     ele.style.position = "fixed";
-    ele.style.cursor = "move";
     update();
   });
   return (
     <div
       tat-base-drag="1"
+      style={{
+        cursor: "move",
+        ...(style as any),
+      }}
       onmousedown={(e) => {
         state.onDrag = true;
         state.startX = e.offsetX;
