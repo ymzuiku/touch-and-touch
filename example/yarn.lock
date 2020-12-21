@@ -10253,6 +10253,18 @@ temp-dir@^1.0.0:
   resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-1.0.0.tgz#0a7c0ea26d3a39afa7e0ebea9c1fc0bc4daa011d"
   integrity sha1-CnwOom06Oa+n4OvqnB/AvE2qAR0=
 
+template-css@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/template-css/-/template-css-1.0.2.tgz#7474445f2ecfb1a7d56e01ccba28dcdb5e2ea279"
+  integrity sha512-KrF44beC3ed2NXdlMmcBoLBFtSe0dpvSH5nZF45KALKo9zCHYHsraJTrO4v3//DKp1aRbLH0UciQ61beX3CkYA==
+  dependencies:
+    template-fn "^1.0.0"
+
+template-fn@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/template-fn/-/template-fn-1.0.1.tgz#4539dcb55b502e393d794d95facb50941e246440"
+  integrity sha512-yjBDJ1kBBvz8JftLggyF7xJNHY7knI0PgvdSnupEMlWO02Ot12MmdTBdU7u2mjO/CwcyXv9VQE0iYYjc8/NwZQ==
+
 tempy@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/tempy/-/tempy-0.3.0.tgz#6f6c5b295695a16130996ad5ab01a8bd726e8bf8"

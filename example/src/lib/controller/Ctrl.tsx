@@ -3,6 +3,7 @@ import { record } from "lib/model/record";
 import { showList } from "lib/model/showList";
 import { recordSave } from "lib/model/recordSave";
 import { state } from "lib/model/state";
+import css from "template-css";
 import {
   RecordSvg,
   RecordStopSvg,
@@ -20,7 +21,7 @@ export const Ctrl = () => {
     >
       {() => {
         return state.recording.get() ? (
-          <span>
+          <span class="tat-row">
             <RecordStopSvg class="tat-btn" onclick={recordSave} />
             <RecordCancelSvg class="tat-btn" onclick={recordClear} />
           </span>
@@ -40,36 +41,46 @@ export const Ctrl = () => {
   );
 };
 
-const css = `
-.tat-ctrl {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-}
-.tat-btn {
-  padding: 2px 4px;
-  border-radius: 2px;
-  cursor: pointer;
-  user-select: none;
-}
-.tat-btn:hover {
-  background: rgba(0,0,0,0.1)
-}
-.tat-btn:active {
-  background: rgba(0,0,128,0.2)
-}
-.tat-icon {
-  width: 16px;
-  height: 16px;
-}
+css`
+  .tat-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+  }
+  .tat-ctrl {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    height: 30px;
+  }
+  .tat-btn {
+    padding: 4px 4px;
+    border-radius: 2px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+  .tat-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .tat-btn:active {
+    background: rgba(0, 0, 128, 0.2);
+  }
+  .tat-icon {
+    width: 16px;
+    height: 16px;
+  }
 
-.tat-show-list-icon {
-  display:block;
-  transition: all 0.3s ease-out;
-}
-.tat-show-list {
-  transform:rotate(-90deg);
-}
+  .tat-show-list-icon {
+    display: block;
+    transition: all 0.3s ease-out;
+  }
+  .tat-show-list {
+    transform: rotate(-90deg);
+  }
 `;
-document.head.append(<style>{css}</style>);

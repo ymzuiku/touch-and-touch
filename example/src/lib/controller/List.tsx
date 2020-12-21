@@ -1,6 +1,7 @@
 import { replay } from "lib/model/replay";
 import { state } from "lib/model/state";
 import VanillaList from "vanilla-list";
+import css from "template-css";
 
 export const List = () => {
   return (
@@ -28,11 +29,10 @@ export const List = () => {
   );
 };
 
-const css = `
+css`
   .tat-list {
-    cursor:pointer;
+    cursor: pointer;
     width: 100%;
     height: 200px;
   }
 `;
-document.head.append(<style>{css}</style>);
