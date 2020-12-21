@@ -2259,10 +2259,10 @@ aoife-scripts@^4.0.2:
   optionalDependencies:
     fsevents "^2.1.3"
 
-aoife-svg@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/aoife-svg/-/aoife-svg-1.0.1.tgz#3519bbfa69845fbbe4f7f51d72f8a9d5d5a5e4ad"
-  integrity sha512-WPZDpBdJu5CuqoC5g8WwC/7RMC7t7TrEHqpZfU+b+Id1gYsw53wrX95VWSuVXje6gu8E7HqDiSmEGp/eq62kYw==
+aoife-svg@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/aoife-svg/-/aoife-svg-1.0.2.tgz#98418b33f4b904cfaf66522abba9277bd39ac744"
+  integrity sha512-G+o/52oE8CFJfGZG0QdD/ZMu+FaXCG1UgWJacoopLavEMfJ+VTvDm2ZgmtFkQS87XKgSMjL9iyYwSgL94uWrCg==
   dependencies:
     aoife "^1.3.5"
 
@@ -2271,10 +2271,10 @@ aoife@^1.3.5:
   resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.5.tgz#efa2abca6e9e770e68793e5b5765e9a88671622d"
   integrity sha512-iPf9wVobgrUts/jh0ZV40Te1q1HLo2lChYh+crPVtlXwjtqswxA+6SLDhKnJwZUhnFLX/xwXHdXm3tgdrpaDyA==
 
-aoife@^1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.6.tgz#17d3e2f8c96bcdd80df64136730ff5de42999656"
-  integrity sha512-CFiKbfm+WOcPzN18DmlarCtP57QGLEGVXayQPGqLI+YG754Nn1VmlKVeLG6LZ9MQyHlGXy+pJs55aU2Cz1TwNQ==
+aoife@^1.3.7:
+  version "1.3.7"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.7.tgz#2e8163808af6dae4cdaa6618f8ad5df3ac9f8d9d"
+  integrity sha512-aTytLuHTLeelde0XaQM6LFKSBa3oYgD9RO/wOsoUo+1zIo+WTgPhB0Hf6K2najqopW6+2p1uq0971yh6PGwKqg==
 
 aproba@^1.1.1:
   version "1.2.0"
@@ -10253,10 +10253,10 @@ temp-dir@^1.0.0:
   resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-1.0.0.tgz#0a7c0ea26d3a39afa7e0ebea9c1fc0bc4daa011d"
   integrity sha1-CnwOom06Oa+n4OvqnB/AvE2qAR0=
 
-template-css@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/template-css/-/template-css-1.0.2.tgz#7474445f2ecfb1a7d56e01ccba28dcdb5e2ea279"
-  integrity sha512-KrF44beC3ed2NXdlMmcBoLBFtSe0dpvSH5nZF45KALKo9zCHYHsraJTrO4v3//DKp1aRbLH0UciQ61beX3CkYA==
+template-css@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/template-css/-/template-css-1.0.5.tgz#b3cd61f5613bd33894bfbe8329382eda46543650"
+  integrity sha512-+76209A0Np1EoUuuSlWx895I9ToSGzQktUWlpZ+y5SleSzQcKDg59MeTUtxZ3wPqYazMOR74C0r4u6Pn+D4+zg==
   dependencies:
     template-fn "^1.0.0"
 

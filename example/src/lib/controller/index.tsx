@@ -8,12 +8,13 @@ export const TouchAndTouchController = () => {
   init();
   return (
     <div tat-drag-ctrl class="tat">
-      <Drag query="[tat-drag-ctrl]" tat-ignore savePositionKey="tat-drag">
-        <div class="tat-title">TouchAndTouch</div>
-      </Drag>
       <div>
         <div class="tat-plan">
-          <Ctrl />
+          <Drag query="[tat-drag-ctrl]" tat-ignore savePositionKey="tat-drag">
+            {/* <div class="tat-title">TouchAndTouch</div> */}
+            <Ctrl />
+          </Drag>
+
           <List />
         </div>
       </div>
@@ -22,6 +23,9 @@ export const TouchAndTouchController = () => {
 };
 
 css`
+  .tat *[hidden] {
+    display: none !important;
+  }
   .tat {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC",
       "Helvetica Neue", "Helvetica", "Arial", sans-serif;

@@ -13,17 +13,14 @@ import {
 
 export const Ctrl = () => {
   return (
-    <div
-      class="tat-ctrl"
-      style={() => ({
-        opacity: state.replaying.get() ? "0.5" : "1",
-      })}
-    >
+    <div class="tat-ctrl">
       {() => {
         return state.recording.get() ? (
           <span class="tat-row">
-            <RecordStopSvg class="tat-btn" onclick={recordSave} />
             <RecordCancelSvg class="tat-btn" onclick={recordClear} />
+            <div class="tat-btn" onclick={recordSave}>
+              Save
+            </div>
           </span>
         ) : (
           <RecordSvg class="tat-btn" onclick={record} />
@@ -44,9 +41,7 @@ export const Ctrl = () => {
 css`
   .tat-row {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
+    ${css.flex("row-center-center")}
   }
   .tat-ctrl {
     display: flex;

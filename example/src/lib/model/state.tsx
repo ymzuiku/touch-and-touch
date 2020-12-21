@@ -20,9 +20,10 @@ export interface RecordCell {
 interface TATProxy {
   list?: () => Promise<RecordCell[]>;
   save?: (list: RecordCell[]) => Promise<void>;
-  add?: (cell: RecordCell, item: RecordItem[]) => void;
+  add?: (cell: RecordCell, item: RecordItem[]) => Promise<void>;
   remove?: (id: string) => Promise<RecordCell>;
   find?: (id: string) => Promise<RecordItem>;
+  update?: (id: string, cell: RecordCell) => Promise<void>;
 }
 
 export const proxy = {} as TATProxy;
@@ -30,6 +31,7 @@ export const proxy = {} as TATProxy;
 export const state = {
   showList: true,
   showExpend: true,
+  showInputId: "",
   data: {
     recordList: [] as RecordCell[],
     recordItems: [] as RecordItem[],
@@ -61,7 +63,20 @@ export const state = {
       micoDb.set(cell.id, item);
       return micoDb.set("record-list", state.data.recordList);
     },
-    find: async (id: string): Promise<RecordItem[]> => {
+    findCell: async (id: string): Promise<RecordCell> => {
+      if (!state.data.recordList) {
+        await state.recordList.list();
+      }
+      let cell: RecordCell = null as any;
+      state.data.recordList.forEach((v) => {
+        if (v.id === id) {
+          cell = v;
+        }
+      });
+
+      return cell;
+    },
+    findItems: async (id: string): Promise<RecordItem[]> => {
       if (!state.data.recordList) {
         await state.recordList.list();
       }
@@ -108,6 +123,24 @@ export const state = {
     set: (speed: number) => {
       micoDb.setSessionStorage("record-speed", speed);
     },
+  },
+  recordUpdate: async (id: string, nextCell: RecordCell) => {
+    if (!state.data.recordList) {
+      await state.recordList.list();
+    }
+
+    state.data.recordList.forEach((v) => {
+      if (v.id === id) {
+        v.id = nextCell.id;
+        v.step = nextCell.step;
+        v.title = nextCell.title;
+        v.updateAt = Date.now();
+      }
+    });
+    if (proxy.update) {
+      await proxy.update(id, nextCell);
+    }
+    await state.recordList.save(state.data.recordList);
   },
   recordItems: {
     get: () => {

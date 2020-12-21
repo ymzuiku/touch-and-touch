@@ -6,6 +6,5 @@ export const recordClear = () => {
   state.recordItems.set([]);
   state.showList = true;
   state.showExpend = true;
-  const list = aoife.next(".tat-plan");
-  console.log("aaaaaaa", list);
+  aoife.next(".tat-plan");
 };
