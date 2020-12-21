@@ -1,19 +1,19 @@
 {
-  "name": "dom-jsx-prject",
-  "version": "0.1.0",
+  "name": "aoife-project",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "dom-jsx-scripts start",
-    "build": "dom-jsx-scripts build",
-    "test": "dom-jsx-scripts test",
-    "eject": "dom-jsx-scripts eject"
+    "start": "aoife-scripts start",
+    "build": "aoife-scripts build",
+    "test": "aoife-scripts test",
+    "eject": "aoife-scripts eject"
   },
   "dependencies": {
-    "dom-jsx": "^1.2.8",
+    "aoife": "^1.3.1",
     "mico-db": "^1.0.1"
   },
   "devDependencies": {
-    "dom-jsx-scripts": "^4.0.24",
+    "aoife-scripts": "^4.0.2",
     "typescript": "^4.1.3"
   },
   "browserslist": {

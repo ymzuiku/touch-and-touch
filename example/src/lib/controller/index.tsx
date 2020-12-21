@@ -1,4 +1,3 @@
-import "dom-jsx";
 import { cancel } from "lib/model/cancel";
 import { record } from "lib/model/record";
 import { replay } from "lib/model/replay";

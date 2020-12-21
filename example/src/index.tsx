@@ -1,4 +1,4 @@
-import "dom-jsx";
+import "aoife";
 import { TouchAndTouchController } from "./lib";
 
 // 这是一个普通的 jsx 组件
@@ -25,7 +25,7 @@ function StatefulExample({ name }: { name: string }) {
         onclick={() => {
           num += 1;
           // next 会使用 document.body.querySelectorAll() 查询并更新 `.add` 匹配的元素及子元素
-          dom.next(".add");
+          aoife.next(".add");
         }}
       >
         {name}

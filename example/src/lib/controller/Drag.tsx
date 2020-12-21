@@ -31,8 +31,6 @@ export const Drag = ({
   const update = () => {
     const Ele = document.querySelector(query) as HTMLElement;
     if (Ele) {
-      Ele.style.position = "fixed";
-      Ele.style.cursor = "move";
       Ele.style.left = state.x + "px";
       Ele.style.top = state.y + "px";
     }
@@ -78,7 +76,11 @@ export const Drag = ({
     }
   }
   fixPosition(state);
-  dom.waitAppend(query).then(update);
+  aoife.waitAppend(query).then((ele) => {
+    ele.style.position = "fixed";
+    ele.style.cursor = "move";
+    update();
+  });
   return (
     <div
       tat-base-drag="1"
