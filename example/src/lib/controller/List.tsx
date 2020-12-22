@@ -5,6 +5,7 @@ import css from "template-css";
 import { EditorSvg } from "./svg";
 import { changeInput } from "lib/model/changeInput";
 import { rename } from "lib/model/rename";
+import dayjs from "dayjs";
 
 export const List = () => {
   return (
@@ -55,7 +56,9 @@ export const List = () => {
                   >
                     {() =>
                       state.data.recordList[i].title ||
-                      state.data.recordList[i].id
+                      dayjs(state.data.recordList[i].updateAt).format(
+                        "YYYY-MM-DD HH:mm"
+                      )
                     }
                   </div>
                 </div>
