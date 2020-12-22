@@ -6,7 +6,7 @@ interface DragProps extends IProps {
 }
 
 function fixPosition(state: { x: number; y: number }) {
-  const out = 30;
+  const out = 60;
   if (state.x < 0) {
     state.x = 0;
   } else if (state.x > window.innerWidth - out) {
@@ -36,7 +36,7 @@ export const Drag = ({
       Ele.style.top = state.y + "px";
     }
   };
-  window.addEventListener("mousemove", (e) => {
+  const onMove = (e: any) => {
     if (state.onDrag) {
       state.x = e.clientX - state.startX;
       state.y = e.clientY - state.startY;
@@ -53,10 +53,16 @@ export const Drag = ({
         }, 500);
       }
     }
-  });
-  window.addEventListener("mouseup", (e) => {
+  };
+  const onMoveEnd = () => {
     state.onDrag = false;
+  };
+  window.addEventListener("mousemove", onMove);
+  window.addEventListener("touchmove", (e) => {
+    onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
   });
+  window.addEventListener("mouseup", onMoveEnd);
+  window.addEventListener("touchend", onMoveEnd);
   const state = {
     onDrag: false,
     x: clientX || 0,
@@ -92,6 +98,13 @@ export const Drag = ({
         state.onDrag = true;
         state.startX = e.offsetX;
         state.startX = e.offsetX;
+      }}
+      ontouchstart={(e: any) => {
+        state.onDrag = true;
+        if (e.touches && e.touches[0] && e.touches[0].target) {
+          state.startX = e.touches[0].target.offsetLeft;
+          state.startY = e.touches[0].target.offsetHeight;
+        }
       }}
       {...rest}
     >

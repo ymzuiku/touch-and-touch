@@ -1,4 +1,5 @@
 import { getEventVal } from "./getEventVal";
+import { recordItemAdd } from "./recordItemAdd";
 import { state } from "./state";
 
 export const inputs = ["input", "submit"];
@@ -23,7 +24,7 @@ export const eleSetListen = (ele: HTMLLIElement) => {
         return;
       }
       if (state.recording.get()) {
-        state.recordItems.add({
+        recordItemAdd({
           key: ele.getAttribute("tat-key")!,
           type: e,
           value: getEventVal(event),

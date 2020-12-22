@@ -6,7 +6,7 @@ import { state } from "lib/model/state";
 import Pop from "aoife-pop";
 import css from "template-css";
 import {
-  RecordSvg,
+  RecordStartSvg,
   RecordStopSvg,
   RecordCancelSvg,
   CtrlExpendSvg,
@@ -15,6 +15,15 @@ import {
 } from "./svg";
 import { replay } from "lib/model/replay";
 import { recordAdd } from "lib/model/recordAdd";
+
+function ThePop({ children }: any) {
+  return (
+    <Pop placement="top" followCursor="horizontal">
+      {children[0]}
+      <div class="tat-fm">{children[1]}</div>
+    </Pop>
+  );
+}
 
 export const Ctrl = () => {
   return (
@@ -26,22 +35,22 @@ export const Ctrl = () => {
           </span>
         ) : (
           <span class="tat-row">
-            <Pop>
+            <ThePop>
               <PlaySvg class="tat-btn" onclick={replay} />
-              <div class="tat-fm">Play now record</div>
-            </Pop>
-            <Pop>
-              <RecordSvg class="tat-btn" onclick={recordStart} />
-              <div class="tat-fm">Record</div>
-            </Pop>
-            <Pop>
+              Play now record
+            </ThePop>
+            <ThePop>
+              <RecordStartSvg class="tat-btn" onclick={recordStart} />
+              Start Record
+            </ThePop>
+            <ThePop>
               <RecordCancelSvg class="tat-btn" onclick={recordClear} />
-              <div class="tat-fm">Clear now record list</div>
-            </Pop>
-            <Pop>
+              Clear now marks
+            </ThePop>
+            <ThePop>
               <AddSvg class="tat-btn" onclick={recordAdd} />
-              <div class="tat-fm">Copy now record to new item</div>
-            </Pop>
+              Copy now record to new item
+            </ThePop>
           </span>
         );
       }}

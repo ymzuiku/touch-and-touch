@@ -15,8 +15,8 @@ export const TouchAndTouchController = () => {
             {/* <div class="tat-title">TouchAndTouch</div> */}
             <Ctrl />
           </Drag>
-          <PlayList />
           <RecordList />
+          <PlayList />
         </div>
       </div>
     </div>

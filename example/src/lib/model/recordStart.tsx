@@ -1,5 +1,6 @@
 import aoife from "aoife";
 import { eleSetAttr } from "./eleSetAttr";
+import { recordItemAdd } from "./recordItemAdd";
 import { state } from "./state";
 
 export const recordStart = () => {
@@ -36,7 +37,7 @@ const matchPlanMClick: any = {
 // 记录页面点击位置
 function recordMouse(event: any) {
   if (matchPlanMClick[event.target.nodeName]) {
-    state.recordItems.add({
+    recordItemAdd({
       key: "",
       type: "mclick",
       clientX: event.clientX,
