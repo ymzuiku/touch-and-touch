@@ -1,10 +1,6 @@
 import { state } from "./state";
 
-export const recordSave = async () => {
-  state.recording.set(0);
-  state.showList = true;
-  state.showExpend = true;
-
+export const recordAdd = async () => {
   const items = state.recordItems.get();
   await state.recordList.add(
     {

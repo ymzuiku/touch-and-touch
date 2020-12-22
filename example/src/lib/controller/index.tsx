@@ -1,8 +1,9 @@
 import { Drag } from "./Drag";
-import { List } from "./List";
+import { PlayList } from "./PlayList";
 import { Ctrl } from "./Ctrl";
 import { init } from "lib/model/init";
 import css from "template-css";
+import { RecordList } from "./RecordList";
 
 export const TouchAndTouchController = () => {
   init();
@@ -14,8 +15,8 @@ export const TouchAndTouchController = () => {
             {/* <div class="tat-title">TouchAndTouch</div> */}
             <Ctrl />
           </Drag>
-
-          <List />
+          <PlayList />
+          <RecordList />
         </div>
       </div>
     </div>
@@ -26,9 +27,12 @@ css`
   .tat *[hidden] {
     display: none !important;
   }
-  .tat {
+  .tat *,
+  .tat-fm {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC",
       "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  }
+  .tat {
     backdrop-filter: blur(5px);
     background: rgba(255, 255, 255, 0.7);
     color: #00;

@@ -1,8 +1,11 @@
 import aoife from "aoife";
+import { changeSelectItem } from "./changeSelectItem";
 import { state } from "./state";
 
 export const init = async () => {
-  await state.recordList.list();
-  await state.recordItems.get();
+  const list = await state.recordList.list();
+  if (list && list[list.length - 1]) {
+    await changeSelectItem(list[list.length - 1].id);
+  }
   aoife.next(".tat-plan");
 };

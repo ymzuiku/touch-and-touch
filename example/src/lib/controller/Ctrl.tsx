@@ -1,15 +1,20 @@
 import { recordClear } from "lib/model/recordClear";
-import { record } from "lib/model/record";
+import { recordStart } from "lib/model/recordStart";
 import { showList } from "lib/model/showList";
-import { recordSave } from "lib/model/recordSave";
+import { recordStop } from "lib/model/recordStop";
 import { state } from "lib/model/state";
+import Pop from "aoife-pop";
 import css from "template-css";
 import {
   RecordSvg,
   RecordStopSvg,
   RecordCancelSvg,
   CtrlExpendSvg,
+  PlaySvg,
+  AddSvg,
 } from "./svg";
+import { replay } from "lib/model/replay";
+import { recordAdd } from "lib/model/recordAdd";
 
 export const Ctrl = () => {
   return (
@@ -17,13 +22,27 @@ export const Ctrl = () => {
       {() => {
         return state.recording.get() ? (
           <span class="tat-row">
-            <RecordCancelSvg class="tat-btn" onclick={recordClear} />
-            <div class="tat-btn" onclick={recordSave}>
-              Save
-            </div>
+            <RecordStopSvg class="tat-btn" onclick={recordStop} />
           </span>
         ) : (
-          <RecordSvg class="tat-btn" onclick={record} />
+          <span class="tat-row">
+            <Pop>
+              <PlaySvg class="tat-btn" onclick={replay} />
+              <div class="tat-fm">Play now record</div>
+            </Pop>
+            <Pop>
+              <RecordSvg class="tat-btn" onclick={recordStart} />
+              <div class="tat-fm">Record</div>
+            </Pop>
+            <Pop>
+              <RecordCancelSvg class="tat-btn" onclick={recordClear} />
+              <div class="tat-fm">Clear now record list</div>
+            </Pop>
+            <Pop>
+              <AddSvg class="tat-btn" onclick={recordAdd} />
+              <div class="tat-fm">Copy now record to new item</div>
+            </Pop>
+          </span>
         );
       }}
       <div style="flex:1"></div>
