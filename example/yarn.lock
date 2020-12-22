@@ -2271,10 +2271,10 @@ aoife@^1.3.5:
   resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.5.tgz#efa2abca6e9e770e68793e5b5765e9a88671622d"
   integrity sha512-iPf9wVobgrUts/jh0ZV40Te1q1HLo2lChYh+crPVtlXwjtqswxA+6SLDhKnJwZUhnFLX/xwXHdXm3tgdrpaDyA==
 
-aoife@^1.3.7:
-  version "1.3.7"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.7.tgz#2e8163808af6dae4cdaa6618f8ad5df3ac9f8d9d"
-  integrity sha512-aTytLuHTLeelde0XaQM6LFKSBa3oYgD9RO/wOsoUo+1zIo+WTgPhB0Hf6K2najqopW6+2p1uq0971yh6PGwKqg==
+aoife@^1.3.8:
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.8.tgz#e98c2905b90598d8a4da0c443d626ee4029f65b6"
+  integrity sha512-EwqrucxfKR9hXQHQr6jhuI61zzMArq1ah2l0FdFA0XJoP69QWMFyDsuTFx4wKTxf/3FfDb9XQUhTQokkJtzT9A==
 
 aproba@^1.1.1:
   version "1.2.0"
@@ -10258,10 +10258,10 @@ temp-dir@^1.0.0:
   resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-1.0.0.tgz#0a7c0ea26d3a39afa7e0ebea9c1fc0bc4daa011d"
   integrity sha1-CnwOom06Oa+n4OvqnB/AvE2qAR0=
 
-template-css@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/template-css/-/template-css-1.0.5.tgz#b3cd61f5613bd33894bfbe8329382eda46543650"
-  integrity sha512-+76209A0Np1EoUuuSlWx895I9ToSGzQktUWlpZ+y5SleSzQcKDg59MeTUtxZ3wPqYazMOR74C0r4u6Pn+D4+zg==
+template-css@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/template-css/-/template-css-1.0.7.tgz#317b3102d3238bfbebf0b64da94a27517ac55d4f"
+  integrity sha512-DPIpKUPC/hKMuGp1pDeGe//fBpVfwhMSS6cxtURD4jkU46OrEEQZ0bdmIAR514RCZ/yN4XFFB+stk5hhm/GTWw==
   dependencies:
     template-fn "^1.0.0"
 
