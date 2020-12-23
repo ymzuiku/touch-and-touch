@@ -13,23 +13,44 @@ function App() {
 
 function StatefulExample({ name }: { name: string }) {
   let num = 0;
+  let age = 0;
   return (
     <div>
-      <button
-        onclick={() => {
-          num += 1;
-          aoife.next(".add");
-        }}
-      >
-        {name}
-      </button>
-      <div
-        class="add"
-        style={() => ({
-          fontSize: 20 + num + "px",
-        })}
-      >
-        <p>{() => num}</p>
+      <div>
+        <button
+          onclick={() => {
+            num += 1;
+            aoife.next(".add");
+          }}
+        >
+          {name}
+        </button>
+        <div
+          class="add"
+          style={() => ({
+            fontSize: 20 + num + "px",
+          })}
+        >
+          <p>{() => num}</p>
+        </div>
+      </div>
+      <div>
+        <button
+          onclick={() => {
+            age += 1;
+            aoife.next(".add");
+          }}
+        >
+          {name}
+        </button>
+        <div
+          class="add"
+          style={() => ({
+            fontSize: 20 + age + "px",
+          })}
+        >
+          <p>{() => age}</p>
+        </div>
       </div>
     </div>
   );

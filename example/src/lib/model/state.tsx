@@ -1,5 +1,7 @@
-import { createMicoDb } from "mico-db";
-const micoDb = createMicoDb("tat");
+// import { createMicoDb } from "mico-db";
+// const micoDb = createMicoDb("tat");
+import micoDb from "./mmDb";
+
 export interface RecordItem {
   index?: number;
   key: string;
