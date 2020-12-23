@@ -39,7 +39,6 @@ export const state = {
     lastFocus: null as any,
     showList: 1,
     showPlayList: 1,
-    showExpend: 1,
     showInputId: "",
     recording: 0,
     replaying: 0,

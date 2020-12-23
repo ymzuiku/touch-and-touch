@@ -69,7 +69,7 @@ export const Ctrl = () => {
       <div style="flex:1"></div>
       <div
         class="tat-btn"
-        hidden={() => !state.ui.get().showExpend}
+        hidden={() => state.ui.get().recording || state.ui.get().replaying}
         onclick={showList}
       >
         <CtrlExpendSvg

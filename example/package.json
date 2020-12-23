@@ -9,7 +9,7 @@
     "eject": "aoife-scripts eject"
   },
   "dependencies": {
-    "aoife": "^1.4.2",
+    "aoife": "^1.4.3",
     "aoife-pop": "^1.0.3",
     "aoife-svg": "^1.0.6",
     "dayjs": "^1.9.7",

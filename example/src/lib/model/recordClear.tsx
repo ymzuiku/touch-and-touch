@@ -5,7 +5,6 @@ export const recordClear = () => {
     recording: 0,
     replaying: 0,
     showList: 1,
-    showExpend: 1,
   });
   state.recordItems.set([]);
   aoife.next(".tat-plan");

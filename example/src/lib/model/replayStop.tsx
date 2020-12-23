@@ -6,8 +6,8 @@ export const replayStop = async () => {
     replaying: 0,
     showMouse: 0,
     showPlayList: 1,
-    showExpend: 1,
   });
   console.log(state.ui.get());
   aoife.next(".tat-plan");
+  aoife.next(".tat-mouse");
 };

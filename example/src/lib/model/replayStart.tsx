@@ -10,9 +10,8 @@ export const replayStart = async () => {
     replaying: 1,
     showMouse: 1,
     showPlayList: 0,
-    showExpend: 0,
   });
-  aoife.next(".tat-ctrl, .tat-mouse");
+  aoife.next(".tat-ctrl, .tat-step, .tat-mouse");
 
   // 播放
   await startReplay(items);
@@ -23,9 +22,8 @@ export const replayStart = async () => {
     replaying: 0,
     showMouse: 0,
     showPlayList: 1,
-    showExpend: 1,
   });
-  aoife.next(".tat-ctrl, .tat-mouse");
+  aoife.next(".tat-plan, .tat-mouse");
 };
 
 function scrollIntoView(el: HTMLElement) {

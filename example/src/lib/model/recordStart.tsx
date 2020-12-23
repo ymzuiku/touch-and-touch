@@ -5,7 +5,6 @@ export const recordStart = async () => {
   state.ui.set({
     recording: 1,
     replaying: 0,
-    showExpend: 0,
     showPlayList: 0,
   });
   aoife.next(".tat-plan");
