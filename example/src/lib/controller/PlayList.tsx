@@ -18,6 +18,7 @@ export const PlayList = () => {
         return list.map((item, i) => {
           return (
             <div
+              id={item.id}
               classPick={() => {
                 return {
                   cell: 1,
@@ -41,19 +42,29 @@ export const PlayList = () => {
                   return hidden;
                 }}
                 onblur={() => changeInput("")}
-                value={() => item.title}
-                onchange={(e) =>
-                  state.recordList
-                    .index(i)
-                    .then((item) => rename(item.id, e.target.value))
-                }
+                value={async () => {
+                  const list = await state.recordList.find();
+                  if (!list[i]) {
+                    return "";
+                  }
+                  return list[i].title || "";
+                }}
+                onchange={(e) => rename(item.id, e.target.value)}
                 placeholder="请输入title"
               />
               <div
                 class="label"
                 hidden={() => state.ui.get().showInputId === item.id}
               >
-                {() => item.title || dayjs(item.updateAt).format("MM-DD HH:mm")}
+                {async () => {
+                  const list = await state.recordList.find();
+                  if (!list[i]) {
+                    return "";
+                  }
+                  return (
+                    list[i].title || dayjs(item.updateAt).format("MM-DD HH:mm")
+                  );
+                }}
               </div>
               <EditorSvg
                 class="edit"
@@ -85,10 +96,6 @@ css`
     width: 100%;
     height: 160px;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-start;
-    aligin-items: flex-start;
   }
   .tat-play-list .edit {
     width: 18px;

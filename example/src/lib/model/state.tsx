@@ -46,7 +46,9 @@ export const state = {
     replayStep: -1,
   }),
   nowCell: micoDb.sessionItem<RecordCell>("nowCell", {} as any),
-  recordList: micoDb.collection<RecordCell>("record-list"),
+  recordList: micoDb.collection<RecordCell>("record-list", {
+    sort: { updateAt: -1 },
+  }),
   recordItems: micoDb.collection<RecordItem>("record-item"),
 };
 
