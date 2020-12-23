@@ -29,7 +29,7 @@ export const Ctrl = () => {
   return (
     <div class="tat-ctrl">
       {() => {
-        return state.recording.get() ? (
+        return state.ui.get().recording ? (
           <span class="tat-row">
             <RecordStopSvg class="tat-btn" onclick={recordStop} />
           </span>
@@ -55,10 +55,15 @@ export const Ctrl = () => {
         );
       }}
       <div style="flex:1"></div>
-      <div class="tat-btn" hidden={() => !state.showExpend} onclick={showList}>
+      <div
+        class="tat-btn"
+        hidden={() => !state.ui.get().showExpend}
+        onclick={showList}
+      >
         <CtrlExpendSvg
           class={() =>
-            "tat-show-list-icon " + (!state.showList && "tat-show-list")
+            "tat-show-list-icon " +
+            (!state.ui.get().showList && "tat-show-list")
           }
         />
       </div>

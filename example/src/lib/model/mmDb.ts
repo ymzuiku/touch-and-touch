@@ -93,6 +93,54 @@ export const createMicoDb = (name = "mico-db") => {
     proxy?: ProxyCollection<T>;
   }
 
+  const createItem = <T>(
+    type: "sessionStorage" | "localStorage",
+    key: string,
+    initData: T
+  ) => {
+    const fns = {
+      set: void 0 as any,
+      get: void 0 as any,
+      remove: void 0 as any,
+    };
+    if (type === "sessionStorage") {
+      fns.set = micoDb.setSessionStorage;
+      fns.get = micoDb.getSessionStorage;
+      fns.remove = micoDb.removeSessionStorage;
+    } else {
+      fns.set = micoDb.setLocalStorage;
+      fns.get = micoDb.getLocalStorage;
+      fns.remove = micoDb.removeLocalStorage;
+    }
+    return {
+      get: (): T => {
+        let out = fns.get(key);
+        if (out === void 0) {
+          out = initData;
+          fns.set(key, out);
+        }
+        return out;
+      },
+      set: (value: T) => fns.set(key, value),
+      remove: () => fns.remove(key),
+    };
+  };
+
+  const dbItem = <T>(key: string, initData: T) => {
+    return {
+      get: async (): Promise<T> => {
+        let out = (await micoDb.get(key)) as T;
+        if (out === void 0) {
+          out = initData;
+          await micoDb.set(key, out);
+        }
+        return out;
+      },
+      set: (value: T) => micoDb.set(key, value),
+      remove: () => micoDb.remove(key),
+    };
+  };
+
   const collection = <T>(key: string, opt: CollectionOptions<T> = {}) => {
     if (!opt.proxy) {
       opt.proxy = {};
@@ -361,6 +409,11 @@ export const createMicoDb = (name = "mico-db") => {
       });
     },
     collection,
+    dbItem,
+    sessionItem: <T>(key: string, initData: T) =>
+      createItem("sessionStorage", key, initData),
+    localItem: <T>(key: string, initData: T) =>
+      createItem("localStorage", key, initData),
     /** get indexedDb by key */
     get: (key: string): Promise<any> => {
       return new Promise((res) => {
