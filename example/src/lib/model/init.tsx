@@ -1,5 +1,6 @@
 import aoife from "aoife";
 import { changeSelectItem } from "./changeSelectItem";
+import { recordDom } from "./recordDom";
 import { state } from "./state";
 
 export const init = async () => {
@@ -8,4 +9,5 @@ export const init = async () => {
     await changeSelectItem(list[list.length - 1].id);
   }
   aoife.next(".tat-plan");
+  recordDom();
 };

@@ -13,7 +13,7 @@ import {
   PlaySvg,
   AddSvg,
 } from "./svg";
-import { replay } from "lib/model/replay";
+import { replayStart } from "lib/model/replayStart";
 import { recordAdd } from "lib/model/recordAdd";
 
 function ThePop({ children }: any) {
@@ -36,7 +36,7 @@ export const Ctrl = () => {
         ) : (
           <span class="tat-row">
             <ThePop>
-              <PlaySvg class="tat-btn" onclick={replay} />
+              <PlaySvg class="tat-btn" onclick={replayStart} />
               Play now record
             </ThePop>
             <ThePop>

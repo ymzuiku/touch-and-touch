@@ -29,6 +29,7 @@ interface TATProxy {
 export const proxy = {} as TATProxy;
 
 export const state = {
+  lastFocus: null as any,
   showList: true,
   showPlayList: true,
   showExpend: true,

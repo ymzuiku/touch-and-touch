@@ -1,4 +1,4 @@
-import { replay } from "lib/model/replay";
+import { replayStart } from "lib/model/replayStart";
 import { state } from "lib/model/state";
 import VanillaList from "vanilla-list";
 import css from "template-css";

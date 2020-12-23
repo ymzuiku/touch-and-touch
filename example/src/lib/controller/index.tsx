@@ -8,7 +8,7 @@ import { RecordList } from "./RecordList";
 export const TouchAndTouchController = () => {
   init();
   return (
-    <div tat-drag-ctrl class="tat">
+    <div tat-drag-ctrl tat-ignore class="tat">
       <div>
         <div class="tat-plan">
           <Drag query="[tat-drag-ctrl]" tat-ignore savePositionKey="tat-drag">
