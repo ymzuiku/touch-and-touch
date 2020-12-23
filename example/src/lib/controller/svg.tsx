@@ -1,5 +1,9 @@
 import aoifeSvg from "aoife-svg";
 
+export const DragSvg = aoifeSvg(`
+<svg t="1608724287002" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2814" width="200" height="200"><path d="M362.666667 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="2815"></path><path d="M661.333333 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="2816"></path><path d="M362.666667 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="2817"></path><path d="M661.333333 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="2818"></path><path d="M362.666667 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="2819"></path><path d="M661.333333 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z" p-id="2820"></path></svg>
+`);
+
 export const EditorSvg = aoifeSvg(`
 <svg t="1608542607404" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1140" width="1em" height="1em"><path d="M896 801.216V864H128v-62.784h768z m-204.288-678.4l155.36 155.36-463.136 463.136-156.864 1.504 1.504-156.864L691.712 122.816z m-0.864 89.632L291.712 611.584l-0.64 67.232 67.2-0.64L757.44 279.04l-66.56-66.56z" fill="#f00" p-id="1141"></path></svg>
 `);

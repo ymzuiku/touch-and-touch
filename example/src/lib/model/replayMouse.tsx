@@ -77,8 +77,8 @@ function mouseClick(item: RecordItem) {
     round.style.transform = baseRoundTransform + "scale(0.5, 0.5)";
     setTimeout(() => {
       round.style.transform = baseRoundTransform + "scale(1, 1)";
-    }, 130);
-  }, 130);
+    }, 80);
+  }, 80);
 }
 
 export { mouse, mouseClick, mouseMove };

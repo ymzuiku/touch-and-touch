@@ -48,14 +48,6 @@ export const state = {
   nowCell: micoDb.sessionItem<RecordCell>("nowCell", {} as any),
   recordList: micoDb.collection<RecordCell>("record-list"),
   recordItems: micoDb.collection<RecordItem>("record-item"),
-  replaying: {
-    get: () => {
-      return micoDb.getSessionStorage("tat-replaying");
-    },
-    set: (replaying: number) => {
-      micoDb.setSessionStorage("tat-replaying", replaying);
-    },
-  },
 };
 
 // 初始化数据

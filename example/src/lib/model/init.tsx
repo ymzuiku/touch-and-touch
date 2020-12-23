@@ -26,7 +26,7 @@ export const init = async () => {
   state.ui.set({ speed: 1 });
   recordDom();
   setTimeout(() => {
-    if (state.replaying.get()) {
+    if (state.ui.get().replaying) {
       replayStart();
     }
   });

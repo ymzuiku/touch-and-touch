@@ -38,6 +38,9 @@ export const Drag = ({
   };
   const onMove = (e: any) => {
     if (state.onDrag) {
+      if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
+        return;
+      }
       state.x = e.clientX - state.startX;
       state.y = e.clientY - state.startY;
       fixPosition(state);

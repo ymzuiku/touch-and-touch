@@ -93,9 +93,9 @@ const getEleCenter = (el: HTMLElement, item: RecordItem) => {
   item.clientY = rect.top + rect.height / 2;
 };
 
-function sleep() {
+function sleep(t: number) {
   return new Promise((res) => {
-    setTimeout(res, 110 * state.ui.get().speed);
+    setTimeout(res, t * state.ui.get().speed);
   });
 }
 
@@ -103,7 +103,7 @@ const startReplay = async (items: RecordItem[]) => {
   let i = 0;
   for (const item of items) {
     i++;
-    if (!state.replaying.get()) {
+    if (!state.ui.get().replaying) {
       break;
     }
     if (i < state.ui.get().replayStep) {
@@ -115,21 +115,21 @@ const startReplay = async (items: RecordItem[]) => {
     }
 
     if (item.type === "mclick") {
-      await sleep();
+      await sleep(80);
       mouseClick(item);
     } else if (item.key) {
-      await sleep();
+      await sleep(50);
       const el = await waitGetElement(item.key);
       if (clicks.indexOf(item.type) > -1) {
         getEleCenter(el, item);
         mouseClick(item);
-        await sleep();
+        await sleep(80);
         emitClick(el as any);
       } else {
         if (state.ui.get().lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
-          await sleep();
+          await sleep(40);
         }
         emitInput(el as any, item, item.type);
       }

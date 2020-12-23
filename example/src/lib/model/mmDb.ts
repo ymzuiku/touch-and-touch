@@ -100,7 +100,6 @@ export const createMicoDb = (name = "mico-db") => {
     return {
       get: (): T => {
         let out = fns.get(key);
-        console.log(",", out, initData);
         if (!out) {
           out = initData;
           fns.set(key, out);

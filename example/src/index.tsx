@@ -4,14 +4,24 @@ import { TouchAndTouchController } from "./lib";
 function AsyncList() {
   return (
     <div>
-      <input
-        placeholder="Input"
-        value={() => {
-          return new Promise((res) => {
-            setTimeout(() => res("hello"), 500);
-          });
-        }}
-      />
+      {() => {
+        return new Promise((res) => {
+          setTimeout(
+            () =>
+              res(
+                <input
+                  placeholder="Input"
+                  value={() => {
+                    return new Promise((res) => {
+                      setTimeout(() => res("hello"));
+                    });
+                  }}
+                />
+              ),
+            5000
+          );
+        });
+      }}
       {() => {
         return new Promise((res) => {
           setTimeout(() => {

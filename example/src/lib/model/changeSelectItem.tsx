@@ -7,6 +7,6 @@ export const changeSelectItem = async (id: string) => {
   }
   const items = cell.items;
   state.nowCell.set(cell);
-  state.recordItems.set(items);
+  await state.recordItems.set(items);
   aoife.next(".tat-plan");
 };

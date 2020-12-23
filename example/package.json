@@ -9,9 +9,9 @@
     "eject": "aoife-scripts eject"
   },
   "dependencies": {
-    "aoife": "^1.4.1",
+    "aoife": "^1.4.2",
     "aoife-pop": "^1.0.3",
-    "aoife-svg": "^1.0.2",
+    "aoife-svg": "^1.0.6",
     "dayjs": "^1.9.7",
     "mico-db": "^1.0.2",
     "template-css": "^1.0.7"

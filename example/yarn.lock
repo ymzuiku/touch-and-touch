@@ -2271,10 +2271,10 @@ aoife-scripts@^4.0.2:
   optionalDependencies:
     fsevents "^2.1.3"
 
-aoife-svg@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/aoife-svg/-/aoife-svg-1.0.2.tgz#98418b33f4b904cfaf66522abba9277bd39ac744"
-  integrity sha512-G+o/52oE8CFJfGZG0QdD/ZMu+FaXCG1UgWJacoopLavEMfJ+VTvDm2ZgmtFkQS87XKgSMjL9iyYwSgL94uWrCg==
+aoife-svg@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/aoife-svg/-/aoife-svg-1.0.6.tgz#098bc96820925e8311241b0336c9d1edd8ead0b0"
+  integrity sha512-QugpLIbYVMDobSefHf2bjzUrLeic7Sx3EbNkzqJXWH4Sf/g0D7Cyt+t06PptyUCETj/mPnNvcI2rKMJlmIdbWA==
   dependencies:
     aoife "^1.3.5"
 
@@ -2283,10 +2283,10 @@ aoife@^1.3.5:
   resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.5.tgz#efa2abca6e9e770e68793e5b5765e9a88671622d"
   integrity sha512-iPf9wVobgrUts/jh0ZV40Te1q1HLo2lChYh+crPVtlXwjtqswxA+6SLDhKnJwZUhnFLX/xwXHdXm3tgdrpaDyA==
 
-aoife@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.1.tgz#e3bd42116e157ba56218ecab857f72fc1148086c"
-  integrity sha512-Kn0D3r/UOMkAjsB4GlRxQbdVMp3HuQtLB3BacP+zfq+bEa3Mq0G66PsTcclP3n1f8npef+RmNVmp4Mol/hjklA==
+aoife@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.2.tgz#df1c4dc1e50ae646437112aa68a51fb69967d18f"
+  integrity sha512-oAQ8GJwPsggnkC7T87c4/y3ZCnCk1pUFDEy+i4GkD3tuz144RdoWilbf8e4HPq0yUygpry/9tR/uFezACezawg==
 
 aproba@^1.1.1:
   version "1.2.0"

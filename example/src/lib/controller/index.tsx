@@ -4,6 +4,7 @@ import { Ctrl } from "./Ctrl";
 import { init } from "lib/model/init";
 import css from "template-css";
 import { Step } from "./Step";
+import { DragSvg } from "./svg";
 
 export const TouchAndTouchController = () => {
   init();
@@ -11,9 +12,17 @@ export const TouchAndTouchController = () => {
     <div tat-drag-ctrl tat-ignore class="tat">
       <div>
         <div class="tat-plan">
-          <Drag query="[tat-drag-ctrl]" tat-ignore localStorageKey="tat-drag">
+          <div class="tat-head-row">
+            <Drag
+              class="tat-head-center"
+              query="[tat-drag-ctrl]"
+              tat-ignore
+              localStorageKey="tat-drag"
+            >
+              <DragSvg />
+            </Drag>
             <Ctrl />
-          </Drag>
+          </div>
           <Step />
           <PlayList />
         </div>
@@ -25,6 +34,17 @@ export const TouchAndTouchController = () => {
 css`
   .tat *[hidden] {
     display: none !important;
+  }
+  .tat-head-row {
+    ${css.flex("row-start-center")}
+  }
+  .tat-head-center {
+    ${css.flex("row-center-center")}
+  }
+  .tat-drag-line {
+    height: 1px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
   }
   .tat *,
   .tat-fm {
