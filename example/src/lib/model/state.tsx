@@ -31,6 +31,8 @@ interface TATProxy {
 
 export const proxy = {} as TATProxy;
 
+const listColl = micoDb.collection("recordList");
+
 export const state = {
   showMouse: false,
   lastFocus: null as any,

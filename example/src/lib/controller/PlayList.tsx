@@ -13,9 +13,9 @@ export const PlayList = () => {
       class="tat-play-list"
       hidden={() => !state.showPlayList || !state.showList}
     >
-      {() => {
-        return state.data.recordList.map((_, i) => {
-          // i = state.data.recordList.length - i - 1;
+      {async () => {
+        const list = await state.recordList.list();
+        return list.map((_, i) => {
           return (
             <div
               classPick={() => ({

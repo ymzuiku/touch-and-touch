@@ -65,15 +65,46 @@ export const createMicoDb = (name = "mico-db") => {
     return coll;
   }
 
-  const collection = <T>(key: string, initData: T) => {
+  interface ProxyReturnOne<T> {
+    filter: T;
+    data: T;
+  }
+
+  interface ProxyReturnMany<T> {
+    filter: T;
+    data: T[];
+  }
+
+  interface ProxyCollection<T> {
+    onChange?: (dataList: T[]) => any;
+    find?: (filter: T, data: T[]) => any;
+    findOne?: (filter: T, data?: T) => any;
+    deleteOne?: (filter: T, data?: T) => any;
+    deleteMany?: (filter: T, data: T[]) => any;
+    updateOne?: (filter: T, inputData: T, returnData?: T) => any;
+    updateMany?: (filter: T, inputData: T, returnData: T[]) => any;
+    insertOne?: (inputData: T) => any;
+    insertMany?: (inputList: T[]) => any;
+    removeDuplicatie?: (key: string, returnData: T[]) => any;
+  }
+
+  interface CollectionOptions<T> {
+    initData?: T;
+    proxy?: ProxyCollection<T>;
+  }
+
+  const collection = <T>(key: string, opt: CollectionOptions<T> = {}) => {
+    if (!opt.proxy) {
+      opt.proxy = {};
+    }
     return {
       find: async (filter?: T) => {
-        const coll = await initColl(key);
+        const coll = await initColl<T>(key);
         if (!filter) {
           return coll;
         }
         const keys = Object.keys(filter!);
-        return coll.filter((item: any) => {
+        const out = coll.filter((item: any) => {
           let isPick = false;
           for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
@@ -84,11 +115,19 @@ export const createMicoDb = (name = "mico-db") => {
           }
           return isPick;
         });
+        if (opt.proxy!.find) {
+          await Promise.resolve(opt.proxy!.find(filter, out));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
+        return out;
       },
       findOne: async (filter: T) => {
-        const coll = await initColl(key);
+        const coll = await initColl<T>(key);
         const keys = Object.keys(filter);
-        return coll.find((item: any) => {
+        const out = coll.find((item: any) => {
           let isPick = false;
           for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
@@ -99,12 +138,20 @@ export const createMicoDb = (name = "mico-db") => {
           }
           return isPick;
         });
+        if (opt.proxy!.findOne) {
+          await Promise.resolve(opt.proxy!.findOne(filter, out));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
+        return out;
       },
       deleteMany: async (filter: T) => {
-        const coll = await initColl(key);
+        const coll = await initColl<T>(key);
         const keys = Object.keys(filter);
         const next = [] as T[];
-        const del = [] as T[];
+        const out = [] as T[];
         coll.forEach((item: any) => {
           let isPick = false;
           for (let i = 0; i < keys.length; i++) {
@@ -117,17 +164,24 @@ export const createMicoDb = (name = "mico-db") => {
           if (!isPick) {
             next.push(item);
           } else {
-            del.push(item);
+            out.push(item);
           }
         });
         await micoDb.set(key, next);
-        return del;
+        if (opt.proxy!.deleteMany) {
+          await Promise.resolve(opt.proxy!.deleteMany(filter, out));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
+        return out;
       },
-      deleteOne: async (filter: T) => {
-        const coll = await initColl(key);
+      deleteOne: async (filter: T): Promise<T | undefined> => {
+        const coll = await initColl<T>(key);
         const keys = Object.keys(filter);
         const next = [] as T[];
-        const del = [] as T[];
+        let del: T | undefined;
         coll.forEach((item: any) => {
           let isPick = false;
           for (let i = 0; i < keys.length; i++) {
@@ -137,19 +191,28 @@ export const createMicoDb = (name = "mico-db") => {
               break;
             }
           }
-          if (!isPick) {
+          if (del) {
+            next.push(item);
+          } else if (!isPick) {
             next.push(item);
           } else {
-            del.push(item);
+            del = item;
           }
         });
         await micoDb.set(key, next);
+        if (opt.proxy!.deleteOne) {
+          await Promise.resolve(opt.proxy!.deleteOne(filter, del));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
         return del;
       },
-      updateOne: async (filter: T, data: T): Promise<T> => {
-        const coll = await initColl(key);
+      updateOne: async (filter: T, data: T): Promise<T | undefined> => {
+        const coll = await initColl<T>(key);
         const keys = Object.keys(filter);
-        let out: any;
+        let out: T | undefined;
         for (let index = 0; index < coll.length; index++) {
           const item = coll[index] as any;
           let isPick = false;
@@ -167,10 +230,17 @@ export const createMicoDb = (name = "mico-db") => {
           }
         }
         await micoDb.set(key, coll);
+        if (opt.proxy!.updateOne) {
+          await Promise.resolve(opt.proxy!.updateOne(filter, data, out));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
         return out;
       },
       updateMany: async (filter: T, data: T): Promise<T[]> => {
-        const coll = await initColl(key);
+        const coll = await initColl<T>(key);
         const keys = Object.keys(filter);
         const out = [] as T[];
         for (let index = 0; index < coll.length; index++) {
@@ -189,22 +259,43 @@ export const createMicoDb = (name = "mico-db") => {
           }
         }
         await micoDb.set(key, coll);
+        if (opt.proxy!.updateMany) {
+          await Promise.resolve(opt.proxy!.updateMany(filter, data, out));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
         return out;
       },
       insertOne: async (data: T) => {
-        const coll = await initColl(key);
+        const coll = await initColl<T>(key);
         coll.push(data);
         await micoDb.set(key, coll);
+        if (opt.proxy!.insertOne) {
+          await Promise.resolve(opt.proxy!.insertOne(data));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
         return coll;
       },
       insertMany: async (dataList: T[]) => {
-        const coll = await initColl(key);
+        const coll = await initColl<T>(key);
         const next = coll.concat(dataList);
         await micoDb.set(key, next);
+        if (opt.proxy!.insertMany) {
+          await Promise.resolve(opt.proxy!.insertMany(dataList));
+        }
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
         return coll;
       },
-      duplicateRemova: async (key: string) => {
-        const coll = await initColl(key);
+      removeDuplicatie: async (key: string): Promise<T[]> => {
+        const coll = await initColl<T>(key);
         const out = [] as T[];
         const set = new Set();
         for (let index = 0; index < coll.length; index++) {
@@ -220,10 +311,21 @@ export const createMicoDb = (name = "mico-db") => {
           }
         }
         await micoDb.set(key, out);
+        if (opt.proxy!.removeDuplicatie) {
+          await Promise.resolve(opt.proxy!.removeDuplicatie(key, out));
+        }
+        if (opt.proxy && opt.proxy.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy.onChange(all));
+        }
         return out;
       },
-      fullCoverage: (dataList: T[]) => {
-        return micoDb.set(key, dataList);
+      fullCoverage: async (dataList: T[]): Promise<void> => {
+        await micoDb.set(key, dataList);
+        if (opt.proxy!.onChange) {
+          const all = await micoDb.get(key);
+          await Promise.resolve(opt.proxy!.onChange(all));
+        }
       },
     };
   };

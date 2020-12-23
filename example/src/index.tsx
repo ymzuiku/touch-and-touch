@@ -1,9 +1,40 @@
 import "aoife";
 import { TouchAndTouchController } from "./lib";
 
+function AsyncList() {
+  return (
+    <div>
+      <input
+        placeholder="Input"
+        value={() => {
+          return new Promise((res) => {
+            setTimeout(() => res("hello"), 500);
+          });
+        }}
+      />
+      {() => {
+        return new Promise((res) => {
+          setTimeout(() => {
+            res(<div>list-a</div>);
+          }, 1000);
+        });
+      }}
+      {() => {
+        return new Promise((res) => {
+          setTimeout(() => {
+            res(<div>list-b</div>);
+          }, 300);
+        });
+      }}
+    </div>
+  );
+}
+
 function App() {
   return (
     <div class="app">
+      <AsyncList />
+
       <h1>TAT Client</h1>
       <StatefulExample name="Add Num" />
       <TouchAndTouchController />

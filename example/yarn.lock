@@ -2283,10 +2283,10 @@ aoife@^1.3.5:
   resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.5.tgz#efa2abca6e9e770e68793e5b5765e9a88671622d"
   integrity sha512-iPf9wVobgrUts/jh0ZV40Te1q1HLo2lChYh+crPVtlXwjtqswxA+6SLDhKnJwZUhnFLX/xwXHdXm3tgdrpaDyA==
 
-aoife@^1.3.8:
-  version "1.3.8"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.8.tgz#e98c2905b90598d8a4da0c443d626ee4029f65b6"
-  integrity sha512-EwqrucxfKR9hXQHQr6jhuI61zzMArq1ah2l0FdFA0XJoP69QWMFyDsuTFx4wKTxf/3FfDb9XQUhTQokkJtzT9A==
+aoife@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.0.tgz#434a11c941d37dd8cbdfbd06ca46217a5575f8ad"
+  integrity sha512-ixFpmtZw+L9kY1a04FJaz1SQC6OagY2lKd4HmXnBodv8psp5yCe3KZ5ROPH/mXtIS0MSEKfAaljSXUNF6pLduw==
 
 aproba@^1.1.1:
   version "1.2.0"
@@ -10819,11 +10819,6 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
-
-vanilla-list@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/vanilla-list/-/vanilla-list-0.2.2.tgz#c62d43c099b40384ba619d490069585e91733a11"
-  integrity sha512-iNmK9qjVcz59jeB5vBvL+uQ/wtTSpbgvSjRWTUJ1HPDKQ/QMfOg7M2PZq5rrTv9GBqEaeWMuMqso3fna6NTpRg==
 
 vary@~1.1.2:
   version "1.1.2"
