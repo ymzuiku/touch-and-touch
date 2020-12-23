@@ -17,6 +17,7 @@ import {
 import { replayStart } from "lib/model/replayStart";
 import { recordCellAdd } from "lib/model/recordCellAdd";
 import { replayStop } from "lib/model/replayStop";
+import { Step } from "./Step";
 
 function ThePop({ children }: any) {
   return (
@@ -35,6 +36,7 @@ export const Ctrl = () => {
           return (
             <span class="tat-row">
               <RecordStopSvg class="tat-btn" onclick={recordStop} />
+              <Step />
             </span>
           );
         }
@@ -42,6 +44,7 @@ export const Ctrl = () => {
           return (
             <span class="tat-row">
               <ReplayStopSvg class="tat-btn" onclick={replayStop} />
+              <Step />
             </span>
           );
         }
@@ -94,6 +97,7 @@ css`
     align-items: center;
     flex-direction: row;
     height: 30px;
+    width: 100%;
   }
   .tat-btn {
     padding: 4px 4px;

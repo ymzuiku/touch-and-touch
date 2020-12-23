@@ -23,7 +23,6 @@ export const TouchAndTouchController = () => {
             </Drag>
             <Ctrl />
           </div>
-          <Step />
           <PlayList />
         </div>
       </div>
@@ -52,13 +51,14 @@ css`
       "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   }
   .tat {
-    backdrop-filter: blur(5px);
-    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(9px);
+    background: rgba(255, 255, 255, 0.76);
     color: #00;
     z-index: 9000;
     padding: 6px;
-    width: 150px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: 160px;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);
     border-radius: 4px;
   }
   .tat-title {

@@ -152,8 +152,9 @@ export const createMicoDb = (name = "mico-db") => {
     }
 
     return {
-      index: async (index: number) => {
-        const coll = await initColl<T>(key);
+      index: async (index: number, sort = opt.sort) => {
+        let coll = await initColl<T>(key);
+        coll = sortFn(sort, coll);
         return coll[index];
       },
       count: async () => {

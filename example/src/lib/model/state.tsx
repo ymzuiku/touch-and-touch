@@ -43,6 +43,7 @@ export const state = {
     recording: 0,
     replaying: 0,
     replayStep: -1,
+    filter: "",
   }),
   nowCell: micoDb.sessionItem<RecordCell>("nowCell", {} as any),
   recordList: micoDb.collection<RecordCell>("record-list", {
