@@ -4,7 +4,7 @@ export const recordStop = async () => {
   state.recording.set(0);
   state.showPlayList = true;
   state.showExpend = true;
-  const cell = state.nowCell;
+  const cell = state.nowCell.get();
   await state.recordList.update(cell.id, true, {
     ...cell,
     updateAt: Date.now(),

@@ -1,10 +1,15 @@
 import { state } from "lib/model/state";
 import css from "template-css";
 
-export const RecordList = () => {
+export const Step = () => {
   return (
     <div class="tat-record-cell" hidden={() => !state.showList}>
-      step: {() => state.recordItems.get().length}
+      step:{" "}
+      {() =>
+        state.recordItems
+          .get()
+          .filter((v) => v.type !== "mclick" && v.type !== "href").length
+      }
     </div>
   );
 };

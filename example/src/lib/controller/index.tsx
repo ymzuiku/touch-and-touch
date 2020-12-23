@@ -3,7 +3,7 @@ import { PlayList } from "./PlayList";
 import { Ctrl } from "./Ctrl";
 import { init } from "lib/model/init";
 import css from "template-css";
-import { RecordList } from "./RecordList";
+import { Step } from "./Step";
 
 export const TouchAndTouchController = () => {
   init();
@@ -12,10 +12,9 @@ export const TouchAndTouchController = () => {
       <div>
         <div class="tat-plan">
           <Drag query="[tat-drag-ctrl]" tat-ignore savePositionKey="tat-drag">
-            {/* <div class="tat-title">TouchAndTouch</div> */}
             <Ctrl />
           </Drag>
-          <RecordList />
+          <Step />
           <PlayList />
         </div>
       </div>

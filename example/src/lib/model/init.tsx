@@ -7,9 +7,14 @@ import { state } from "./state";
 export const init = async () => {
   const list = await state.recordList.list();
   state.speed.set(1);
-  if (list && list[list.length - 1]) {
-    await changeSelectItem(list[list.length - 1].id);
+  if (!state.nowCell.get()) {
+    if (list && list[list.length - 1]) {
+      await changeSelectItem(list[list.length - 1].id);
+    }
+  } else {
+    await changeSelectItem(state.nowCell.get().id);
   }
+
   aoife.next(".tat-plan");
   recordDom();
   setTimeout(() => {

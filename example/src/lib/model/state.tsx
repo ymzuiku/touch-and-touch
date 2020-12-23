@@ -1,4 +1,5 @@
-import micoDb from "mico-db";
+import { createMicoDb } from "mico-db";
+const micoDb = createMicoDb("tat");
 export interface RecordItem {
   index?: number;
   key: string;
@@ -39,7 +40,14 @@ export const state = {
     recordList: [] as RecordCell[],
     recordItems: [] as RecordItem[],
   },
-  nowCell: {} as RecordCell,
+  nowCell: {
+    set: (cell: RecordCell) => {
+      micoDb.setSessionStorage("tat-nowCell", cell);
+    },
+    get: (): RecordCell => {
+      return micoDb.getSessionStorage("tat-nowCell");
+    },
+  },
   recordList: {
     list: async (): Promise<RecordCell[]> => {
       if (proxy.list) {

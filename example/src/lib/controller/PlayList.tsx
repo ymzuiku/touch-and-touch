@@ -21,7 +21,7 @@ export const PlayList = () => {
               classPick={() => ({
                 cell: 1,
                 "cell-selected":
-                  state.data.recordList[i].id === state.nowCell.id,
+                  state.data.recordList[i].id === state.nowCell.get().id,
               })}
             >
               <input
