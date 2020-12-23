@@ -15,22 +15,22 @@ export const PlayList = () => {
     >
       {async () => {
         const list = await state.recordList.find();
-        return list.map((_, i) => {
+        return list.map((item, i) => {
           return (
             <div
-              classPick={async () => {
-                const list = await state.recordList.find();
+              classPick={() => {
                 return {
                   cell: 1,
-                  "cell-selected": list[i].id === state.nowCell.get().id,
+                  "cell-selected": item.id === state.nowCell.get().id,
                 };
               }}
+              onclick={() => changeSelectItem(item.id)}
             >
               <input
                 class="input"
-                hidden={async (el) => {
-                  const list = await state.recordList.find();
-                  const hidden = state.ui.get().showInputId !== list[i].id;
+                onclick={(e) => e.stopPropagation()}
+                hidden={(el) => {
+                  const hidden = state.ui.get().showInputId !== item.id;
                   if (!hidden) {
                     requestAnimationFrame(() => {
                       if (document.contains(el)) {
@@ -53,34 +53,16 @@ export const PlayList = () => {
               />
               <div
                 class="label"
-                hidden={() =>
-                  state.recordList
-                    .index(i)
-                    .then((item) => state.ui.get().showInputId === item.id)
-                }
-                onclick={() =>
-                  state.recordList
-                    .index(i)
-                    .then((item) => changeSelectItem(item.id))
-                }
+                hidden={() => state.ui.get().showInputId === item.id}
               >
-                {() =>
-                  state.recordList
-                    .index(i)
-                    .then(
-                      (item) =>
-                        item.title || dayjs(item.updateAt).format("MM-DD HH:mm")
-                    )
-                }
+                {() => item.title || dayjs(item.updateAt).format("MM-DD HH:mm")}
               </div>
               <EditorSvg
                 class="edit"
                 onclick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  state.recordList.index(i).then((item) => {
-                    changeInput(item.id);
-                  });
+                  changeInput(item.id);
                 }}
               />
               <DeleteSvg
@@ -88,9 +70,7 @@ export const PlayList = () => {
                 onclick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  state.recordList.index(i).then((item) => {
-                    remove(item.id);
-                  });
+                  remove(item.id);
                 }}
               />
             </div>

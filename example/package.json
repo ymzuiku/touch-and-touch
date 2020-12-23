@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "aoife": "^1.4.1",
-    "aoife-pop": "^1.0.1",
+    "aoife-pop": "^1.0.3",
     "aoife-svg": "^1.0.2",
     "dayjs": "^1.9.7",
     "mico-db": "^1.0.2",

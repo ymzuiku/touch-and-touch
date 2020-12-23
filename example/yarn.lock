@@ -2194,10 +2194,10 @@ anymatch@^3.0.3, anymatch@~3.1.1:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-aoife-pop@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/aoife-pop/-/aoife-pop-1.0.1.tgz#91c2d122df5f28ea8e21aa87916af66dfa367a75"
-  integrity sha512-AbNUxQD9ybAfHKen5h2sFstNTpvoYul86/j+35YZVUQjrYiEmAU4+aoIL9fc8/mE3FH4vkDK/czeluVJ8DV9VA==
+aoife-pop@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/aoife-pop/-/aoife-pop-1.0.3.tgz#f9e394a2f30c599bc4045446a2c7b472afb9eea8"
+  integrity sha512-OjiQ4tEX9rfv8uM4kMvoapis2gXkYaD3zrZ0gnFB31wGT12Dufu029E9CS8ekLksixEB8FyZayynJHIIq15Eag==
   dependencies:
     tippy.js "^6.2.7"
 

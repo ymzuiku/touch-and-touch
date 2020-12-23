@@ -1,31 +1,18 @@
-export function parseObj(obj: string) {
-  if (obj && (obj[0] === "[" || obj[0] === "{")) {
-    try {
-      return JSON.parse(obj);
-    } catch (err) {
-      return obj;
-    }
-  }
-  const value = Number(obj);
-  return isNaN(value) ? obj : value;
-}
-
 // 创建一个区别独立 key 前缀的 MicoDb
 export const createMicoDb = (name = "mico-db") => {
   let db: IDBDatabase;
   const setStorage = (type: string, key: string, obj: any) => {
     const fn = (window as any)[type];
     key = micoDb.name + micoDb.version + "_" + key;
-    if (typeof obj === "object") {
-      fn.setItem(key, JSON.stringify(obj));
-    } else {
-      fn.setItem(key, obj);
-    }
+    fn.setItem(key, JSON.stringify({ json: obj }));
   };
   const getStorage = (type: string, key: string) => {
     const fn = (window as any)[type];
     const obj = fn.getItem(micoDb.name + micoDb.version + "_" + key);
-    return parseObj(obj);
+    const data = JSON.parse(obj);
+    if (data) {
+      return data.json;
+    }
   };
 
   const removeStorage = (type: string, key: string) => {
@@ -113,7 +100,8 @@ export const createMicoDb = (name = "mico-db") => {
     return {
       get: (): T => {
         let out = fns.get(key);
-        if (out === void 0) {
+        console.log(",", out, initData);
+        if (!out) {
           out = initData;
           fns.set(key, out);
         }

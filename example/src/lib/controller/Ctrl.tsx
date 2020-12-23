@@ -18,7 +18,7 @@ import { recordCellAdd } from "lib/model/recordCellAdd";
 
 function ThePop({ children }: any) {
   return (
-    <Pop placement="top" followCursor="horizontal">
+    <Pop animation={void 0} placement="top" followCursor="horizontal">
       {children[0]}
       <div class="tat-fm">{children[1]}</div>
     </Pop>
