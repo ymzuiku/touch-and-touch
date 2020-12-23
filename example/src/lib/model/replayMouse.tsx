@@ -10,36 +10,49 @@ const setStyle = (ele: any, obj: any) => {
 };
 
 const baseRoundTransform = "translate(-10px, -28px) ";
-const mouse = document.createElement("div");
+const svgEle = (
+  <div
+    style={{
+      transform: "translate(-3px, -3px)",
+      filter: "drop-shadow(0px 6px 3px rgba(0,0,0,0.25))",
+    }}
+    innerHTML={svg}
+  ></div>
+);
 
-setStyle(mouse, {
-  transition: `all ${0.3 * state.speed.get()}s cubic-bezier(0.23, 1, 0.32, 1)`,
-  position: "fixed",
-  pointerEvents: "none",
-  left: "-50px",
-  top: "-50px",
-  zIndex: 9900,
-});
+const round = (
+  <div
+    style={{
+      display: "block",
+      transition: "all 0.12s cubic-bezier(0.23, 1, 0.32, 1)",
+      transform: baseRoundTransform,
+      width: "20px",
+      height: "20px",
+      borderRadius: "10px",
+      background: "rgba(0,100,255,0.35)",
+    }}
+  ></div>
+);
 
-const svgEle = document.createElement("div");
-setStyle(svgEle, {
-  transform: "translate(-3px, -3px)",
-  filter: "drop-shadow(0px 6px 3px rgba(0,0,0,0.25))",
-});
-svgEle.innerHTML = svg;
-
-const round = document.createElement("div");
-setStyle(round, {
-  display: "block",
-  transition: "all 0.2s cubic-bezier(0.23, 1, 0.32, 1)",
-  transform: baseRoundTransform,
-  width: "20px",
-  height: "20px",
-  borderRadius: "10px",
-  background: "rgba(0,100,255,0.35)",
-});
-
-mouse.append(svgEle, round);
+const mouse = (
+  <div
+    hidden={() => !state.showMouse}
+    class="tat-mouse"
+    style={{
+      transition: `all ${
+        0.3 * state.speed.get()
+      }s cubic-bezier(0.23, 1, 0.32, 1)`,
+      position: "fixed",
+      pointerEvents: "none",
+      left: "-50px",
+      top: "-50px",
+      zIndex: 9900,
+    }}
+  >
+    {svgEle}
+    {round}
+  </div>
+);
 
 document.body.append(mouse);
 
@@ -49,7 +62,6 @@ function mouseMove(item: RecordItem) {
 }
 
 function mouseClick(item: RecordItem) {
-  const speed = state.speed.get();
   if (
     state.lastFocus &&
     document.contains(state.lastFocus) &&
@@ -65,8 +77,8 @@ function mouseClick(item: RecordItem) {
     round.style.transform = baseRoundTransform + "scale(0.5, 0.5)";
     setTimeout(() => {
       round.style.transform = baseRoundTransform + "scale(1, 1)";
-    }, 150 * speed);
-  }, 150 * speed);
+    }, 130);
+  }, 130);
 }
 
 export { mouse, mouseClick, mouseMove };

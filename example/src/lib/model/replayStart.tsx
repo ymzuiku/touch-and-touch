@@ -4,10 +4,19 @@ import { clicks } from "./eleSetListen";
 
 export const replayStart = async () => {
   const items = state.recordItems.get();
+  // 开始设置播放的样式
+  state.recording.set(0);
   state.replaying.set(1);
-  aoife.next(".tat-ctrl");
+  state.showMouse = true;
+  aoife.next(".tat-ctrl, .tat-mouse");
+
+  // 播放
   await startReplay(items);
+
+  // 还原播放的样式
   state.replaying.set(0);
+  state.showMouse = false;
+  aoife.next(".tat-ctrl, .tat-mouse");
 };
 
 function scrollIntoView(el: HTMLElement) {
@@ -79,42 +88,47 @@ const getEleCenter = (el: HTMLElement, item: RecordItem) => {
   item.clientY = rect.top + rect.height / 2;
 };
 
-function sleep(t: number) {
+function sleep() {
   return new Promise((res) => {
-    setTimeout(res, t);
+    setTimeout(res, 110 * state.speed.get());
   });
 }
 
 const startReplay = async (items: RecordItem[]) => {
-  items.forEach((item, i) => {
-    item.index = i;
-  });
-
+  let i = 0;
   for (const item of items) {
+    i++;
     if (!state.replaying.get()) {
       break;
     }
+    if (i < state.replayStep.get()) {
+      continue;
+    }
+    state.replayStep.set(i);
+    if (item.href) {
+      window.location.href = item.href;
+    }
 
-    console.log(item);
     if (item.type === "mclick") {
-      await sleep(50 * state.speed.get());
+      await sleep();
       mouseClick(item);
     } else if (item.key) {
-      await sleep(50 * state.speed.get());
+      await sleep();
       const el = await waitGetElement(item.key);
       if (clicks.indexOf(item.type) > -1) {
         getEleCenter(el, item);
         mouseClick(item);
-        await sleep(300 * state.speed.get());
+        await sleep();
         emitClick(el as any);
       } else {
         if (state.lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
-          await sleep(200 * state.speed.get());
+          await sleep();
         }
         emitInput(el as any, item, item.type);
       }
     }
   }
+  state.replayStep.set(0);
 };

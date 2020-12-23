@@ -14,8 +14,7 @@
     "aoife-svg": "^1.0.2",
     "dayjs": "^1.9.7",
     "mico-db": "^1.0.2",
-    "template-css": "^1.0.7",
-    "vanilla-list": "^0.2.2"
+    "template-css": "^1.0.7"
   },
   "devDependencies": {
     "aoife-scripts": "^4.0.2",

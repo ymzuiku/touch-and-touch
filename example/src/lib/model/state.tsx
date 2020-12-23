@@ -29,6 +29,7 @@ interface TATProxy {
 export const proxy = {} as TATProxy;
 
 export const state = {
+  showMouse: false,
   lastFocus: null as any,
   showList: true,
   showPlayList: true,
@@ -64,6 +65,9 @@ export const state = {
         await proxy.add(cell, item);
       }
       micoDb.set(cell.id, item);
+      state.data.recordList = state.data.recordList.sort(
+        (a, b) => b.updateAt - a.updateAt
+      );
       return micoDb.set("tat-list", state.data.recordList);
     },
     findCell: async (id: string): Promise<RecordCell> => {

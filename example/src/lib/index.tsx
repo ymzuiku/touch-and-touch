@@ -6,3 +6,7 @@ import { TouchAndTouchController } from "./controller";
 
 // export { TouchAndTouchController, cancel, replay, record, save };
 export { TouchAndTouchController };
+
+if ((module as any).hot) {
+  (module as any).hot.accept();
+}

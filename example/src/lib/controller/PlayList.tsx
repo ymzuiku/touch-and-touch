@@ -1,6 +1,4 @@
-import { replayStart } from "lib/model/replayStart";
 import { state } from "lib/model/state";
-import VanillaList from "vanilla-list";
 import css from "template-css";
 import { DeleteSvg, EditorSvg } from "./svg";
 import { changeInput } from "lib/model/changeInput";
@@ -17,7 +15,7 @@ export const PlayList = () => {
     >
       {() => {
         return state.data.recordList.map((_, i) => {
-          i = state.data.recordList.length - i - 1;
+          // i = state.data.recordList.length - i - 1;
           return (
             <div
               classPick={() => ({
@@ -28,7 +26,6 @@ export const PlayList = () => {
             >
               <input
                 class="input"
-                id={() => state.data.recordList[i].id}
                 hidden={(el) => {
                   const hidden =
                     state.showInputId !== state.data.recordList[i].id;
@@ -111,9 +108,11 @@ css`
     ${css.wordBreak(1)}
   }
   .tat-play-list .cell-selected {
-    border-left: 2px solid rgba(0, 0, 0, 0.5);
+    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;
+    border-radius: 0px 2px 2px 0px !important;
   }
   .tat-play-list .cell {
+    border-left: 2px solid rgba(0, 0, 0, 0);
     height: 20px;
     font-size: 12px;
     padding: 4px 0px 4px 4px;

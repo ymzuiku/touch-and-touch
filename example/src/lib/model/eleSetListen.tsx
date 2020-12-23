@@ -19,17 +19,11 @@ export const eleSetListen = (ele: HTMLLIElement) => {
     }
     (ele as any)["tat-" + e] = true;
     ele.addEventListener(e, function (event: any) {
-      // 播放和录制过程，不再重新记录
-      if (state.replaying.get()) {
-        return;
-      }
-      if (state.recording.get()) {
-        recordItemAdd({
-          key: ele.getAttribute("tat-key")!,
-          type: e,
-          value: getEventVal(event),
-        });
-      }
+      recordItemAdd({
+        key: ele.getAttribute("tat-key")!,
+        type: e,
+        value: getEventVal(event),
+      });
     });
   });
 };
