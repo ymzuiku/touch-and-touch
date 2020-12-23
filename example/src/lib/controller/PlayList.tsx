@@ -41,9 +41,7 @@ export const PlayList = () => {
                   return hidden;
                 }}
                 onblur={() => changeInput("")}
-                value={() =>
-                  state.recordList.find().then((list) => list[i].title)
-                }
+                value={() => item.title}
                 onchange={(e) =>
                   state.recordList
                     .index(i)
@@ -87,6 +85,10 @@ css`
     width: 100%;
     height: 160px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    aligin-items: flex-start;
   }
   .tat-play-list .edit {
     width: 18px;

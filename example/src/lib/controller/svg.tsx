@@ -13,6 +13,10 @@ export const RecordStartSvg = aoifeSvg(
 );
 
 export const RecordStopSvg = aoifeSvg(
+  `<svg t="1608738155473" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1785" width="200" height="200"><path d="M512 0c-282.784 0-512 229.216-512 512s229.216 512 512 512 512-229.216 512-512-229.216-512-512-512zM512 928c-229.76 0-416-186.24-416-416s186.24-416 416-416 416 186.24 416 416-186.24 416-416 416zM320 320l384 0 0 384-384 0z" p-id="1786"></path></svg>`
+);
+
+export const ReplayStopSvg = aoifeSvg(
   `<svg t="1608544642733" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1144" width="200" height="200"><path d="M32 32m160 0l640 0q160 0 160 160l0 640q0 160-160 160l-640 0q-160 0-160-160l0-640q0-160 160-160Z" fill="#364F6B" p-id="1145"></path></svg>`
 );
 

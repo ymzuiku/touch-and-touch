@@ -1,3 +1,16 @@
+const sortFn = (sort: any, coll: any[]) => {
+  if (sort) {
+    const k = Object.keys(sort)[0];
+    const v = sort[k];
+    if (v === 1) {
+      coll = coll.sort((a: any, b: any) => a[k] - b[k]);
+    } else if (v === -1) {
+      coll = coll.sort((a: any, b: any) => b[k] - a[k]);
+    }
+  }
+  return coll;
+};
+
 // 创建一个区别独立 key 前缀的 MicoDb
 export const createMicoDb = (name = "mico-db") => {
   let db: IDBDatabase;
@@ -75,6 +88,7 @@ export const createMicoDb = (name = "mico-db") => {
 
   interface CollectionOptions<T> {
     initData?: T;
+    sort?: { [key: string]: number };
     proxy?: ProxyCollection<T>;
   }
 
@@ -136,13 +150,23 @@ export const createMicoDb = (name = "mico-db") => {
     if (!opt.proxy) {
       opt.proxy = {};
     }
+
     return {
       index: async (index: number) => {
         const coll = await initColl<T>(key);
         return coll[index];
       },
-      find: async (filter?: Partial<T> | ((val: T) => any)) => {
+      count: async () => {
         const coll = await initColl<T>(key);
+        return coll.length;
+      },
+      find: async (
+        filter?: Partial<T> | ((val: T) => any),
+        sort = opt.sort
+      ) => {
+        let coll = await initColl<T>(key);
+        coll = sortFn(sort, coll);
+
         if (!filter) {
           return coll;
         }

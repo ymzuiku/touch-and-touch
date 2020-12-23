@@ -4,7 +4,10 @@ export const replayStop = async () => {
   state.ui.set({
     recording: 0,
     replaying: 0,
+    showMouse: 0,
+    showPlayList: 1,
+    showExpend: 1,
   });
-  await state.recordItems.set([]);
-  aoife.next(".tat-ctrl");
+  console.log(state.ui.get());
+  aoife.next(".tat-plan");
 };

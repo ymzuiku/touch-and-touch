@@ -9,6 +9,8 @@ export const replayStart = async () => {
     recording: 0,
     replaying: 1,
     showMouse: 1,
+    showPlayList: 0,
+    showExpend: 0,
   });
   aoife.next(".tat-ctrl, .tat-mouse");
 
@@ -20,6 +22,8 @@ export const replayStart = async () => {
     recording: 0,
     replaying: 0,
     showMouse: 0,
+    showPlayList: 1,
+    showExpend: 1,
   });
   aoife.next(".tat-ctrl, .tat-mouse");
 };
@@ -110,6 +114,7 @@ const startReplay = async (items: RecordItem[]) => {
       continue;
     }
     state.ui.set({ replayStep: i });
+    aoife.next(".tat-step");
     if (item.href) {
       window.location.href = item.href;
     }

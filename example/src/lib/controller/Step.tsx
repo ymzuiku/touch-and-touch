@@ -3,19 +3,19 @@ import css from "template-css";
 
 export const Step = () => {
   return (
-    <div class="tat-record-cell" hidden={() => !state.ui.get().showList}>
+    <div class="tat-step" hidden={() => !state.ui.get().showList}>
       step:{" "}
       {() =>
-        state.recordItems
-          .find((v: any) => v.type !== "mclick" && v.type !== "href")
-          .then((list) => list.length)
+        state.ui.get().replaying
+          ? `${state.ui.get().replayStep}/${state.nowCell.get().step}`
+          : state.nowCell.get().step
       }
     </div>
   );
 };
 
 css`
-  .tat-record-cell {
+  .tat-step {
     padding: 4px;
     font-size: 13px;
     cursor: pointer;

@@ -9,12 +9,14 @@ import {
   RecordStartSvg,
   RecordStopSvg,
   RecordCancelSvg,
+  ReplayStopSvg,
   CtrlExpendSvg,
   PlaySvg,
   AddSvg,
 } from "./svg";
 import { replayStart } from "lib/model/replayStart";
 import { recordCellAdd } from "lib/model/recordCellAdd";
+import { replayStop } from "lib/model/replayStop";
 
 function ThePop({ children }: any) {
   return (
@@ -29,11 +31,21 @@ export const Ctrl = () => {
   return (
     <div class="tat-ctrl">
       {() => {
-        return state.ui.get().recording ? (
-          <span class="tat-row">
-            <RecordStopSvg class="tat-btn" onclick={recordStop} />
-          </span>
-        ) : (
+        if (state.ui.get().recording) {
+          return (
+            <span class="tat-row">
+              <RecordStopSvg class="tat-btn" onclick={recordStop} />
+            </span>
+          );
+        }
+        if (state.ui.get().replaying) {
+          return (
+            <span class="tat-row">
+              <ReplayStopSvg class="tat-btn" onclick={replayStop} />
+            </span>
+          );
+        }
+        return (
           <span class="tat-row">
             <ThePop>
               <PlaySvg class="tat-btn" onclick={replayStart} />

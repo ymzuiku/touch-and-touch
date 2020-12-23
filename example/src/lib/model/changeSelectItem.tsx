@@ -1,12 +1,13 @@
 import { state } from "./state";
 
 export const changeSelectItem = async (id: string) => {
-  const cell = await state.recordList.findOne({ id });
-  if (!cell) {
+  const list = await state.recordList.findOne({ id });
+  console.log("0--", list, id);
+  if (!list) {
     return;
   }
-  const items = cell.items;
-  state.nowCell.set(cell);
+  const items = list.items;
+  state.nowCell.set(list);
   await state.recordItems.set(items);
   aoife.next(".tat-plan");
 };

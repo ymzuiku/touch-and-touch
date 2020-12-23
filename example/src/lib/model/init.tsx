@@ -13,7 +13,7 @@ export const init = async () => {
     list = await state.recordList.find();
   }
 
-  if (!state.nowCell.get()) {
+  if (!state.nowCell.get().id) {
     if (list && list[list.length - 1]) {
       await changeSelectItem(list[list.length - 1].id);
     }
