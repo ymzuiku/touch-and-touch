@@ -1,6 +1,5 @@
 import { getEventVal } from "./getEventVal";
 import { recordItemAdd } from "./recordItemAdd";
-import { state } from "./state";
 
 export const inputs = ["input", "submit"];
 export const submits = ["submit", "onchange"];

@@ -3,12 +3,12 @@ import css from "template-css";
 
 export const Step = () => {
   return (
-    <div class="tat-record-cell" hidden={() => !state.showList}>
+    <div class="tat-record-cell" hidden={() => !state.ui.get().showList}>
       step:{" "}
       {() =>
         state.recordItems
-          .get()
-          .filter((v) => v.type !== "mclick" && v.type !== "href").length
+          .find((v: any) => v.type !== "mclick" && v.type !== "href")
+          .then((list) => list.length)
       }
     </div>
   );

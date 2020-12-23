@@ -1,19 +1,18 @@
 import { state } from "./state";
 
-export const recordStop = async () => {
-  state.ui.set({
-    recording: 0,
-    showPlayList: 1,
-    showExpend: 1,
-  });
-
+export const recordCellAdd = async () => {
+  const items = await state.recordItems.find();
   const cell = state.nowCell.get();
   await state.recordList.updateOne(
-    { id: cell.id },
     {
-      ...cell,
+      id: cell.id,
+    },
+    {
       updateAt: Date.now(),
+      step: items.length,
+      items,
     }
   );
+
   aoife.next(".tat-plan");
 };

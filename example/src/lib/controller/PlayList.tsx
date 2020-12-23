@@ -11,24 +11,26 @@ export const PlayList = () => {
   return (
     <div
       class="tat-play-list"
-      hidden={() => !state.showPlayList || !state.showList}
+      hidden={() => !state.ui.get().showPlayList || !state.ui.get().showList}
     >
       {async () => {
-        const list = await state.recordList.list();
+        const list = await state.recordList.find();
         return list.map((_, i) => {
           return (
             <div
-              classPick={() => ({
-                cell: 1,
-                "cell-selected":
-                  state.data.recordList[i].id === state.nowCell.get().id,
-              })}
+              classPick={async () => {
+                const list = await state.recordList.find();
+                return {
+                  cell: 1,
+                  "cell-selected": list[i].id === state.nowCell.get().id,
+                };
+              }}
             >
               <input
                 class="input"
-                hidden={(el) => {
-                  const hidden =
-                    state.showInputId !== state.data.recordList[i].id;
+                hidden={async (el) => {
+                  const list = await state.recordList.find();
+                  const hidden = state.ui.get().showInputId !== list[i].id;
                   if (!hidden) {
                     requestAnimationFrame(() => {
                       if (document.contains(el)) {
@@ -39,20 +41,36 @@ export const PlayList = () => {
                   return hidden;
                 }}
                 onblur={() => changeInput("")}
-                value={() => state.data.recordList[i].title || ""}
+                value={() =>
+                  state.recordList.find().then((list) => list[i].title)
+                }
                 onchange={(e) =>
-                  rename(state.data.recordList[i].id, e.target.value)
+                  state.recordList
+                    .index(i)
+                    .then((item) => rename(item.id, e.target.value))
                 }
                 placeholder="请输入title"
               />
               <div
                 class="label"
-                hidden={() => state.showInputId === state.data.recordList[i].id}
-                onclick={() => changeSelectItem(state.data.recordList[i].id)}
+                hidden={() =>
+                  state.recordList
+                    .index(i)
+                    .then((item) => state.ui.get().showInputId === item.id)
+                }
+                onclick={() =>
+                  state.recordList
+                    .index(i)
+                    .then((item) => changeSelectItem(item.id))
+                }
               >
                 {() =>
-                  state.data.recordList[i].title ||
-                  dayjs(state.data.recordList[i].updateAt).format("MM-DD HH:mm")
+                  state.recordList
+                    .index(i)
+                    .then(
+                      (item) =>
+                        item.title || dayjs(item.updateAt).format("MM-DD HH:mm")
+                    )
                 }
               </div>
               <EditorSvg
@@ -60,7 +78,9 @@ export const PlayList = () => {
                 onclick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  changeInput(state.data.recordList[i].id);
+                  state.recordList.index(i).then((item) => {
+                    changeInput(item.id);
+                  });
                 }}
               />
               <DeleteSvg
@@ -68,7 +88,9 @@ export const PlayList = () => {
                 onclick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  remove(state.data.recordList[i].id);
+                  state.recordList.index(i).then((item) => {
+                    remove(item.id);
+                  });
                 }}
               />
             </div>

@@ -11,7 +11,7 @@ export const TouchAndTouchController = () => {
     <div tat-drag-ctrl tat-ignore class="tat">
       <div>
         <div class="tat-plan">
-          <Drag query="[tat-drag-ctrl]" tat-ignore savePositionKey="tat-drag">
+          <Drag query="[tat-drag-ctrl]" tat-ignore localStorageKey="tat-drag">
             <Ctrl />
           </Drag>
           <Step />

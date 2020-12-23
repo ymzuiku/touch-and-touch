@@ -36,11 +36,11 @@ const round = (
 
 const mouse = (
   <div
-    hidden={() => !state.showMouse}
+    hidden={() => !state.ui.get().showMouse}
     class="tat-mouse"
     style={{
       transition: `all ${
-        0.3 * state.speed.get()
+        0.3 * state.ui.get().speed
       }s cubic-bezier(0.23, 1, 0.32, 1)`,
       position: "fixed",
       pointerEvents: "none",
@@ -63,12 +63,12 @@ function mouseMove(item: RecordItem) {
 
 function mouseClick(item: RecordItem) {
   if (
-    state.lastFocus &&
-    document.contains(state.lastFocus) &&
-    state.lastFocus.focus
+    state.ui.get().lastFocus &&
+    document.contains(state.ui.get().lastFocus) &&
+    state.ui.get().lastFocus.focus
   ) {
-    state.lastFocus.blur();
-    state.lastFocus = void 0;
+    state.ui.get().lastFocus.blur();
+    state.ui.get().lastFocus = void 0;
   }
 
   mouse.style.top = item.clientY + "px";

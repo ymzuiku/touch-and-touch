@@ -2283,10 +2283,10 @@ aoife@^1.3.5:
   resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.5.tgz#efa2abca6e9e770e68793e5b5765e9a88671622d"
   integrity sha512-iPf9wVobgrUts/jh0ZV40Te1q1HLo2lChYh+crPVtlXwjtqswxA+6SLDhKnJwZUhnFLX/xwXHdXm3tgdrpaDyA==
 
-aoife@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.0.tgz#434a11c941d37dd8cbdfbd06ca46217a5575f8ad"
-  integrity sha512-ixFpmtZw+L9kY1a04FJaz1SQC6OagY2lKd4HmXnBodv8psp5yCe3KZ5ROPH/mXtIS0MSEKfAaljSXUNF6pLduw==
+aoife@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.1.tgz#e3bd42116e157ba56218ecab857f72fc1148086c"
+  integrity sha512-Kn0D3r/UOMkAjsB4GlRxQbdVMp3HuQtLB3BacP+zfq+bEa3Mq0G66PsTcclP3n1f8npef+RmNVmp4Mol/hjklA==
 
 aproba@^1.1.1:
   version "1.2.0"

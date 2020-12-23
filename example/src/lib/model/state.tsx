@@ -18,6 +18,7 @@ export interface RecordCell {
   title?: string;
   updateAt: number;
   step: number;
+  items: RecordItem[];
 }
 
 interface TATProxy {
@@ -34,11 +35,11 @@ export const proxy = {} as TATProxy;
 export const state = {
   ui: micoDb.sessionItem("ui", {
     speed: 1,
-    showMouse: false,
+    showMouse: 0,
     lastFocus: null as any,
-    showList: true,
-    showPlayList: true,
-    showExpend: true,
+    showList: 1,
+    showPlayList: 1,
+    showExpend: 1,
     showInputId: "",
     recording: 0,
     replaying: 0,

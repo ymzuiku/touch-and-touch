@@ -3,19 +3,24 @@ import { RecordItem, state } from "./state";
 import { clicks } from "./eleSetListen";
 
 export const replayStart = async () => {
-  const items = state.recordItems.get();
+  const items = await state.recordItems.find();
   // 开始设置播放的样式
-  state.recording.set(0);
-  state.replaying.set(1);
-  state.showMouse = true;
+  state.ui.set({
+    recording: 0,
+    replaying: 1,
+    showMouse: 1,
+  });
   aoife.next(".tat-ctrl, .tat-mouse");
 
   // 播放
   await startReplay(items);
 
   // 还原播放的样式
-  state.replaying.set(0);
-  state.showMouse = false;
+  state.ui.set({
+    recording: 0,
+    replaying: 0,
+    showMouse: 0,
+  });
   aoife.next(".tat-ctrl, .tat-mouse");
 };
 
@@ -43,7 +48,7 @@ function emitInput(el: HTMLInputElement, item: RecordItem, eventKey: string) {
   if (el.closest("[tat-ignore]")) {
     return;
   }
-  state.lastFocus = el;
+  state.ui.get().lastFocus = el;
   const nodeName = el.nodeName.toLocaleLowerCase();
   if (nodeName === "input" || nodeName === "textarea") {
     el.focus();
@@ -90,7 +95,7 @@ const getEleCenter = (el: HTMLElement, item: RecordItem) => {
 
 function sleep() {
   return new Promise((res) => {
-    setTimeout(res, 110 * state.speed.get());
+    setTimeout(res, 110 * state.ui.get().speed);
   });
 }
 
@@ -101,10 +106,10 @@ const startReplay = async (items: RecordItem[]) => {
     if (!state.replaying.get()) {
       break;
     }
-    if (i < state.replayStep.get()) {
+    if (i < state.ui.get().replayStep) {
       continue;
     }
-    state.replayStep.set(i);
+    state.ui.set({ replayStep: i });
     if (item.href) {
       window.location.href = item.href;
     }
@@ -121,7 +126,7 @@ const startReplay = async (items: RecordItem[]) => {
         await sleep();
         emitClick(el as any);
       } else {
-        if (state.lastFocus !== el) {
+        if (state.ui.get().lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
           await sleep();
@@ -130,5 +135,5 @@ const startReplay = async (items: RecordItem[]) => {
       }
     }
   }
-  state.replayStep.set(0);
+  state.ui.set({ replayStep: 0 });
 };

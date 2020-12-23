@@ -14,7 +14,7 @@ import {
   AddSvg,
 } from "./svg";
 import { replayStart } from "lib/model/replayStart";
-import { recordAdd } from "lib/model/recordAdd";
+import { recordCellAdd } from "lib/model/recordCellAdd";
 
 function ThePop({ children }: any) {
   return (
@@ -48,7 +48,7 @@ export const Ctrl = () => {
               Clear now marks
             </ThePop>
             <ThePop>
-              <AddSvg class="tat-btn" onclick={recordAdd} />
+              <AddSvg class="tat-btn" onclick={recordCellAdd} />
               Copy now record to new item
             </ThePop>
           </span>

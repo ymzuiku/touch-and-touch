@@ -1,5 +1,5 @@
 interface DragProps extends IProps {
-  savePositionKey?: string;
+  localStorageKey?: string;
   clientX?: number;
   clientY?: number;
   query?: string;
@@ -24,7 +24,7 @@ export const Drag = ({
   clientX,
   clientY,
   query = "[tat-base-drag]",
-  savePositionKey,
+  localStorageKey,
   style,
   ...rest
 }: DragProps) => {
@@ -43,13 +43,13 @@ export const Drag = ({
       fixPosition(state);
       // next("[tat-drag]");
       update();
-      if (savePositionKey) {
+      if (localStorageKey) {
         if (saveTime) {
           clearTimeout(saveTime);
           saveTime = null;
         }
         saveTime = setTimeout(() => {
-          localStorage.setItem(savePositionKey, JSON.stringify(state));
+          localStorage.setItem(localStorageKey, JSON.stringify(state));
         }, 500);
       }
     }
@@ -70,8 +70,8 @@ export const Drag = ({
     startX: 0,
     startY: 0,
   };
-  if (savePositionKey) {
-    const old = localStorage.getItem(savePositionKey);
+  if (localStorageKey) {
+    const old = localStorage.getItem(localStorageKey);
     if (old) {
       try {
         const data = JSON.parse(old);
