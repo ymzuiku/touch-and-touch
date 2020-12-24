@@ -152,6 +152,7 @@ export const createMicoDb = (name = "mico-db") => {
     }
 
     return {
+      proxy: opt.proxy,
       index: async (index: number, sort = opt.sort) => {
         let coll = await initColl<T>(key);
         coll = sortFn(sort, coll);

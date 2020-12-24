@@ -43,7 +43,7 @@ export const Ctrl = () => {
         if (state.ui.get().replaying) {
           return (
             <span class="tat-row">
-              <ReplayStopSvg class="tat-btn" onclick={replayStop} />
+              <ReplayStopSvg class="tat-btn" onclick={() => replayStop()} />
               <Step />
             </span>
           );

@@ -1,5 +1,6 @@
 // import { createMicoDb } from "mico-db";
 // const micoDb = createMicoDb("tat");
+import { initOpt } from "./init";
 import micoDb from "./mmDb";
 
 export interface RecordItem {

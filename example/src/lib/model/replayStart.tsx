@@ -3,6 +3,7 @@ import { RecordItem, state } from "./state";
 import { clicks } from "./eleSetListen";
 import { replayStop } from "./replayStop";
 import { replayFail } from "./replayFail";
+import { initOpt } from "./init";
 
 export const replayStart = async () => {
   const items = await state.recordItems.find();
@@ -15,6 +16,11 @@ export const replayStart = async () => {
   });
   aoife.next(".tat-plan, .tat-mouse");
 
+  if (initOpt.onReplay) {
+    const cell = state.nowCell.get();
+    initOpt.onReplay(cell);
+  }
+
   // 播放
   try {
     await startReplay(items);
@@ -23,7 +29,7 @@ export const replayStart = async () => {
   }
 
   // 还原播放的样式
-  await replayStop();
+  await replayStop(true);
 };
 
 function scrollIntoView(el: HTMLElement) {
