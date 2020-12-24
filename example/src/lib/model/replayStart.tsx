@@ -1,6 +1,8 @@
 import { mouseClick, mouseMove } from "./replayMouse";
 import { RecordItem, state } from "./state";
 import { clicks } from "./eleSetListen";
+import { replayStop } from "./replayStop";
+import { replayFail } from "./replayFail";
 
 export const replayStart = async () => {
   const items = await state.recordItems.find();
@@ -11,19 +13,17 @@ export const replayStart = async () => {
     showMouse: 1,
     showPlayList: 0,
   });
-  aoife.next(".tat-ctrl, .tat-step, .tat-mouse");
+  aoife.next(".tat-plan, .tat-mouse");
 
   // 播放
-  await startReplay(items);
+  try {
+    await startReplay(items);
+  } catch (err) {
+    await replayFail(err);
+  }
 
   // 还原播放的样式
-  state.ui.set({
-    recording: 0,
-    replaying: 0,
-    showMouse: 0,
-    showPlayList: 1,
-  });
-  aoife.next(".tat-plan, .tat-mouse");
+  await replayStop();
 };
 
 function scrollIntoView(el: HTMLElement) {
@@ -69,14 +69,18 @@ function emitInput(el: HTMLInputElement, item: RecordItem, eventKey: string) {
 }
 
 function waitGetElement(key: string): Promise<HTMLElement> {
-  let t = Date.now();
-  return new Promise((res) => {
+  const t = Date.now();
+  return new Promise((res, rej) => {
     const getEl = () => {
       const e = document.querySelector(`[tat-key="${key}"]`);
-      if (!e && Date.now() - t < state.ui.get().waitTimeout) {
-        setTimeout(() => {
-          getEl();
-        }, 50);
+      if (!e) {
+        if (Date.now() - t < state.ui.get().waitTimeout) {
+          setTimeout(() => {
+            getEl();
+          }, 50);
+        } else {
+          rej("[Touch And Touch] Find next element timeout");
+        }
       } else {
         res(e as any);
       }
@@ -137,5 +141,4 @@ const startReplay = async (items: RecordItem[]) => {
       }
     }
   }
-  state.ui.set({ replayStep: 0 });
 };

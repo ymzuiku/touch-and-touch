@@ -44,7 +44,7 @@ export const state = {
     replaying: 0,
     replayStep: -1,
     filter: "",
-    waitTimeout: 3000,
+    waitTimeout: 5000,
   }),
   nowCell: micoDb.sessionItem<RecordCell>("nowCell", {} as any),
   recordList: micoDb.collection<RecordCell>("record-list", {

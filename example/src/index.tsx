@@ -1,6 +1,14 @@
 import "aoife";
 import { TouchAndTouchController } from "./lib";
 
+function AsyncChild() {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res(<div>async-child</div>);
+    }, 500);
+  });
+}
+
 function AsyncList() {
   return (
     <div>
@@ -44,6 +52,7 @@ function App() {
   return (
     <div class="app">
       <AsyncList />
+      <AsyncChild />
 
       <h1>TAT Client</h1>
       <StatefulExample name="Add Num" />
@@ -97,4 +106,4 @@ function StatefulExample({ name }: { name: string }) {
   );
 }
 
-document.body.append(App());
+document.body.append(<App />);
