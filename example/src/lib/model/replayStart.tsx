@@ -69,12 +69,11 @@ function emitInput(el: HTMLInputElement, item: RecordItem, eventKey: string) {
 }
 
 function waitGetElement(key: string): Promise<HTMLElement> {
-  let n = 0;
+  let t = Date.now();
   return new Promise((res) => {
     const getEl = () => {
       const e = document.querySelector(`[tat-key="${key}"]`);
-      n++;
-      if (!e && n < 500) {
+      if (!e && Date.now() - t < state.ui.get().waitTimeout) {
         setTimeout(() => {
           getEl();
         }, 50);

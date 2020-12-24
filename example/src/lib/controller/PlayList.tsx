@@ -81,10 +81,9 @@ export const PlayList = () => {
                 >
                   {async () => {
                     const v = await state.recordList.index(i);
-                    if (!v) {
-                      return "";
+                    if (v) {
+                      return `[${v.step}] ` + getTitle(v);
                     }
-                    return `[${v.step}] ` + getTitle(v);
                   }}
                 </div>
                 <EditorSvg

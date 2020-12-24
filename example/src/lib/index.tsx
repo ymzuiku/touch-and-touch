@@ -2,11 +2,7 @@ import { TouchAndTouchController } from "./controller";
 // import { cancel } from "./model/cancel";
 // import { replay } from "./model/replay";
 // import { record } from "./model/record";
-// import { save } from "./model/save";
+import { init } from "./model/init";
 
 // export { TouchAndTouchController, cancel, replay, record, save };
-export { TouchAndTouchController };
-
-if ((module as any).hot) {
-  (module as any).hot.accept();
-}
+export { TouchAndTouchController, init };
