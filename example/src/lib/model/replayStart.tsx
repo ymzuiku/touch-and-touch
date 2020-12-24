@@ -117,10 +117,10 @@ const startReplay = async (items: RecordItem[]) => {
     if (!state.ui.get().replaying) {
       break;
     }
-    if (i < state.ui.get().replayStep) {
+    if (i < state.ui.get().step) {
       continue;
     }
-    state.ui.set({ replayStep: i });
+    state.ui.set({ step: i });
     aoife.next(".tat-step");
     if (item.href) {
       window.location.href = item.href;

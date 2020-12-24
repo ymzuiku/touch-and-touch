@@ -7,7 +7,7 @@ export const Step = () => {
       <span>Step: </span>
       {() =>
         state.ui.get().replaying
-          ? `${state.ui.get().replayStep}/${state.nowCell.get().step}`
+          ? `${state.ui.get().step}/${state.nowCell.get().step}`
           : state.nowCell.get().step
       }
     </div>

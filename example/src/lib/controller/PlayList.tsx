@@ -4,13 +4,9 @@ import { DeleteSvg, EditorSvg } from "./svg";
 import { changeInput } from "lib/model/changeInput";
 import { rename } from "lib/model/rename";
 import { remove } from "lib/model/remove";
-import dayjs from "dayjs";
 import { changeSelectItem } from "lib/model/changeSelectItem";
 import { changeFilter } from "lib/model/changeFilter";
-
-function getTitle(item: any) {
-  return item.title || dayjs(item.updateAt).format("MM-DD HH:mm");
-}
+import { getTitle } from "lib/model/getTitle";
 
 export const PlayList = () => {
   return (

@@ -6,7 +6,7 @@ export const replayStop = async (success?: boolean) => {
     recording: 0,
     replaying: 0,
     showMouse: 0,
-    replayStep: -1,
+    step: -1,
     showPlayList: 1,
   });
   console.log(state.ui.get());

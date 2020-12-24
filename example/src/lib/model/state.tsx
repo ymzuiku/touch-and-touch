@@ -43,7 +43,7 @@ export const state = {
     showInputId: "",
     recording: 0,
     replaying: 0,
-    replayStep: -1,
+    step: -1,
     filter: "",
     waitTimeout: 5000,
   }),
