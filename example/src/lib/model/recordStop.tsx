@@ -9,7 +9,7 @@ export const recordStop = async () => {
   const cell = state.nowCell.get();
   const items = await state.recordItems.find();
   await state.recordList.updateOne(
-    { id: cell.id },
+    { _id: cell._id },
     {
       ...cell,
       items,

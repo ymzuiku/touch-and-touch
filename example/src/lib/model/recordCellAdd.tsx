@@ -6,7 +6,7 @@ export const recordCellAdd = async () => {
 
   const id = "id" + Date.now();
   await state.recordList.insertOne({
-    id,
+    _id: id,
     updateAt: Date.now(),
     step: items.length,
     items,

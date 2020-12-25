@@ -13,7 +13,7 @@
     "aoife-pop": "^1.0.3",
     "aoife-svg": "^1.0.6",
     "dayjs": "^1.9.7",
-    "mico-db": "^1.0.2",
+    "mico-db": "^1.1.0",
     "template-css": "^1.0.7",
     "vanilla-message": "^0.2.2"
   },

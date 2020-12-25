@@ -25,11 +25,11 @@ export const PlayList = () => {
           return list.map((item, i) => {
             return (
               <div
-                id={item.id}
+                id={item._id}
                 classPick={() => {
                   return {
                     cell: 1,
-                    "cell-selected": item.id === state.nowCell.get().id,
+                    "cell-selected": item._id === state.nowCell.get()._id,
                   };
                 }}
                 hidden={async () => {
@@ -44,13 +44,13 @@ export const PlayList = () => {
                   const title = getTitle(item);
                   return title.indexOf(state.ui.get().filter) < 0;
                 }}
-                onclick={() => changeSelectItem(item.id)}
+                onclick={() => changeSelectItem(item._id)}
               >
                 <input
                   class="input"
                   onclick={(e) => e.stopPropagation()}
                   hidden={(el) => {
-                    const hidden = state.ui.get().showInputId !== item.id;
+                    const hidden = state.ui.get().showInputId !== item._id;
                     if (!hidden) {
                       requestAnimationFrame(() => {
                         if (document.contains(el)) {
@@ -68,12 +68,12 @@ export const PlayList = () => {
                     }
                     return v.title || "";
                   }}
-                  onchange={(e) => rename(item.id, e.target.value)}
+                  onchange={(e) => rename(item._id, e.target.value)}
                   placeholder="请输入title"
                 />
                 <div
                   class="label"
-                  hidden={() => state.ui.get().showInputId === item.id}
+                  hidden={() => state.ui.get().showInputId === item._id}
                 >
                   {async () => {
                     const v = await state.recordList.index(i);
@@ -87,7 +87,7 @@ export const PlayList = () => {
                   onclick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    changeInput(item.id);
+                    changeInput(item._id);
                   }}
                 />
                 <DeleteSvg
@@ -95,7 +95,7 @@ export const PlayList = () => {
                   onclick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    remove(item.id);
+                    remove(item._id);
                   }}
                 />
               </div>

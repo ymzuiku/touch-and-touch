@@ -28,12 +28,12 @@ export const init = async (opt: InitOptions = {}) => {
     list = await state.recordList.find();
   }
 
-  if (!state.nowCell.get().id) {
+  if (!state.nowCell.get()._id) {
     if (list && list[list.length - 1]) {
-      await changeSelectItem(list[list.length - 1].id);
+      await changeSelectItem(list[list.length - 1]._id);
     }
   } else {
-    await changeSelectItem(state.nowCell.get().id);
+    await changeSelectItem(state.nowCell.get()._id);
   }
 
   aoife.next(".tat-plan");
@@ -53,7 +53,7 @@ export const init = async (opt: InitOptions = {}) => {
         }
       });
       if (cell) {
-        await changeSelectItem(cell.id);
+        await changeSelectItem(cell._id);
         state.ui.set({ step: -1 });
         replayStart();
       }

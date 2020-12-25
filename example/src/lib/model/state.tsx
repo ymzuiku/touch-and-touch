@@ -1,7 +1,5 @@
-// import { createMicoDb } from "mico-db";
-// const micoDb = createMicoDb("tat");
-import { initOpt } from "./init";
-import micoDb from "./mmDb";
+import { createMicoDb } from "mico-db";
+const micoDb = createMicoDb("tat");
 
 export interface RecordItem {
   index?: number;
@@ -15,7 +13,7 @@ export interface RecordItem {
   scrollY?: number;
 }
 export interface RecordCell {
-  id: string;
+  _id: string;
   title?: string;
   updateAt: number;
   step: number;
@@ -34,20 +32,37 @@ interface TATProxy {
 export const proxy = {} as TATProxy;
 
 export const state = {
-  ui: micoDb.sessionItem("ui", {
-    speed: 1,
-    showMouse: 0,
-    lastFocus: null as any,
-    showList: 1,
-    showPlayList: 1,
-    showInputId: "",
-    recording: 0,
-    replaying: 0,
-    step: -1,
-    filter: "",
-    waitTimeout: 5000,
+  ui: micoDb.collection("ui", {
+    type: "session",
+    firstItem: {
+      speed: 1,
+      showMouse: 0,
+      lastFocus: null as any,
+      showList: 1,
+      showPlayList: 1,
+      showInputId: "",
+      recording: 0,
+      replaying: 0,
+      step: -1,
+      filter: "",
+      waitTimeout: 5000,
+    },
   }),
-  nowCell: micoDb.sessionItem<RecordCell>("nowCell", {} as any),
+  // ui: micoDb.sessionItem("ui", {
+  //   speed: 1,
+  //   showMouse: 0,
+  //   lastFocus: null as any,
+  //   showList: 1,
+  //   showPlayList: 1,
+  //   showInputId: "",
+  //   recording: 0,
+  //   replaying: 0,
+  //   step: -1,
+  //   filter: "",
+  //   waitTimeout: 5000,
+  // }),
+  nowCell: micoDb.collection<RecordCell>("nowCell"),
+  // nowCell: micoDb.sessionItem<RecordCell>("nowCell", {} as any),
   recordList: micoDb.collection<RecordCell>("record-list", {
     sort: { updateAt: -1 },
   }),

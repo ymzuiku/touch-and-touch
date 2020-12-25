@@ -1,7 +1,7 @@
 import { state } from "./state";
 
 export const changeSelectItem = async (id: string) => {
-  const list = await state.recordList.findOne({ id });
+  const list = await state.recordList.findOne({ _id: id });
   if (!list) {
     return;
   }

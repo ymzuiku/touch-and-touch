@@ -4,6 +4,6 @@ export const rename = async (id: string, title: string) => {
   state.ui.set({
     showInputId: "",
   });
-  await state.recordList.updateOne({ id }, { title });
+  await state.recordList.updateOne({ _id: id }, { title });
   aoife.next("#" + id);
 };
