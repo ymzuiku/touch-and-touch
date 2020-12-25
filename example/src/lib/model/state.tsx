@@ -33,7 +33,7 @@ export const proxy = {} as TATProxy;
 
 export const state = {
   ui: micoDb.collection("ui", {
-    type: "session",
+    type: "sessionStorage",
     firstItem: {
       speed: 1,
       showMouse: 0,

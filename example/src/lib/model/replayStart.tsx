@@ -137,7 +137,7 @@ const startReplay = async (items: RecordItem[]) => {
     }
 
     if (item.type === "mclick") {
-      await sleep(80);
+      await sleep(120);
       mouseClick(item);
     } else if (item.key) {
       await sleep(50);
@@ -145,13 +145,13 @@ const startReplay = async (items: RecordItem[]) => {
       if (clicks.indexOf(item.type) > -1) {
         getEleCenter(el, item);
         mouseClick(item);
-        await sleep(80);
+        await sleep(100);
         emitClick(el as any);
       } else {
         if ((await state.ui.findOne()).lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
-          await sleep(40);
+          await sleep(50);
         }
         emitInput(el as any, item, item.type);
       }
