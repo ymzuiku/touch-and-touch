@@ -3,7 +3,6 @@ import { PlayList } from "./PlayList";
 import { Ctrl } from "./Ctrl";
 import { init } from "lib/model/init";
 import css from "template-css";
-import { Step } from "./Step";
 import { DragSvg } from "./svg";
 
 export const TouchAndTouchController = () => {

@@ -28,20 +28,26 @@ export const init = async (opt: InitOptions = {}) => {
     list = await state.recordList.find();
   }
 
-  if (!state.nowCell.get()._id) {
+  const old = await state.nowCell.findOne();
+  if (!old._id) {
     if (list && list[list.length - 1]) {
       await changeSelectItem(list[list.length - 1]._id);
     }
   } else {
-    await changeSelectItem(state.nowCell.get()._id);
+    const next = await state.nowCell.findOne();
+    await changeSelectItem(next._id);
   }
 
   aoife.next(".tat-plan");
 
-  state.ui.set({ speed: opt.speed || 1, waitTimeout: opt.waitTimeout || 5000 });
+  await state.ui.updateOne(
+    {},
+    { speed: opt.speed || 1, waitTimeout: opt.waitTimeout || 5000 }
+  );
+
   recordDom();
   setTimeout(async () => {
-    if (state.ui.get().replaying) {
+    if ((await state.ui.findOne()).replaying) {
       replayStart();
     } else if (initOpt.autoPlayItem) {
       // 根据初始化参数自动播放
@@ -54,7 +60,7 @@ export const init = async (opt: InitOptions = {}) => {
       });
       if (cell) {
         await changeSelectItem(cell._id);
-        state.ui.set({ step: -1 });
+        await state.ui.updateOne({}, { step: -1 });
         replayStart();
       }
     }

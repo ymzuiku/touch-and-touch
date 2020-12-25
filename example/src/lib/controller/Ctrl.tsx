@@ -31,8 +31,10 @@ function ThePop({ children }: any) {
 export const Ctrl = () => {
   return (
     <div class="tat-ctrl">
-      {() => {
-        if (state.ui.get().recording) {
+      {async () => {
+        const ui = await state.ui.findOne();
+
+        if (ui.recording) {
           return (
             <span class="tat-row">
               <RecordStopSvg class="tat-btn" onclick={recordStop} />
@@ -40,7 +42,7 @@ export const Ctrl = () => {
             </span>
           );
         }
-        if (state.ui.get().replaying) {
+        if (ui.replaying) {
           return (
             <span class="tat-row">
               <ReplayStopSvg class="tat-btn" onclick={() => replayStop()} />
@@ -72,14 +74,17 @@ export const Ctrl = () => {
       <div style="flex:1"></div>
       <div
         class="tat-btn"
-        hidden={() => state.ui.get().recording || state.ui.get().replaying}
+        hidden={async () => {
+          const ui = await state.ui.findOne();
+          ui.recording || ui.replaying;
+        }}
         onclick={showList}
       >
         <CtrlExpendSvg
-          class={() =>
-            "tat-show-list-icon " +
-            (!state.ui.get().showList && "tat-show-list")
-          }
+          class={async () => {
+            const ui = await state.ui.findOne();
+            return "tat-show-list-icon " + (ui.showList && "tat-show-list");
+          }}
         />
       </div>
     </div>

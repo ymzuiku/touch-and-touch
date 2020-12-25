@@ -12,7 +12,10 @@ export const PlayList = () => {
   return (
     <div
       class="tat-play-list"
-      hidden={() => !state.ui.get().showPlayList || !state.ui.get().showList}
+      hidden={async () => {
+        const ui = await state.ui.findOne();
+        return !ui.showPlayList || !ui.showList;
+      }}
     >
       <input
         class="filter"
@@ -26,14 +29,16 @@ export const PlayList = () => {
             return (
               <div
                 id={item._id}
-                classPick={() => {
+                classPick={async () => {
+                  const cell = await state.nowCell.findOne();
                   return {
                     cell: 1,
-                    "cell-selected": item._id === state.nowCell.get()._id,
+                    "cell-selected": item._id === cell._id,
                   };
                 }}
                 hidden={async () => {
-                  const filter = state.ui.get().filter;
+                  const ui = await state.ui.findOne();
+                  const filter = ui.filter;
                   if (!filter) {
                     return false;
                   }
@@ -42,15 +47,16 @@ export const PlayList = () => {
                     return true;
                   }
                   const title = getTitle(item);
-                  return title.indexOf(state.ui.get().filter) < 0;
+                  return title.indexOf(ui.filter) < 0;
                 }}
                 onclick={() => changeSelectItem(item._id)}
               >
                 <input
                   class="input"
                   onclick={(e) => e.stopPropagation()}
-                  hidden={(el) => {
-                    const hidden = state.ui.get().showInputId !== item._id;
+                  hidden={async (el) => {
+                    const ui = await state.ui.findOne();
+                    const hidden = ui.showInputId !== item._id;
                     if (!hidden) {
                       requestAnimationFrame(() => {
                         if (document.contains(el)) {
@@ -73,7 +79,10 @@ export const PlayList = () => {
                 />
                 <div
                   class="label"
-                  hidden={() => state.ui.get().showInputId === item._id}
+                  hidden={async () => {
+                    const ui = await state.ui.findOne();
+                    return ui.showInputId === item._id;
+                  }}
                 >
                   {async () => {
                     const v = await state.recordList.index(i);

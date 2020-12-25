@@ -1,6 +1,6 @@
 import { state } from "./state";
 
 export const changeInput = async (id: string) => {
-  state.ui.set({ showInputId: id });
+  await state.ui.updateOne({}, { showInputId: id });
   aoife.next(".tat-play-list .cell");
 };

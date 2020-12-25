@@ -8,16 +8,19 @@ import { initOpt } from "./init";
 export const replayStart = async () => {
   const items = await state.recordItems.find();
   // 开始设置播放的样式
-  state.ui.set({
-    recording: 0,
-    replaying: 1,
-    showMouse: 1,
-    showPlayList: 0,
-  });
+  await state.ui.updateOne(
+    {},
+    {
+      recording: 0,
+      replaying: 1,
+      showMouse: 1,
+      showPlayList: 0,
+    }
+  );
   aoife.next(".tat-plan, .tat-mouse");
 
   if (initOpt.onReplay) {
-    const cell = state.nowCell.get();
+    const cell = await state.nowCell.findOne();
     initOpt.onReplay(cell);
   }
 
@@ -52,11 +55,15 @@ function emitClick(el: HTMLElement) {
   el.dispatchEvent(event);
 }
 
-function emitInput(el: HTMLInputElement, item: RecordItem, eventKey: string) {
+async function emitInput(
+  el: HTMLInputElement,
+  item: RecordItem,
+  eventKey: string
+) {
   if (el.closest("[tat-ignore]")) {
     return;
   }
-  state.ui.get().lastFocus = el;
+  await state.ui.updateOne({}, { lastFocus: el });
   const nodeName = el.nodeName.toLocaleLowerCase();
   if (nodeName === "input" || nodeName === "textarea") {
     el.focus();
@@ -76,11 +83,12 @@ function emitInput(el: HTMLInputElement, item: RecordItem, eventKey: string) {
 
 function waitGetElement(key: string): Promise<HTMLElement> {
   const t = Date.now();
-  return new Promise((res, rej) => {
-    const getEl = () => {
+  return new Promise(async (res, rej) => {
+    const getEl = async () => {
       const e = document.querySelector(`[tat-key="${key}"]`);
+      const ui = await state.ui.findOne();
       if (!e) {
-        if (Date.now() - t < state.ui.get().waitTimeout) {
+        if (Date.now() - t < ui.waitTimeout) {
           setTimeout(() => {
             getEl();
           }, 50);
@@ -91,7 +99,7 @@ function waitGetElement(key: string): Promise<HTMLElement> {
         res(e as any);
       }
     };
-    getEl();
+    await getEl();
   });
 }
 
@@ -105,22 +113,24 @@ const getEleCenter = (el: HTMLElement, item: RecordItem) => {
 };
 
 function sleep(t: number) {
-  return new Promise((res) => {
-    setTimeout(res, t * state.ui.get().speed);
+  return new Promise(async (res) => {
+    const ui = await state.ui.findOne();
+    setTimeout(res, t * ui.speed);
   });
 }
 
 const startReplay = async (items: RecordItem[]) => {
   let i = 0;
   for (const item of items) {
+    const ui = await state.ui.findOne();
     i++;
-    if (!state.ui.get().replaying) {
+    if (!ui.replaying) {
       break;
     }
-    if (i < state.ui.get().step) {
+    if (i < ui.step) {
       continue;
     }
-    state.ui.set({ step: i });
+    await state.ui.updateOne({}, { step: i });
     aoife.next(".tat-step");
     if (item.href) {
       window.location.href = item.href;
@@ -138,7 +148,7 @@ const startReplay = async (items: RecordItem[]) => {
         await sleep(80);
         emitClick(el as any);
       } else {
-        if (state.ui.get().lastFocus !== el) {
+        if ((await state.ui.findOne()).lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
           await sleep(40);

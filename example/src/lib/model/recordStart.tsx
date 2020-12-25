@@ -2,11 +2,14 @@ import aoife from "aoife";
 import { state } from "./state";
 
 export const recordStart = async () => {
-  state.ui.set({
-    recording: 1,
-    replaying: 0,
-    showPlayList: 0,
-  });
+  await state.ui.updateOne(
+    {},
+    {
+      recording: 1,
+      replaying: 0,
+      showPlayList: 0,
+    }
+  );
   aoife.next(".tat-plan");
   // 记录首次页面的url
   const items = await state.recordItems.find();

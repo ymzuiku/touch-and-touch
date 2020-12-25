@@ -36,12 +36,13 @@ const round = (
 
 const mouse = (
   <div
-    hidden={() => !state.ui.get().showMouse}
+    hidden={async () => {
+      const ui = await state.ui.findOne();
+      return !ui.showMouse;
+    }}
     class="tat-mouse"
     style={{
-      transition: `all ${
-        0.3 * state.ui.get().speed
-      }s cubic-bezier(0.23, 1, 0.32, 1)`,
+      transition: `all 0.3s cubic-bezier(0.23, 1, 0.32, 1)`,
       position: "fixed",
       pointerEvents: "none",
       left: "-50px",
@@ -61,14 +62,11 @@ function mouseMove(item: RecordItem) {
   mouse.style.top = item.clientY + "px";
 }
 
-function mouseClick(item: RecordItem) {
-  if (
-    state.ui.get().lastFocus &&
-    document.contains(state.ui.get().lastFocus) &&
-    state.ui.get().lastFocus.focus
-  ) {
-    state.ui.get().lastFocus.blur();
-    state.ui.get().lastFocus = void 0;
+async function mouseClick(item: RecordItem) {
+  const ui = await state.ui.findOne();
+  if (ui.lastFocus && document.contains(ui.lastFocus) && ui.lastFocus.focus) {
+    ui.lastFocus.blur();
+    await state.ui.updateOne({}, { lastFocus: void 0 });
   }
 
   mouse.style.top = item.clientY + "px";

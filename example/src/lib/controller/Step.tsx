@@ -3,13 +3,19 @@ import css from "template-css";
 
 export const Step = () => {
   return (
-    <div class="tat-step" hidden={() => !state.ui.get().showList}>
+    <div
+      class="tat-step"
+      hidden={async () => {
+        const ui = await state.ui.findOne();
+        return !ui.showList;
+      }}
+    >
       <span>Step: </span>
-      {() =>
-        state.ui.get().replaying
-          ? `${state.ui.get().step}/${state.nowCell.get().step}`
-          : state.nowCell.get().step
-      }
+      {async () => {
+        const ui = await state.ui.findOne();
+        const cell = await state.nowCell.findOne();
+        return ui.replaying ? `${ui.step}/${cell.step}` : cell.step;
+      }}
     </div>
   );
 };
