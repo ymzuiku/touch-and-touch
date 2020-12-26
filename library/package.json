@@ -35,8 +35,10 @@
   },
   "homepage": "git+https://github.com/ymzuiku/touch-and-touch.git",
   "dependencies": {
+    "aoife-pop": "^1.0.3",
     "dom-jsx": "^1.0.4",
     "mico-db": "^1.0.1",
-    "mockjs": "^1.1.0"
+    "mockjs": "^1.1.0",
+    "template-css": "^1.0.7"
   }
 }

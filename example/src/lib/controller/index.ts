@@ -3,9 +3,9 @@ import { PlayList } from "./PlayList";
 import { Ctrl } from "./Ctrl";
 import css from "template-css";
 import { DragSvg } from "./svg";
-import { init, InitOptions } from "lib/model/init";
+import { init, InitOptions } from "../model/init";
 
-export const TouchAndTouchController = (opt: InitOptions) => {
+export const TouchAndTouch = (opt: InitOptions) => {
   init(opt);
   return (
     <div tat-drag-ctrl tat-ignore class="tat">

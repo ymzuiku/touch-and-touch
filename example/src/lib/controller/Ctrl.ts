@@ -1,10 +1,14 @@
-import { recordClear } from "lib/model/recordClear";
-import { recordStart } from "lib/model/recordStart";
-import { showList } from "lib/model/showList";
-import { recordStop } from "lib/model/recordStop";
-import { state } from "lib/model/state";
 import Pop from "aoife-pop";
 import css from "template-css";
+import { recordClear } from "../model/recordClear";
+import { recordStart } from "../model/recordStart";
+import { showList } from "../model/showList";
+import { recordStop } from "../model/recordStop";
+import { state } from "../model/state";
+import { replayStart } from "../model/replayStart";
+import { recordCellAdd } from "../model/recordCellAdd";
+import { replayStop } from "../model/replayStop";
+import { Step } from "./Step";
 import {
   RecordStartSvg,
   RecordStopSvg,
@@ -14,18 +18,20 @@ import {
   PlaySvg,
   AddSvg,
 } from "./svg";
-import { replayStart } from "lib/model/replayStart";
-import { recordCellAdd } from "lib/model/recordCellAdd";
-import { replayStop } from "lib/model/replayStop";
-import { Step } from "./Step";
 
 function ThePop({ children }: any) {
-  return (
-    <Pop animation={void 0} placement="top" followCursor="horizontal">
-      {children[0]}
-      <div class="tat-fm">{children[1]}</div>
-    </Pop>
-  );
+  return Pop({
+    animation: void 0,
+    placement: "top",
+    followCursor: "horizontal",
+    children: [children[0], aoife("div", { class: "tat-fm" }, children[1])],
+  });
+  // return (
+  //   <Pop animation={void 0} placement="top" followCursor="horizontal">
+  //     {children[0]}
+  //     <div class="tat-fm">{children[1]}</div>
+  //   </Pop>
+  // );
 }
 
 export const Ctrl = () => {

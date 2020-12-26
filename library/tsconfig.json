@@ -21,8 +21,8 @@
     "declaration": true,
     "outDir": "./umd",
     "declarationDir": "./",
-    "jsx": "react"
+    "jsx": "preserve",
+    "jsxFactory": "aoife"
   },
   "exclude": ["node_modules", "umd"],
-  "include": ["lib-old"]
 }

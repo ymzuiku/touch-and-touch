@@ -34,8 +34,8 @@ fs.copySync(pwd("../example/src/lib"), pwd("lib"));
 
 const watchOptions = [
   {
-    external: ["mico-db", "dom-jsx"],
-    input: "./lib/index.ts",
+    external: ["mico-db", "aoife", "template-css", "template-fn"],
+    input: "./lib/index.tsx",
     output: {
       file: "./umd/index.js",
       format: "umd",
@@ -43,11 +43,12 @@ const watchOptions = [
       sourcemap: true,
       globals: {
         "mico-db": "micoDb",
-        "dom-jsx": "dom",
+        aoife: "aoife",
       },
     },
     plugins: [
       rollupTypescript({
+        extensions: ["js", "ts", "tsx"],
         useTsconfigDeclarationDir: false,
       }),
       uglify({

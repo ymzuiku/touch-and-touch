@@ -1,4 +1,4 @@
-import { state } from "lib/model/state";
+import { state } from "../model/state";
 import css from "template-css";
 
 export const Step = () => {

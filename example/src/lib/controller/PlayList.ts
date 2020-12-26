@@ -1,12 +1,12 @@
-import { state } from "lib/model/state";
+import { state } from "../model/state";
 import css from "template-css";
 import { DeleteSvg, EditorSvg } from "./svg";
-import { changeInput } from "lib/model/changeInput";
-import { rename } from "lib/model/rename";
-import { remove } from "lib/model/remove";
-import { changeSelectItem } from "lib/model/changeSelectItem";
-import { changeFilter } from "lib/model/changeFilter";
-import { getTitle } from "lib/model/getTitle";
+import { changeInput } from "../model/changeInput";
+import { rename } from "../model/rename";
+import { remove } from "../model/remove";
+import { changeSelectItem } from "../model/changeSelectItem";
+import { changeFilter } from "../model/changeFilter";
+import { getTitle } from "../model/getTitle";
 
 export const PlayList = () => {
   return (
