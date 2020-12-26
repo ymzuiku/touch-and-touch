@@ -16,7 +16,6 @@ export const eleSetListen = (ele: HTMLLIElement) => {
     if ((ele as any)["tat-" + e]) {
       return;
     }
-    (ele as any)["tat-" + e] = true;
     ele.addEventListener(e, function (event: any) {
       recordItemAdd({
         key: ele.getAttribute("tat-key")!,

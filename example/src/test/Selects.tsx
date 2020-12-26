@@ -1,6 +1,6 @@
 export const Selects = () => {
   return (
-    <select>
+    <select id="aa">
       <option>dog</option>
       <option>fish</option>
       <option>cat</option>

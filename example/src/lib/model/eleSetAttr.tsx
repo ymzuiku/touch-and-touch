@@ -6,7 +6,7 @@ const listenTags = [
   "button",
   "textarea",
   "command",
-  "option",
+  "select",
   "form",
   "video",
 ];

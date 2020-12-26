@@ -1,12 +1,12 @@
 import { Drag } from "./Drag";
 import { PlayList } from "./PlayList";
 import { Ctrl } from "./Ctrl";
-import { init } from "lib/model/init";
 import css from "template-css";
 import { DragSvg } from "./svg";
+import { init, InitOptions } from "lib/model/init";
 
-export const TouchAndTouchController = () => {
-  init();
+export const TouchAndTouchController = (opt: InitOptions) => {
+  init(opt);
   return (
     <div tat-drag-ctrl tat-ignore class="tat">
       <div>

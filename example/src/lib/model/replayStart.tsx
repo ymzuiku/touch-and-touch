@@ -156,9 +156,10 @@ const startReplay = async (items: RecordItem[]) => {
         if ((await state.ui.findOne()).lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
-          await sleep(50);
+          await sleep(100);
         }
         emitInput(el as any, item, item.type);
+        await sleep(50);
       }
     }
   }
