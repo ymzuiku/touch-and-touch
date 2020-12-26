@@ -3,7 +3,6 @@ import css from 'template-css';
 import dayjs from 'dayjs';
 import { createMicoDb } from 'mico-db';
 import aoife$1 from 'aoife';
-import Message from 'vanilla-message';
 import aoifeSvg from 'aoife-svg';
 
 /*! *****************************************************************************
@@ -501,6 +500,7 @@ var mouse = aoife("div", {
     }); },
     class: "tat-mouse",
     style: {
+        fontSize: "16px",
         transition: "all 0.3s cubic-bezier(0.23, 1, 0.32, 1)",
         position: "fixed",
         pointerEvents: "none",
@@ -577,15 +577,17 @@ var replayFail = function (msg) { return __awaiter(void 0, void 0, void 0, funct
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                Message(msg, { style: { background: "#f66" } });
                 if (!initOpt.onFail) return [3 /*break*/, 2];
                 return [4 /*yield*/, state.nowCell.findOne()];
             case 1:
                 cell = _a.sent();
                 initOpt.onFail(cell, msg);
-                _a.label = 2;
-            case 2: return [4 /*yield*/, replayStop()];
-            case 3:
+                return [3 /*break*/, 3];
+            case 2:
+                alert(msg);
+                _a.label = 3;
+            case 3: return [4 /*yield*/, replayStop()];
+            case 4:
                 _a.sent();
                 return [2 /*return*/];
         }
@@ -701,7 +703,10 @@ function waitGetElement(key) {
                                     return [4 /*yield*/, state.ui.findOne()];
                                 case 1:
                                     ui = _a.sent();
-                                    if (!e) {
+                                    if (!e ||
+                                        e.hidden ||
+                                        e.style.display === "none" ||
+                                        e.style.visibility === "hidden") {
                                         if (Date.now() - t < ui.waitTimeout) {
                                             requestAnimationFrame(getEl);
                                         }
@@ -778,7 +783,13 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 _a.sent();
                 aoife.next(".tat-step");
                 if (item.href) {
-                    window.location.href = item.href;
+                    if (item.href.indexOf("#/") > -1 && window.location.href === item.href) {
+                        window.location.href = item.href;
+                        window.location.reload();
+                    }
+                    else {
+                        window.location.href = item.href;
+                    }
                 }
                 if (!(item.type === "mclick")) return [3 /*break*/, 6];
                 return [4 /*yield*/, sleep(120)];
@@ -1351,7 +1362,7 @@ var TouchAndTouch = function (opt) {
         children: [DragSvg({})],
     }), Ctrl()), PlayList()));
 };
-css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n  }\n  .tat {\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.76);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    width: 160px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n  }\n  .tat {\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.76);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    width: 160px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
+css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    width: 160px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    width: 160px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
 var templateObject_1$3;
 
 export default TouchAndTouch;

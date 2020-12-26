@@ -34,6 +34,7 @@ const mouse = aoife(
     },
     class: "tat-mouse",
     style: {
+      fontSize: "16px",
       transition: `all 0.3s cubic-bezier(0.23, 1, 0.32, 1)`,
       position: "fixed",
       pointerEvents: "none",

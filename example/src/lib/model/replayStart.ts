@@ -84,9 +84,14 @@ function waitGetElement(key: string): Promise<HTMLElement> {
   const t = Date.now();
   return new Promise(async (res, rej) => {
     const getEl = async () => {
-      const e = document.querySelector(`[tat-key="${key}"]`);
+      const e = document.querySelector(`[tat-key="${key}"]`) as HTMLElement;
       const ui = await state.ui.findOne();
-      if (!e) {
+      if (
+        !e ||
+        e.hidden ||
+        e.style.display === "none" ||
+        e.style.visibility === "hidden"
+      ) {
         if (Date.now() - t < ui.waitTimeout) {
           requestAnimationFrame(getEl);
         } else {
@@ -136,7 +141,12 @@ const startReplay = async (items: RecordItem[]) => {
     await state.ui.updateOne({}, { step: i });
     aoife.next(".tat-step");
     if (item.href) {
-      window.location.href = item.href;
+      if (item.href.indexOf("#/") > -1 && window.location.href === item.href) {
+        window.location.href = item.href;
+        window.location.reload();
+      } else {
+        window.location.href = item.href;
+      }
     }
 
     if (item.type === "mclick") {

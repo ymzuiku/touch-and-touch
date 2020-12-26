@@ -32,6 +32,7 @@ export function recordDom() {
       }
     }
   };
+
   const observer = new MutationObserver(onMutations);
   observer.observe(document.body, {
     attributes: false,

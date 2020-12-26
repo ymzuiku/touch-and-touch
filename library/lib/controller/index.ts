@@ -49,10 +49,12 @@ css`
   .tat-fm {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC",
       "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: 16px;
   }
   .tat {
+    font-size: 16px;
     backdrop-filter: blur(9px);
-    background: rgba(255, 255, 255, 0.76);
+    background: rgba(255, 255, 255, 0.85);
     color: #00;
     z-index: 9000;
     padding: 6px;

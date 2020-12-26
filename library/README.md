@@ -29,8 +29,9 @@
 - textarea: 当 oninput 事件触发了，会记录 value
 - form: 当 onchange 事件触发了，会记录一次事件触发
 - a: 当 onclick 事件触发了，会记录 value
-- button: 当 onclick 事件触发了，会记录一次点击
 - select: 当 onclick 事件触发了，会记录一次点击
+- button: 当 onclick 事件触发了，会记录一次点击
+- div: 当 onclick 事件触发了，会记录一次点击
 
 ## 播放录制
 
@@ -38,7 +39,8 @@
 
 - input: 根据之前记录的 type，使用之前记录的 value 触发 oninput / onchange
 - textarea: 根据之前记录的 type，使用之前记录的 value 触发 oninput / onchange
+- form: 播放之前记录的每次 onchange 事件
 - a: 根据之前记录的 type，使用之前记录的 value 触发 onclick
 - button: 根据之前记录的 type，使用之前记录的 value 触发 onclick
 - select: 根据之前记录的 type，使用之前记录的 value 触发 onclick
-- form: 播放之前记录的每次 onchange 事件
+- div: 当 onclick 事件触发了，会记录一次点击
