@@ -25,4 +25,5 @@
     "jsxFactory": "aoife"
   },
   "exclude": ["node_modules", "umd"],
+  "include": ["./aoife-app.d.ts"]
 }

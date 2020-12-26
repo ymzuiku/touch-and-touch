@@ -7,9 +7,9 @@ function App() {
     <div class="app">
       <TouchAndTouch
         speed={3}
-        onChangeSelected={(cell) => {
-          console.log(cell.title || cell.updateAt, cell.items);
-        }}
+        // onChangeSelected={(cell) => {
+        //   console.log(cell.title || cell.updateAt, cell.items);
+        // }}
       />
       {/* <h1>TAT Client</h1>
       <Selects />

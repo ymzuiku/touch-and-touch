@@ -34,26 +34,31 @@ fs.copySync(pwd("../example/src/lib"), pwd("lib"));
 
 const watchOptions = [
   {
-    external: ["mico-db", "aoife", "template-css", "template-fn"],
-    input: "./lib/index.tsx",
+    external: [
+      "mico-db",
+      "dayjs",
+      "aoife-svg",
+      "aoife-pop",
+      "aoife",
+      "template-css",
+      "template-fn",
+      "vanilla-message",
+    ],
+    input: "./lib/index.ts",
     output: {
-      file: "./umd/index.js",
-      format: "umd",
+      file: "./es/index.js",
+      format: "es",
       name: "touchAndTouch",
       sourcemap: true,
-      globals: {
-        "mico-db": "micoDb",
-        aoife: "aoife",
-      },
     },
     plugins: [
       rollupTypescript({
         extensions: ["js", "ts", "tsx"],
         useTsconfigDeclarationDir: false,
       }),
-      uglify({
-        sourcemap: true,
-      }),
+      // uglify({
+      //   sourcemap: true,
+      // }),
     ],
   },
 ];

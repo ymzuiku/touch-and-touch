@@ -1,0 +1,10 @@
+export declare const DragSvg: (props: IProps) => HTMLElement;
+export declare const EditorSvg: (props: IProps) => HTMLElement;
+export declare const RecordStartSvg: (props: IProps) => HTMLElement;
+export declare const RecordStopSvg: (props: IProps) => HTMLElement;
+export declare const ReplayStopSvg: (props: IProps) => HTMLElement;
+export declare const RecordCancelSvg: (props: IProps) => HTMLElement;
+export declare const CtrlExpendSvg: (props: IProps) => HTMLElement;
+export declare const DeleteSvg: (props: IProps) => HTMLElement;
+export declare const PlaySvg: (props: IProps) => HTMLElement;
+export declare const CopySvg: (props: IProps) => HTMLElement;
