@@ -1,7 +1,4 @@
 import "aoife";
-import { Buttons } from "test/Buttons";
-import { Selects } from "test/Selects";
-import { Inputs } from "test/Inputs";
 import TouchAndTouchController from "./lib";
 import { html } from "./bootstrap";
 
@@ -9,6 +6,7 @@ function App() {
   return (
     <div class="app">
       <TouchAndTouchController
+        speed={3}
         onChangeSelected={(cell) => {
           console.log(cell.title || cell.updateAt, cell.items);
         }}

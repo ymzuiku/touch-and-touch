@@ -35,21 +35,18 @@ export const replayStart = async () => {
 };
 
 function scrollIntoView(el: HTMLElement) {
-  el.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+  el.scrollIntoView({ block: "center", inline: "center" });
 }
 
 function emitClick(el: HTMLElement) {
   if (el.closest("[tat-ignore]")) {
     return;
   }
-
   const event = new MouseEvent("click", {
     view: window,
     bubbles: true,
     cancelable: true,
   });
-
-  scrollIntoView(el);
 
   el.dispatchEvent(event);
 }
@@ -75,7 +72,6 @@ async function emitInput(
     cancelable: true,
   });
 
-  scrollIntoView(el);
   el.value = (item && item.value) || "";
   el.dispatchEvent(inputEvent);
 }
@@ -88,9 +84,7 @@ function waitGetElement(key: string): Promise<HTMLElement> {
       const ui = await state.ui.findOne();
       if (!e) {
         if (Date.now() - t < ui.waitTimeout) {
-          setTimeout(() => {
-            getEl();
-          }, 50);
+          requestAnimationFrame(getEl);
         } else {
           rej("[Touch And Touch] Find next element timeout");
         }
@@ -147,16 +141,18 @@ const startReplay = async (items: RecordItem[]) => {
     } else if (item.key) {
       await sleep(50);
       const el = await waitGetElement(item.key);
+      scrollIntoView(el);
+      await sleep(10);
       if (clicks.indexOf(item.type) > -1) {
         getEleCenter(el, item);
         mouseClick(item);
-        await sleep(100);
+        await sleep(50);
         emitClick(el as any);
       } else {
         if ((await state.ui.findOne()).lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
-          await sleep(100);
+          await sleep(10);
         }
         emitInput(el as any, item, item.type);
         await sleep(50);

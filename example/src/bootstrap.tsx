@@ -141,6 +141,7 @@ export const html = `
 
           <hr class="my-4">
 
+          <input type="checkbox" class="form-check-input" id="same-address2">
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="same-address">
             <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
