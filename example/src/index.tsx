@@ -9,7 +9,7 @@ function App() {
   };
   return (
     <div tat-id="form" class="app">
-      <TouchAndTouch speed={3} />
+      <TouchAndTouch speed={3} onChangeSelected={(cell) => console.log(cell)} />
       <h1>TAT Client</h1>
       {/* <div innerHTML={html}></div> */}
       <form

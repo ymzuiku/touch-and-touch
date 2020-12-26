@@ -1,15 +1,6 @@
 import { eleSetListen } from "./eleSetListen";
 
-const listenTags = [
-  "input",
-  "a",
-  "button",
-  "textarea",
-  "command",
-  "select",
-  "form",
-  "video",
-];
+const listenTags = ["input", "a", "button", "textarea", "select", "form"];
 
 function getAttrAndCloseAttr(item: HTMLElement, key: string) {
   let attr = item.getAttribute(key);

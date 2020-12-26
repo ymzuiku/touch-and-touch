@@ -59,9 +59,13 @@ async function emitInput(
   if (el.closest("[tat-ignore]")) {
     return;
   }
-  await state.ui.updateOne({}, { lastFocus: el });
   const nodeName = el.nodeName.toLocaleLowerCase();
-  if (nodeName === "input" || nodeName === "textarea") {
+  if (
+    nodeName === "input" ||
+    nodeName === "textarea" ||
+    nodeName === "button"
+  ) {
+    await state.ui.updateOne({}, { lastFocus: el });
     el.focus();
   }
 
@@ -139,23 +143,26 @@ const startReplay = async (items: RecordItem[]) => {
       await sleep(120);
       mouseClick(item);
     } else if (item.key) {
-      await sleep(50);
       const el = await waitGetElement(item.key);
-      scrollIntoView(el);
-      await sleep(10);
+      if (el.nodeName !== "FORM") {
+        scrollIntoView(el);
+        await sleep(16);
+      }
       if (clicks.indexOf(item.type) > -1) {
         getEleCenter(el, item);
         mouseClick(item);
-        await sleep(50);
+        await sleep(80);
         emitClick(el as any);
       } else {
         if ((await state.ui.findOne()).lastFocus !== el) {
-          getEleCenter(el, item);
-          mouseMove(item);
-          await sleep(10);
+          if (el.nodeName !== "FORM") {
+            getEleCenter(el, item);
+            mouseMove(item);
+            await sleep(16);
+          }
         }
         emitInput(el as any, item, item.type);
-        await sleep(50);
+        await sleep(16);
       }
     }
   }

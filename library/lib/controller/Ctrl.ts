@@ -36,14 +36,16 @@ export const Ctrl = () => {
       return aoife(
         "span",
         { class: "tat-row" },
-        RecordStopSvg({ class: "tat-btn", onclick: recordStop })
+        RecordStopSvg({ class: "tat-btn", onclick: recordStop }),
+        Step()
       );
     }
     if (ui.replaying) {
       return aoife(
         "span",
         { class: "tat-row" },
-        ReplayStopSvg({ class: "tat-btn", onclick: () => replayStop() })
+        ReplayStopSvg({ class: "tat-btn", onclick: () => replayStop() }),
+        Step()
       );
     }
     return aoife(

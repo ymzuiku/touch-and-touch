@@ -90,7 +90,6 @@ export const PlayList = () => {
             },
             async () => {
               const v = await state.recordList.index(i);
-              console.log("11", v);
               if (v) {
                 return `[${v.step}] ` + getTitle(v);
               }
