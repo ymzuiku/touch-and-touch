@@ -154,14 +154,16 @@ const startReplay = async (items: RecordItem[]) => {
       mouseClick(item);
     } else if (item.key) {
       const el = await waitGetElement(item.key);
-      if (el.nodeName !== "FORM") {
+      if (el.nodeName !== "FORM" && el.nodeName !== "DIV") {
         scrollIntoView(el);
         await sleep(16);
       }
       if (clicks.indexOf(item.type) > -1) {
-        getEleCenter(el, item);
-        mouseClick(item);
-        await sleep(80);
+        if (el.nodeName !== "DIV") {
+          getEleCenter(el, item);
+          mouseClick(item);
+          await sleep(80);
+        }
         emitClick(el as any);
       } else {
         if ((await state.ui.findOne()).lastFocus !== el) {

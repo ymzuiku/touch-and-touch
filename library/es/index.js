@@ -372,7 +372,15 @@ var eleSetListen = function (ele) {
     });
 };
 
-var listenTags = ["input", "a", "button", "textarea", "select", "form"];
+var listenTags = [
+    "input",
+    "a",
+    "button",
+    "textarea",
+    "select",
+    "form",
+    "div",
+];
 function getAttrAndCloseAttr(item, key) {
     var attr = item.getAttribute(key);
     if (!attr) {
@@ -393,6 +401,9 @@ function setAttrId(ele) {
     if (ele.getAttribute("tat-key")) {
         return;
     }
+    if (ele.nodeName === "DIV" && !ele.getAttribute("tat-btn")) {
+        return;
+    }
     var pageKey = loadPageKey();
     var selfTatid = ele.getAttribute("tat-id");
     if (selfTatid) {
@@ -405,6 +416,7 @@ function setAttrId(ele) {
         return eleSetListen(ele);
     }
     var tat = getAttrAndCloseAttr(ele, "tat-id");
+    var btn = getAttrAndCloseAttr(ele, "tat-btn");
     var id = getAttrAndCloseAttr(ele, "id");
     var key = getAttrAndCloseAttr(ele, "key");
     var placeholder = ele.getAttribute("placeholder");
@@ -412,13 +424,14 @@ function setAttrId(ele) {
     var type = ele.getAttribute("type");
     ele.setAttribute("tat-key", [
         pageKey,
-        "ele:" + ele.nodeName.toLowerCase(),
-        "tat-id:" + tat,
-        "id:" + id,
-        "name:" + name,
-        "type:" + type,
-        "key:" + key,
-        "placeholder:" + placeholder,
+        ele.nodeName.toLowerCase(),
+        tat && "tat-id:" + tat,
+        btn && "tat-btn:" + btn,
+        id && "id:" + id,
+        name && "name:" + name,
+        type && "type:" + type,
+        key && "key:" + key,
+        placeholder && "ph:" + placeholder,
     ].join(", "));
     eleSetListen(ele);
 }
@@ -766,17 +779,17 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 _i = 0, items_1 = items;
                 _a.label = 2;
             case 2:
-                if (!(_i < items_1.length)) return [3 /*break*/, 17];
+                if (!(_i < items_1.length)) return [3 /*break*/, 18];
                 item = items_1[_i];
                 return [4 /*yield*/, state.ui.findOne()];
             case 3:
                 ui = _a.sent();
                 i++;
                 if (!ui.replaying) {
-                    return [3 /*break*/, 17];
+                    return [3 /*break*/, 18];
                 }
                 if (i < ui.step) {
-                    return [3 /*break*/, 16];
+                    return [3 /*break*/, 17];
                 }
                 return [4 /*yield*/, state.ui.updateOne({}, { step: i })];
             case 4:
@@ -796,47 +809,50 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
             case 5:
                 _a.sent();
                 mouseClick(item);
-                return [3 /*break*/, 16];
+                return [3 /*break*/, 17];
             case 6:
-                if (!item.key) return [3 /*break*/, 16];
+                if (!item.key) return [3 /*break*/, 17];
                 return [4 /*yield*/, waitGetElement(item.key)];
             case 7:
                 el = _a.sent();
-                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 9];
+                if (!(el.nodeName !== "FORM" && el.nodeName !== "DIV")) return [3 /*break*/, 9];
                 scrollIntoView(el);
                 return [4 /*yield*/, sleep(16)];
             case 8:
                 _a.sent();
                 _a.label = 9;
             case 9:
-                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 11];
+                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 12];
+                if (!(el.nodeName !== "DIV")) return [3 /*break*/, 11];
                 getEleCenter(el, item);
                 mouseClick(item);
                 return [4 /*yield*/, sleep(80)];
             case 10:
                 _a.sent();
+                _a.label = 11;
+            case 11:
                 emitClick(el);
-                return [3 /*break*/, 16];
-            case 11: return [4 /*yield*/, state.ui.findOne()];
-            case 12:
-                if (!((_a.sent()).lastFocus !== el)) return [3 /*break*/, 14];
-                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 14];
+                return [3 /*break*/, 17];
+            case 12: return [4 /*yield*/, state.ui.findOne()];
+            case 13:
+                if (!((_a.sent()).lastFocus !== el)) return [3 /*break*/, 15];
+                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 15];
                 getEleCenter(el, item);
                 mouseMove(item);
                 return [4 /*yield*/, sleep(16)];
-            case 13:
-                _a.sent();
-                _a.label = 14;
             case 14:
+                _a.sent();
+                _a.label = 15;
+            case 15:
                 emitInput(el, item, item.type);
                 return [4 /*yield*/, sleep(16)];
-            case 15:
-                _a.sent();
-                _a.label = 16;
             case 16:
+                _a.sent();
+                _a.label = 17;
+            case 17:
                 _i++;
                 return [3 /*break*/, 2];
-            case 17: return [2 /*return*/];
+            case 18: return [2 /*return*/];
         }
     });
 }); };

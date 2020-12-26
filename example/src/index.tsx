@@ -24,7 +24,7 @@ function App() {
       >
         <input placeholder="name" />
         <input placeholder="password" type="password" />
-        <div tat-id="dog" onclick={() => alert("10")}>
+        <div tat-btn="dog" onclick={() => alert("10")}>
           alert
         </div>
         <button name="submit">Submit</button>

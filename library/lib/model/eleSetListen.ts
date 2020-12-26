@@ -16,7 +16,7 @@ export const eleSetListen = (ele: HTMLLIElement) => {
     if ((ele as any)["tat-" + e]) {
       return;
     }
-    ele.addEventListener(e, function (event: any) {
+    ele.addEventListener(e, function (event: Event) {
       if (clicks.indexOf(e) > -1) {
         setTimeout(() => {
           recordItemAdd({
