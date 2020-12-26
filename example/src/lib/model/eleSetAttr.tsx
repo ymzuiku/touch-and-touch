@@ -52,9 +52,16 @@ function setAttrId(ele: HTMLInputElement) {
 
   ele.setAttribute(
     "tat-key",
-    aoife.stringToHex(
-      [pageKey, ele.nodeName, placeholder, name, type, id, key, tat].join("_")
-    )
+    [
+      pageKey,
+      "ele:" + ele.nodeName.toLowerCase(),
+      "tat-id:" + tat,
+      "id:" + id,
+      "name:" + name,
+      "type:" + type,
+      "key:" + key,
+      "placeholder:" + placeholder,
+    ].join(", ")
   );
   eleSetListen(ele as any);
 }

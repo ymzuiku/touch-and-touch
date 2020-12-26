@@ -6,8 +6,10 @@ export const recordClear = async () => {
   if (lastCell.step === 0) {
     return;
   }
-  if (!confirm(`Is clear [${lastCell.step}]${getTitle(lastCell)} steps?`)) {
-    return;
+  if (!state.onAlt) {
+    if (!confirm(`Is clear [${lastCell.step}]${getTitle(lastCell)} steps?`)) {
+      return;
+    }
   }
   state.ui.updateOne(
     {},

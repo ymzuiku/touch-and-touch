@@ -1,12 +1,16 @@
+import { initOpt } from "./init";
 import { state } from "./state";
 
 export const changeSelectItem = async (id: string) => {
-  const list = await state.recordList.findOne({ _id: id });
-  if (!list) {
+  const cell = await state.recordList.findOne({ _id: id });
+  if (!cell) {
     return;
   }
-  const items = list.items;
-  await state.nowCell.updateOne({}, list);
+  const items = cell.items;
+  await state.nowCell.updateOne({}, cell);
   await state.recordItems.set(items);
+  if (initOpt.onChangeSelected) {
+    initOpt.onChangeSelected(cell);
+  }
   aoife.next(".tat-plan");
 };

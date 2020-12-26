@@ -1,7 +1,13 @@
 import "aoife";
 import { Buttons } from "Buttons";
 import { Selects } from "Selects";
-import { TouchAndTouchController } from "./lib";
+import { TouchAndTouchController, init } from "./lib";
+
+init({
+  onChangeSelected: (cell) => {
+    console.log(cell.title || cell.updateAt, cell.items);
+  },
+});
 
 function App() {
   return (

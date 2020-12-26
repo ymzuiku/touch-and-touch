@@ -13,13 +13,25 @@ export interface InitOptions {
   onSuccess?: (cell: RecordCell) => any;
   onReplay?: (cell: RecordCell) => any;
   onChangeData?: (cells: RecordCell[]) => any;
+  onChangeSelected?: (cell: RecordCell) => any;
   autoPlayItem?: string;
 }
 
-export let initOpt: InitOptions;
+export const initOpt: InitOptions = {};
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Alt") {
+    state.onAlt = true;
+  }
+});
+window.addEventListener("keyup", (e) => {
+  if (e.key === "Alt") {
+    state.onAlt = false;
+  }
+});
 
 export const init = async (opt: InitOptions = {}) => {
-  initOpt = opt;
+  Object.assign(initOpt, opt);
   state.recordList.proxy.onChange = initOpt.onChangeData;
   let list = await state.recordList.find();
   // 若列表为空，初始化一个内容

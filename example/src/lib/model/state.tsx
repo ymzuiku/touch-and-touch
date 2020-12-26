@@ -32,6 +32,7 @@ interface TATProxy {
 export const proxy = {} as TATProxy;
 
 export const state = {
+  onAlt: false,
   ui: micoDb.collection("ui", {
     type: "sessionStorage",
     firstItem: {
@@ -48,21 +49,7 @@ export const state = {
       waitTimeout: 5000,
     },
   }),
-  // ui: micoDb.sessionItem("ui", {
-  //   speed: 1,
-  //   showMouse: 0,
-  //   lastFocus: null as any,
-  //   showList: 1,
-  //   showPlayList: 1,
-  //   showInputId: "",
-  //   recording: 0,
-  //   replaying: 0,
-  //   step: -1,
-  //   filter: "",
-  //   waitTimeout: 5000,
-  // }),
   nowCell: micoDb.collection<RecordCell>("nowCell"),
-  // nowCell: micoDb.sessionItem<RecordCell>("nowCell", {} as any),
   recordList: micoDb.collection<RecordCell>("record-list", {
     sort: { updateAt: -1 },
   }),
