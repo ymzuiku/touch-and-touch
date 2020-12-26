@@ -7,6 +7,8 @@ import { replayStart } from "./replayStart";
 import { RecordCell, state } from "./state";
 
 export interface InitOptions {
+  // Multiple
+  multiplePage?: boolean;
   speed?: number;
   waitTimeout?: number;
   onFail?: (cell: RecordCell, error: string) => any;
@@ -31,6 +33,9 @@ window.addEventListener("keyup", (e) => {
 });
 
 export const init = async (opt: InitOptions = {}) => {
+  if (opt.multiplePage === void 0) {
+    opt.multiplePage = true;
+  }
   Object.assign(initOpt, opt);
   state.recordList.proxy.onChange = initOpt.onChangeData;
   let list = await state.recordList.find();

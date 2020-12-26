@@ -120,6 +120,12 @@ function sleep(t: number) {
 
 const startReplay = async (items: RecordItem[]) => {
   let i = 0;
+  await state.ui.updateOne(
+    {},
+    {
+      showMouse: 1,
+    }
+  );
   for (const item of items) {
     const ui = await state.ui.findOne();
     i++;
@@ -134,12 +140,6 @@ const startReplay = async (items: RecordItem[]) => {
     if (item.href) {
       window.location.href = item.href;
     }
-    await state.ui.updateOne(
-      {},
-      {
-        showMouse: 1,
-      }
-    );
 
     if (item.type === "mclick") {
       await sleep(120);
