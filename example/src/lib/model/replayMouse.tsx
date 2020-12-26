@@ -64,7 +64,12 @@ function mouseMove(item: RecordItem) {
 
 async function mouseClick(item: RecordItem) {
   const ui = await state.ui.findOne();
-  if (ui.lastFocus && document.contains(ui.lastFocus) && ui.lastFocus.focus) {
+  if (
+    ui.lastFocus &&
+    ui.lastFocus.nodeName &&
+    document.contains(ui.lastFocus) &&
+    ui.lastFocus.focus
+  ) {
     ui.lastFocus.blur();
     await state.ui.updateOne({}, { lastFocus: void 0 });
   }

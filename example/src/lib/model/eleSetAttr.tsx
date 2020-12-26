@@ -33,16 +33,18 @@ function setAttrId(ele: HTMLInputElement) {
     return;
   }
   const pageKey = loadPageKey();
-  const selfTid = ele.getAttribute("tat-id");
-  if (selfTid) {
-    ele.setAttribute("tat-key", pageKey + selfTid);
-    return;
+  const selfTatid = ele.getAttribute("tat-id");
+  if (selfTatid) {
+    ele.setAttribute("tat-key", pageKey + selfTatid);
+    return eleSetListen(ele as any);
   }
+
   const selfId = ele.getAttribute("id");
   if (selfId) {
-    ele.setAttribute("tat-mark", pageKey + selfId);
-    return;
+    ele.setAttribute("tat-key", pageKey + selfId);
+    return eleSetListen(ele as any);
   }
+
   const tat = getAttrAndCloseAttr(ele, "tat-id");
   const id = getAttrAndCloseAttr(ele, "id");
   const key = getAttrAndCloseAttr(ele, "key");
