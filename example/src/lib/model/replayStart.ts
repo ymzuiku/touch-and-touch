@@ -139,23 +139,23 @@ const startReplay = async (items: RecordItem[]) => {
       await sleep(120);
       mouseClick(item);
     } else if (item.key) {
-      await sleep(50);
+      // await sleep(50);
       const el = await waitGetElement(item.key);
       scrollIntoView(el);
       await sleep(10);
       if (clicks.indexOf(item.type) > -1) {
         getEleCenter(el, item);
         mouseClick(item);
-        await sleep(50);
+        await sleep(80);
         emitClick(el as any);
       } else {
         if ((await state.ui.findOne()).lastFocus !== el) {
           getEleCenter(el, item);
           mouseMove(item);
-          await sleep(10);
+          await sleep(20);
         }
         emitInput(el as any, item, item.type);
-        await sleep(50);
+        await sleep(20);
       }
     }
   }

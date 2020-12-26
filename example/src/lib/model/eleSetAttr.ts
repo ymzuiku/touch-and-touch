@@ -5,10 +5,10 @@ const listenTags = [
   "a",
   "button",
   "textarea",
-  "command",
+  // "command",
   "select",
-  "form",
-  "video",
+  // "form",
+  // "video",
 ];
 
 function getAttrAndCloseAttr(item: HTMLElement, key: string) {

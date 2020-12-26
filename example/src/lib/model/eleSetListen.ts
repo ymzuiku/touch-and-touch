@@ -7,12 +7,12 @@ export const clicks = ["mousedown", "touchend"];
 export const attrs = [...inputs, ...clicks, ...submits];
 
 export const eleSetListen = (ele: HTMLLIElement) => {
-  let attrList = attrs;
-  if (ele.nodeName === "FORM") {
-    attrList = [...submits];
-  }
+  // let attrList = attrs;
+  // if (ele.nodeName === "FORM") {
+  //   attrList = [...submits];
+  // }
 
-  attrList.forEach((e: string) => {
+  attrs.forEach((e: string) => {
     if ((ele as any)["tat-" + e]) {
       return;
     }

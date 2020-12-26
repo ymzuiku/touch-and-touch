@@ -2,7 +2,7 @@
 
 无负担的 UI 自动化测试工具
 
-# 元素唯一标识
+## 录制元素标志
 
 唯一标示的优先级别：
 
@@ -17,6 +17,26 @@
 1. 若遇到相同的唯一标识，touch-and-touch 会默认点击第一个;
 2. 若找不到上次记录的标识元素，会一直等待它出现.
 
-# 忽略录制
+### 忽略录制
 
 若某个元素有：`tat-ignore` 属性，它及它的子元素的交互都不会被录制，例如我们的录制面板就是 `tat-ignore`。
+
+## 录制事件
+
+以下标签，我们会监听相应的事件：
+
+- input: 当 oninput \ onchange 事件触发了，会记录 value
+- textarea: 当 oninput 事件触发了，会记录 value
+- a: 当 onclick 事件触发了，会记录 value
+- button: 当 onclick 事件触发了，会记录一次点击
+- select: 当 onclick 事件触发了，会记录一次点击
+
+## 播放录制
+
+根据录制的事件列表，会对不同的元素进行模拟动作
+
+- input: 根据之前记录的 type，使用之前记录的 value 触发 oninput / onchange
+- textarea: 根据之前记录的 type，使用之前记录的 value 触发 oninput / onchange
+- a: 根据之前记录的 type，使用之前记录的 value 触发 onclick
+- button: 根据之前记录的 type，使用之前记录的 value 触发 onclick
+- select: 根据之前记录的 type，使用之前记录的 value 触发 onclick
