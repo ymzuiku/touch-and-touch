@@ -31,7 +31,6 @@
 - a: 当 onclick 事件触发了，会记录 value
 - select: 当 onclick 事件触发了，会记录一次点击
 - button: 当 onclick 事件触发了，会记录一次点击
-- div: 当 onclick 事件触发了，会记录一次点击
 
 ## 播放录制
 
@@ -43,4 +42,3 @@
 - a: 根据之前记录的 type，使用之前记录的 value 触发 onclick
 - button: 根据之前记录的 type，使用之前记录的 value 触发 onclick
 - select: 根据之前记录的 type，使用之前记录的 value 触发 onclick
-- div: 当 onclick 事件触发了，会记录一次点击
