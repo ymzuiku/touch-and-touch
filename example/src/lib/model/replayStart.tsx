@@ -13,7 +13,6 @@ export const replayStart = async () => {
     {
       recording: 0,
       replaying: 1,
-      showMouse: 1,
       showPlayList: 0,
     }
   );
@@ -135,6 +134,12 @@ const startReplay = async (items: RecordItem[]) => {
     if (item.href) {
       window.location.href = item.href;
     }
+    await state.ui.updateOne(
+      {},
+      {
+        showMouse: 1,
+      }
+    );
 
     if (item.type === "mclick") {
       await sleep(120);
