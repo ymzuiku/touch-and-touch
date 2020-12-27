@@ -9,5 +9,5 @@ export const showList = async () => {
       showList: ui.showList ? 0 : 1,
     }
   );
-  aoife.next(".tat-plan");
+  aoife.next(".tat-plan, .tat-step");
 };

@@ -1,4 +1,5 @@
 import aoife from "aoife";
+import { getHref } from "./getHref";
 import { initOpt } from "./init";
 import { state } from "./state";
 
@@ -12,22 +13,20 @@ export const recordStart = async () => {
     }
   );
   aoife.next(".tat-plan");
-  if (initOpt.multiplePage) {
-    // 记录首次页面的url
-    const items = await state.recordItems.find();
-    let isHaveHref = false;
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].type === "href") {
-        isHaveHref = true;
-        break;
-      }
+  // 记录首次页面的url
+  const items = await state.recordItems.find();
+  let isHaveHref = false;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type === "href") {
+      isHaveHref = true;
+      break;
     }
-    if (!isHaveHref) {
-      state.recordItems.insertOne({
-        key: "",
-        type: "href",
-        href: window.location.href,
-      });
-    }
+  }
+  if (!isHaveHref) {
+    state.recordItems.insertOne({
+      key: "",
+      type: "href",
+      href: getHref(window.location.href),
+    });
   }
 };

@@ -2283,10 +2283,10 @@ aoife@^1.3.5:
   resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.3.5.tgz#efa2abca6e9e770e68793e5b5765e9a88671622d"
   integrity sha512-iPf9wVobgrUts/jh0ZV40Te1q1HLo2lChYh+crPVtlXwjtqswxA+6SLDhKnJwZUhnFLX/xwXHdXm3tgdrpaDyA==
 
-aoife@^1.4.7:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.7.tgz#1b609362d1cb5a9484ecaa89c7984ef99cbc728d"
-  integrity sha512-lhaXKUQh7cK+Vn7u0jcgDDRRQuCdJHNn5RuNg5oT0YXIF72h3J5gjgD1KEdfMKTxsZwVHHWCSKhHdOz86CF32A==
+aoife@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.8.tgz#f2a041a32736334c7ea3d045b362f2edff2053f1"
+  integrity sha512-yekIXW6aBcUPNq7Zc7zQqrbACi/n5oN6GRdKgZ947/C1ATYYq/hVbMef7yChSQSM5RbEF/sdPpHieMrprK9rVQ==
 
 aproba@^1.1.1:
   version "1.2.0"
@@ -6884,6 +6884,11 @@ loader-utils@^1.1.0, loader-utils@^1.2.3, loader-utils@^1.4.0:
     big.js "^5.2.2"
     emojis-list "^3.0.0"
     json5 "^1.0.1"
+
+localfile@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/localfile/-/localfile-1.0.0.tgz#f895b33b69a96f8c6352d1fd60cd7b40ea818e7c"
+  integrity sha512-+z837eIEgnDHslpuggBckujO14sgBCJR+ff0jb1klYvo/AYTiEJSiRdiIcBBwjaC+isGn9qplJhKGBlo+Vx67g==
 
 locate-path@^2.0.0:
   version "2.0.0"

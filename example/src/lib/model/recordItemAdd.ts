@@ -7,6 +7,6 @@ export const recordItemAdd = async (event: RecordItem) => {
     await state.recordItems.insertOne(event);
     const step = await state.recordItems.count();
     state.nowCell.updateOne({}, { step });
-    aoife.next(".tat-step");
+    aoife.next(".tat-step, .tat-step");
   }
 };

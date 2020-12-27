@@ -2,7 +2,6 @@ import Pop from "aoife-pop";
 import css from "template-css";
 import { recordClear } from "../model/recordClear";
 import { recordStart } from "../model/recordStart";
-import { showList } from "../model/showList";
 import { recordStop } from "../model/recordStop";
 import { state } from "../model/state";
 import { replayStart } from "../model/replayStart";
@@ -14,10 +13,14 @@ import {
   RecordStopSvg,
   RecordCancelSvg,
   ReplayStopSvg,
-  CtrlExpendSvg,
   PlaySvg,
   CopySvg,
+  ReplayAllSvg,
+  DownloadSvg,
+  LoaclFileSvg,
 } from "./svg";
+import { exportRecord } from "../model/exportRecord";
+import { importRecord } from "../model/importRecord";
 
 function ThePop({ children }: any) {
   return Pop({
@@ -54,7 +57,13 @@ export const Ctrl = () => {
       ThePop({
         children: [
           PlaySvg({ class: "tat-btn", onclick: replayStart }),
-          "Play now record",
+          "Play selected record",
+        ],
+      }),
+      ThePop({
+        children: [
+          ReplayAllSvg({ class: "tat-btn", onclick: replayStart }),
+          "Play all filter record",
         ],
       }),
       ThePop({
@@ -66,7 +75,7 @@ export const Ctrl = () => {
       ThePop({
         children: [
           RecordCancelSvg({ class: "tat-btn", onclick: recordClear }),
-          "Clear marks",
+          "Clear Events",
         ],
       }),
       ThePop({
@@ -75,24 +84,39 @@ export const Ctrl = () => {
           "Copy record to new item",
         ],
       }),
-      aoife("div", { style: "flex:1" }),
-      aoife(
-        "div",
-        {
-          class: "tat-btn",
-          hidden: async () => {
-            const ui = await state.ui.findOne();
-            return ui.recording || ui.replaying;
-          },
-          onclick: showList,
-        },
-        CtrlExpendSvg({
-          class: async () => {
-            const ui = await state.ui.findOne();
-            return "tat-show-list-icon " + (ui.showList && "tat-show-list");
-          },
-        })
-      )
+      ThePop({
+        children: [
+          DownloadSvg({
+            class: "tat-btn",
+            onclick: exportRecord,
+          }),
+          "Copy record to new item",
+        ],
+      }),
+      ThePop({
+        children: [
+          LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
+          "Copy record to new item",
+        ],
+      })
+      // aoife("div", { style: "flex:1" })
+      // aoife(
+      //   "div",
+      //   {
+      //     class: "tat-btn",
+      //     hidden: async () => {
+      //       const ui = await state.ui.findOne();
+      //       return ui.recording || ui.replaying;
+      //     },
+      //     onclick: showList,
+      //   },
+      //   CtrlExpendSvg({
+      //     class: async () => {
+      //       const ui = await state.ui.findOne();
+      //       return "tat-show-list-icon " + (ui.showList && "tat-show-list");
+      //     },
+      //   })
+      // )
     );
   });
 };

@@ -20,10 +20,13 @@ export const PlayList = () => {
     },
     aoife("input", {
       class: "filter",
-      placeholder: "Filter",
+      placeholder: "FilterA, FilterB...",
+      defaultValue: async () => {
+        const ui = await state.ui.findOne();
+        return ui.filter.join(", ");
+      },
       oninput: (e) => changeFilter(e.target.value),
     }),
-    // <div class="cells">
     aoife("div", { class: "cells" }, async () => {
       const list = await state.recordList.find();
       return list.map((item, i) => {
@@ -41,7 +44,7 @@ export const PlayList = () => {
             hidden: async () => {
               const ui = await state.ui.findOne();
               const filter = ui.filter;
-              if (!filter) {
+              if (!filter || !filter.length) {
                 return false;
               }
               const item = await state.recordList.index(i);
@@ -49,7 +52,13 @@ export const PlayList = () => {
                 return true;
               }
               const title = getTitle(item);
-              return title.indexOf(ui.filter) < 0;
+              let isShow = false;
+              filter.forEach((f) => {
+                if (f && new RegExp(f).test(title)) {
+                  isShow = true;
+                }
+              });
+              return !isShow;
             },
             onclick: () => changeSelectItem(item._id),
           },
@@ -119,6 +128,7 @@ export const PlayList = () => {
 
 css`
   .tat-play-list {
+    font-size: 16px;
     width: 100%;
   }
   .tat-play-list .filter {
@@ -127,7 +137,7 @@ css`
     margin: 4px;
     margin-bottom: 8px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: calc(100% - 13px);
+    width: calc(100% - 8px);
     outline: none;
   }
   .tat-play-list .edit {
@@ -141,7 +151,7 @@ css`
     height: 20px;
     font-size: 12px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: 95px;
+    width: 120px;
     outline: none;
   }
   .tat-play-list .cells {
@@ -153,7 +163,10 @@ css`
     background: rgba(0, 0, 0, 0.1);
   }
   .tat-play-list .label {
-    width: 100px;
+    font-size: 12px;
+    // width: 100px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    flex: 1;
     ${css.wordBreak(1)}
   }
   .tat-play-list .cell-selected {

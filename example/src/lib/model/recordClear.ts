@@ -23,5 +23,5 @@ export const recordClear = async () => {
   state.nowCell.updateOne({}, { items: [], step: 0 });
   const cell = await state.nowCell.findOne();
   await state.recordList.updateOne({ _id: cell._id }, cell);
-  aoife.next(".tat-plan");
+  aoife.next(".tat-plan, .tat-step");
 };

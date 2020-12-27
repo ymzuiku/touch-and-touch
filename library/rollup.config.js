@@ -43,6 +43,7 @@ const watchOptions = [
       "template-css",
       "template-fn",
       "vanilla-message",
+      "localfile",
     ],
     input: "./lib/index.ts",
     output: {

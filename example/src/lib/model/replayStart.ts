@@ -4,6 +4,7 @@ import { clicks } from "./eleSetListen";
 import { replayStop } from "./replayStop";
 import { replayFail } from "./replayFail";
 import { initOpt } from "./init";
+import { getHref } from "./getHref";
 
 export const replayStart = async () => {
   const items = await state.recordItems.find();
@@ -16,7 +17,7 @@ export const replayStart = async () => {
       showPlayList: 0,
     }
   );
-  aoife.next(".tat-plan, .tat-mouse");
+  aoife.next(".tat-plan, .tat-step, .tat-mouse");
 
   if (initOpt.onReplay) {
     const cell = await state.nowCell.findOne();
@@ -95,7 +96,7 @@ function waitGetElement(key: string): Promise<HTMLElement> {
         if (Date.now() - t < ui.waitTimeout) {
           requestAnimationFrame(getEl);
         } else {
-          rej("[Touch And Touch] Find next element timeout");
+          rej("[TouchAndTouch Error] Find next element timeout");
         }
       } else {
         res(e as any);
@@ -141,7 +142,10 @@ const startReplay = async (items: RecordItem[]) => {
     await state.ui.updateOne({}, { step: i });
     aoife.next(".tat-step");
     if (item.href) {
-      if (item.href.indexOf("#/") > -1 && window.location.href === item.href) {
+      if (
+        item.href.indexOf("#/") > -1 &&
+        getHref(window.location.href) === item.href
+      ) {
         window.location.href = item.href;
         window.location.reload();
       } else {

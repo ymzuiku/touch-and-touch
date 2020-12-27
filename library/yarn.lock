@@ -1469,10 +1469,15 @@ aoife-svg@^1.0.6:
   dependencies:
     aoife "^1.3.5"
 
-aoife@^1.3.5, aoife@^1.4.7:
+aoife@^1.3.5:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.7.tgz#1b609362d1cb5a9484ecaa89c7984ef99cbc728d"
   integrity sha512-lhaXKUQh7cK+Vn7u0jcgDDRRQuCdJHNn5RuNg5oT0YXIF72h3J5gjgD1KEdfMKTxsZwVHHWCSKhHdOz86CF32A==
+
+aoife@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.8.tgz#f2a041a32736334c7ea3d045b362f2edff2053f1"
+  integrity sha512-yekIXW6aBcUPNq7Zc7zQqrbACi/n5oN6GRdKgZ947/C1ATYYq/hVbMef7yChSQSM5RbEF/sdPpHieMrprK9rVQ==
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -3658,6 +3663,11 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
+
+localfile@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/localfile/-/localfile-1.0.0.tgz#f895b33b69a96f8c6352d1fd60cd7b40ea818e7c"
+  integrity sha512-+z837eIEgnDHslpuggBckujO14sgBCJR+ff0jb1klYvo/AYTiEJSiRdiIcBBwjaC+isGn9qplJhKGBlo+Vx67g==
 
 locate-path@^3.0.0:
   version "3.0.0"
