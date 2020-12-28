@@ -17,6 +17,9 @@ function App() {
       <div role="tab" onclick={() => Message.info("role-tab")}>
         role
       </div>
+      <div role="tab" onclick={() => Message.info("role-tab2")}>
+        role2
+      </div>
       <input type="aa" />
       <form
         onchange={(e) => {

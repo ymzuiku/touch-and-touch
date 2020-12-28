@@ -638,6 +638,7 @@ function getAttrAndCloseAttr(item, key) {
 var loadPageKey = function () {
     return window.location.pathname + window.location.hash.split("?")[0];
 };
+var attrKeys = {};
 function setAttrId(ele) {
     if (ele.closest("[tat-ignore]")) {
         return;
@@ -675,7 +676,7 @@ function setAttrId(ele) {
     var name = ele.getAttribute("name");
     var role = ele.getAttribute("role");
     var type = ele.getAttribute("type");
-    ele.setAttribute("tat-key", [
+    var tatKey = [
         pageKey,
         tag,
         tat && "tat-id:" + tat,
@@ -688,7 +689,12 @@ function setAttrId(ele) {
         placeholder && "place:" + placeholder,
     ]
         .filter(Boolean)
-        .join(","));
+        .join(",");
+    if (attrKeys[tatKey]) {
+        tatKey += "_" + ele.textContent;
+    }
+    ele.setAttribute("tat-key", tatKey);
+    attrKeys[tatKey] = 1;
     eleSetListen(ele);
 }
 function eleSetAttr(parent) {

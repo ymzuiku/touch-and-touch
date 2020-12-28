@@ -26,6 +26,8 @@ function getAttrAndCloseAttr(item: HTMLElement, key: string) {
 export const loadPageKey = () =>
   window.location.pathname + window.location.hash.split("?")[0];
 
+const attrKeys = {} as any;
+
 function setAttrId(ele: HTMLInputElement) {
   if (ele.closest("[tat-ignore]")) {
     return;
@@ -68,24 +70,28 @@ function setAttrId(ele: HTMLInputElement) {
   const name = ele.getAttribute("name");
   const role = ele.getAttribute("role");
   const type = ele.getAttribute("type");
+  let tatKey = [
+    pageKey,
+    tag,
+    tat && "tat-id:" + tat,
+    btn && "tat-btn:" + btn,
+    id && "id:" + id,
+    name && "name:" + name,
+    type && "type:" + type,
+    key && "key:" + key,
+    role && "role:" + role,
+    placeholder && "place:" + placeholder,
+  ]
+    .filter(Boolean)
+    .join(",");
 
-  ele.setAttribute(
-    "tat-key",
-    [
-      pageKey,
-      tag,
-      tat && "tat-id:" + tat,
-      btn && "tat-btn:" + btn,
-      id && "id:" + id,
-      name && "name:" + name,
-      type && "type:" + type,
-      key && "key:" + key,
-      role && "role:" + role,
-      placeholder && "place:" + placeholder,
-    ]
-      .filter(Boolean)
-      .join(",")
-  );
+  if (attrKeys[tatKey]) {
+    tatKey += "_" + ele.textContent;
+  }
+
+  ele.setAttribute("tat-key", tatKey);
+  attrKeys[tatKey] = 1;
+
   eleSetListen(ele as any);
 }
 
