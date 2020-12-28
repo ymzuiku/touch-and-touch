@@ -42,6 +42,7 @@ const watchOptions = [
       "aoife",
       "template-css",
       "template-fn",
+      "mockjs",
       "vanilla-message",
       "localfile",
     ],

@@ -2,6 +2,20 @@
 
 无负担的 UI 自动化测试工具, 依赖基础标签的事件和 value 进行录制
 
+## 安装
+
+```sh
+npm i --save touch-and-touch
+```
+
+创建实例：
+
+```js
+import TouchAndTouch from "touch-and-touch";
+
+document.body.append(TouchAndTouch());
+```
+
 ## 录制事件
 
 以下标签，我们会监听相应的事件：
