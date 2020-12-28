@@ -368,5 +368,24 @@ export declare const state: {
         removeDuplicatie: (key: string) => Promise<RecordItem[]>;
         set: (dataList: Partial<RecordItem>[]) => Promise<void>;
     };
+    customEvent: {
+        proxy: import("mico-db/umd/collection").ProxyCollection<any>;
+        index: (index: number, sort?: {
+            [key: string]: number;
+        } | undefined) => Promise<any>;
+        count: () => Promise<number>;
+        find: (filter?: Partial<any> | ((val: any) => any) | undefined, sort?: {
+            [key: string]: number;
+        } | undefined) => Promise<any[]>;
+        findOne: (filter?: Partial<any> | ((val: any) => any) | undefined) => Promise<any>;
+        deleteMany: (filter?: Partial<any> | undefined) => Promise<any[]>;
+        deleteOne: (filter?: Partial<any> | undefined) => Promise<any>;
+        updateOne: (filter: Partial<any>, data: Partial<any>) => Promise<any>;
+        updateMany: (filter: Partial<any>, data: Partial<any>) => Promise<any[]>;
+        insertOne: (data: Partial<any>) => Promise<any[]>;
+        insertMany: (dataList: Partial<any>[]) => Promise<any[]>;
+        removeDuplicatie: (key: string) => Promise<any[]>;
+        set: (dataList: Partial<any>[]) => Promise<void>;
+    };
 };
 export {};

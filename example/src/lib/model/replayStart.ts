@@ -91,7 +91,7 @@ async function emitInput(
 }
 
 function done(e: any) {
-  Message.info(`[TouchAndTouch] Listened: ${e.detail}`, { outTime: 1500 });
+  Message.info(`[TouchAndTouch] Listened: ${e.detail}`, { outTime: 1500, position:'bottom' });
   state.customEvent.updateOne({}, { [e.detail]: 1 });
 }
 window.addEventListener("tat", done);

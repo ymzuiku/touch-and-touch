@@ -19,7 +19,6 @@ export const eleSetListen = (ele: HTMLInputElement) => {
       return;
     }
     ele.addEventListener(e, async function (event: Event) {
-      console.log("ignore", (ele as any)._tatIgnoreOnce, getEventVal(event));
       if ((ele as any)._tatIgnoreOnce === getEventVal(event)) {
         return;
       }
@@ -34,7 +33,6 @@ export const eleSetListen = (ele: HTMLInputElement) => {
       } else {
         let value = getEventVal(event) as string;
         let mock = "";
-        console.log("input-", value);
         const reg = /!!/;
         if (reg.test(value)) {
           mock = value.replace(reg, "");

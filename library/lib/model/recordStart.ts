@@ -1,4 +1,5 @@
 import aoife from "aoife";
+import { recordListenCustemEvent } from "./customEvent";
 import { getHref } from "./getHref";
 import { state } from "./state";
 
@@ -20,6 +21,7 @@ export const recordStart = async () => {
       break;
     }
   }
+  recordListenCustemEvent();
   if (!isHaveHref) {
     state.recordItems.insertOne({
       key: "",

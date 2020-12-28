@@ -215,6 +215,9 @@ var state = {
         sort: { updateAt: -1 },
     }),
     recordItems: micoDb.collection("record-item"),
+    customEvent: micoDb.collection("custom-event", {
+        type: "sessionStorage",
+    }),
 };
 // 初始化数据
 // state.recordItems.get();
@@ -260,6 +263,23 @@ var recordClear = function () { return __awaiter(void 0, void 0, void 0, functio
     });
 }); };
 
+function customEvent(e) {
+    if (e.detail) {
+        Message.info("[TouchAndTouch] Listened: " + e.detail, { outTime: 1500, position: 'bottom' });
+        state.recordItems.insertOne({
+            key: "",
+            type: "customEvent",
+            value: e.detail,
+        });
+    }
+}
+var recordListenCustemEvent = function () {
+    window.addEventListener("tat", customEvent);
+};
+var recordRemoveCustemEvent = function () {
+    window.removeEventListener("tat", customEvent);
+};
+
 function getHref(href) {
     var list = href.split(window.location.host);
     return list[1] || "/";
@@ -286,6 +306,7 @@ var recordStart = function () { return __awaiter(void 0, void 0, void 0, functio
                         break;
                     }
                 }
+                recordListenCustemEvent();
                 if (!isHaveHref) {
                     state.recordItems.insertOne({
                         key: "",
@@ -302,9 +323,11 @@ var recordStop = function () { return __awaiter(void 0, void 0, void 0, function
     var cell, items;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.updateOne({}, {
-                    recording: 0,
-                })];
+            case 0:
+                recordRemoveCustemEvent();
+                return [4 /*yield*/, state.ui.updateOne({}, {
+                        recording: 0,
+                    })];
             case 1:
                 _a.sent();
                 return [4 /*yield*/, state.nowCell.findOne()];
@@ -481,7 +504,6 @@ var eleSetListen = function (ele) {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            console.log("ignore", ele._tatIgnoreOnce, getEventVal(event));
                             if (ele._tatIgnoreOnce === getEventVal(event)) {
                                 return [2 /*return*/];
                             }
@@ -497,7 +519,6 @@ var eleSetListen = function (ele) {
                         case 1:
                             value = getEventVal(event);
                             mock = "";
-                            console.log("input-", value);
                             reg = /!!/;
                             if (!reg.test(value)) return [3 /*break*/, 5];
                             mock = value.replace(reg, "");
@@ -796,22 +817,28 @@ var replayStop = function (success) { return __awaiter(void 0, void 0, void 0, f
     var cell;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.updateOne({}, {
-                    recording: 0,
-                    replaying: 0,
-                    showMouse: 0,
-                    step: 0,
-                })];
+            case 0: return [4 /*yield*/, state.customEvent.deleteMany({})];
             case 1:
                 _a.sent();
-                aoife.next(".tat-update, .tat-mouse");
-                if (!(success && initOpt.onSuccess)) return [3 /*break*/, 3];
-                return [4 /*yield*/, state.nowCell.findOne()];
+                return [4 /*yield*/, state.customEvent.insertOne({})];
             case 2:
+                _a.sent();
+                return [4 /*yield*/, state.ui.updateOne({}, {
+                        recording: 0,
+                        replaying: 0,
+                        showMouse: 0,
+                        step: 0,
+                    })];
+            case 3:
+                _a.sent();
+                aoife.next(".tat-update, .tat-mouse");
+                if (!(success && initOpt.onSuccess)) return [3 /*break*/, 5];
+                return [4 /*yield*/, state.nowCell.findOne()];
+            case 4:
                 cell = _a.sent();
                 initOpt.onSuccess(cell);
-                _a.label = 3;
-            case 3: return [2 /*return*/];
+                _a.label = 5;
+            case 5: return [2 /*return*/];
         }
     });
 }); };
@@ -853,29 +880,35 @@ var replayStart = function () { return __awaiter(void 0, void 0, void 0, functio
             case 2:
                 // 开始设置播放的样式
                 _a.sent();
-                aoife.next(".tat-update, .tat-mouse");
-                if (!initOpt.onReplay) return [3 /*break*/, 4];
-                return [4 /*yield*/, state.nowCell.findOne()];
+                return [4 /*yield*/, state.customEvent.deleteMany({})];
             case 3:
+                _a.sent();
+                return [4 /*yield*/, state.customEvent.insertOne({})];
+            case 4:
+                _a.sent();
+                aoife.next(".tat-update, .tat-mouse");
+                if (!initOpt.onReplay) return [3 /*break*/, 6];
+                return [4 /*yield*/, state.nowCell.findOne()];
+            case 5:
                 cell = _a.sent();
                 initOpt.onReplay(cell);
-                _a.label = 4;
-            case 4:
-                _a.trys.push([4, 6, , 8]);
-                return [4 /*yield*/, startReplay(items)];
-            case 5:
-                _a.sent();
-                return [3 /*break*/, 8];
+                _a.label = 6;
             case 6:
-                err_1 = _a.sent();
-                return [4 /*yield*/, replayFail(err_1)];
+                _a.trys.push([6, 8, , 10]);
+                return [4 /*yield*/, startReplay(items)];
             case 7:
                 _a.sent();
-                return [3 /*break*/, 8];
-            case 8: 
+                return [3 /*break*/, 10];
+            case 8:
+                err_1 = _a.sent();
+                return [4 /*yield*/, replayFail(err_1)];
+            case 9:
+                _a.sent();
+                return [3 /*break*/, 10];
+            case 10: 
             // 还原播放的样式
             return [4 /*yield*/, replayStop(true)];
-            case 9:
+            case 11:
                 // 还原播放的样式
                 _a.sent();
                 return [2 /*return*/];
@@ -935,6 +968,44 @@ function emitInput(el, item, eventKey) {
             }
         });
     });
+}
+function done(e) {
+    var _a;
+    Message.info("[TouchAndTouch] Listened: " + e.detail, { outTime: 1500, position: 'bottom' });
+    state.customEvent.updateOne({}, (_a = {}, _a[e.detail] = 1, _a));
+}
+window.addEventListener("tat", done);
+function waitGetCustomEvent(detail) {
+    var _this = this;
+    var t = Date.now();
+    return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+        var custom, ui, getEvent;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, state.customEvent.findOne()];
+                case 1:
+                    custom = _a.sent();
+                    return [4 /*yield*/, state.ui.findOne()];
+                case 2:
+                    ui = _a.sent();
+                    getEvent = function () {
+                        if (!custom[detail]) {
+                            if (Date.now() - t < ui.waitTimeout) {
+                                requestAnimationFrame(getEvent);
+                            }
+                            else {
+                                rej("[TouchAndTouch] Unlistened: " + detail);
+                            }
+                        }
+                        else {
+                            res(true);
+                        }
+                    };
+                    getEvent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 }
 function waitGetElement(key) {
     var _this = this;
@@ -1017,17 +1088,17 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 _i = 0, items_1 = items;
                 _a.label = 2;
             case 2:
-                if (!(_i < items_1.length)) return [3 /*break*/, 18];
+                if (!(_i < items_1.length)) return [3 /*break*/, 20];
                 item = items_1[_i];
                 return [4 /*yield*/, state.ui.findOne()];
             case 3:
                 ui = _a.sent();
                 i++;
                 if (!ui.replaying) {
-                    return [3 /*break*/, 18];
+                    return [3 /*break*/, 20];
                 }
                 if (i < ui.step) {
-                    return [3 /*break*/, 17];
+                    return [3 /*break*/, 19];
                 }
                 return [4 /*yield*/, state.ui.updateOne({}, { step: i })];
             case 4:
@@ -1048,50 +1119,56 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
             case 5:
                 _a.sent();
                 mouseClick(item);
-                return [3 /*break*/, 17];
+                return [3 /*break*/, 19];
             case 6:
-                if (!item.key) return [3 /*break*/, 17];
-                return [4 /*yield*/, waitGetElement(item.key)];
+                if (!(item.type === "customEvent" && item.value)) return [3 /*break*/, 8];
+                return [4 /*yield*/, waitGetCustomEvent(item.value)];
             case 7:
+                _a.sent();
+                return [3 /*break*/, 19];
+            case 8:
+                if (!item.key) return [3 /*break*/, 19];
+                return [4 /*yield*/, waitGetElement(item.key)];
+            case 9:
                 el = _a.sent();
-                if (!(el.nodeName !== "FORM" && el.nodeName !== "DIV")) return [3 /*break*/, 9];
+                if (!(el.nodeName !== "FORM" && el.nodeName !== "DIV")) return [3 /*break*/, 11];
                 scrollIntoView(el);
                 return [4 /*yield*/, sleep(16)];
-            case 8:
-                _a.sent();
-                _a.label = 9;
-            case 9:
-                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 12];
-                if (!(el.nodeName !== "DIV")) return [3 /*break*/, 11];
-                getEleCenter(el, item);
-                mouseClick(item);
-                return [4 /*yield*/, sleep(80)];
             case 10:
                 _a.sent();
                 _a.label = 11;
             case 11:
-                emitClick(el);
-                return [3 /*break*/, 17];
-            case 12: return [4 /*yield*/, state.ui.findOne()];
+                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 14];
+                if (!(el.nodeName !== "DIV")) return [3 /*break*/, 13];
+                getEleCenter(el, item);
+                mouseClick(item);
+                return [4 /*yield*/, sleep(80)];
+            case 12:
+                _a.sent();
+                _a.label = 13;
             case 13:
-                if (!((_a.sent()).lastFocus !== el)) return [3 /*break*/, 15];
-                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 15];
+                emitClick(el);
+                return [3 /*break*/, 19];
+            case 14: return [4 /*yield*/, state.ui.findOne()];
+            case 15:
+                if (!((_a.sent()).lastFocus !== el)) return [3 /*break*/, 17];
+                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 17];
                 getEleCenter(el, item);
                 mouseMove(item);
-                return [4 /*yield*/, sleep(16)];
-            case 14:
-                _a.sent();
-                _a.label = 15;
-            case 15:
-                emitInput(el, item, item.type);
                 return [4 /*yield*/, sleep(16)];
             case 16:
                 _a.sent();
                 _a.label = 17;
             case 17:
+                emitInput(el, item, item.type);
+                return [4 /*yield*/, sleep(16)];
+            case 18:
+                _a.sent();
+                _a.label = 19;
+            case 19:
                 _i++;
                 return [3 /*break*/, 2];
-            case 18: return [2 /*return*/];
+            case 20: return [2 /*return*/];
         }
     });
 }); };
