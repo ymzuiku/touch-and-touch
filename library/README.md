@@ -20,13 +20,29 @@ document.body.append(TouchAndTouch());
 
 以下标签，我们会监听相应的事件：
 
-- input: 当 oninput \ onchange 事件触发了，会记录 value
-- textarea: 当 oninput 事件触发了，会记录 value
-- form: 当 onchange 事件触发了，会记录一次事件触发
-- select: 当 onclick 事件触发了，会记录一次点击
-- a: 当 onclick 事件触发了，会记录 value
-- button: 当 onclick 事件触发了，会记录一次点击
-- div: 包含 tat-btn 属性的 div， 当 onclick 事件触发了，会记录一次点击
+监听输入变化：
+
+- input
+- textarea
+- form
+- select
+
+监听点击事件：
+
+- a
+- button
+- lib
+- span
+
+除了以上元素，其他元素需要监听点击事件，需要满足以下情况之一：
+
+- ele.getAttribute("tat-btn") no void
+- ele.getAttribute("role") === "tab"
+- ele.getAttribute("role") === "menuitem"
+- ele.getAttribute("role") === "switch"
+- ele.getAttribute("role") === "button"
+- ele.getAttribute("type") === "submit"
+- ele.getAttribute("type") === "button"
 
 ## 录制元素标志
 
@@ -34,7 +50,7 @@ document.body.append(TouchAndTouch());
 
 1. tat-id
 2. id
-3. tag + key + type + name + placeholder + tat-id(冒泡寻找父元素的 tat-id) + tat-btn
+3. tag + key + type + name + role + placeholder + tat-id(冒泡寻找父元素的 tat-id) + tat-btn
 
 其中若无 tat-id, 且无 id，则会冒泡查找父元素，直到找到为止.
 
@@ -57,7 +73,7 @@ document.body.append(TouchAndTouch());
 - select: 根据之前记录的 type，使用之前记录的 value 触发 onclick
 - a: 根据之前记录的 type，使用之前记录的 value 触发 onclick
 - button: 根据之前记录的 type，使用之前记录的 value 触发 onclick
-- div: 包含 tat-btn 属性的 div，根据之前记录的 type，使用之前记录的 value 触发 onclick
+- 其他元素: 包含 tat-btn 属性的 div，根据之前记录的 type，使用之前记录的 value 触发 onclick
 
 ## 录制时使用 mockjs.Random
 

@@ -7,7 +7,8 @@ const listenTags = [
   "textarea",
   "select",
   "form",
-  "div",
+  "li",
+  "span",
 ];
 
 function getAttrAndCloseAttr(item: HTMLElement, key: string) {
@@ -31,7 +32,17 @@ function setAttrId(ele: HTMLInputElement) {
   if (ele.getAttribute("tat-key")) {
     return;
   }
-  if (ele.nodeName === "DIV" && !ele.getAttribute("tat-btn")) {
+  const tag = ele.nodeName.toLocaleLowerCase();
+  if (
+    listenTags.indexOf(tag) === -1 &&
+    !ele.getAttribute("tat-btn") &&
+    ele.getAttribute("role") !== "tab" &&
+    ele.getAttribute("role") !== "menuitem" &&
+    ele.getAttribute("role") !== "switch" &&
+    ele.getAttribute("role") !== "button" &&
+    ele.getAttribute("type") !== "submit" &&
+    ele.getAttribute("type") !== "button"
+  ) {
     return;
   }
   const pageKey = loadPageKey();
@@ -53,6 +64,7 @@ function setAttrId(ele: HTMLInputElement) {
   const key = getAttrAndCloseAttr(ele, "key");
   const placeholder = ele.getAttribute("placeholder");
   const name = ele.getAttribute("name");
+  const role = ele.getAttribute("role");
   const type = ele.getAttribute("type");
 
   ele.setAttribute(
@@ -66,6 +78,7 @@ function setAttrId(ele: HTMLInputElement) {
       name && "name:" + name,
       type && "type:" + type,
       key && "key:" + key,
+      role && "role:" + role,
       placeholder && "place:" + placeholder,
     ]
       .filter(Boolean)
