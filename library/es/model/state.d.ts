@@ -3,6 +3,7 @@ export interface RecordItem {
     key: string;
     type: string;
     value?: string;
+    mock?: string;
     href?: string;
     clientX?: number;
     clientY?: number;
@@ -33,7 +34,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -48,7 +48,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -62,7 +61,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -74,7 +72,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -88,7 +85,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -101,7 +97,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -113,7 +108,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -125,7 +119,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -138,7 +131,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -150,7 +142,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -163,7 +154,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -175,7 +165,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -188,7 +177,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -200,7 +188,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -212,7 +199,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -225,7 +211,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -237,7 +222,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -249,7 +233,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -262,7 +245,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -274,7 +256,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -287,7 +268,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -299,7 +279,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -312,7 +291,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;
@@ -325,7 +303,6 @@ export declare const state: {
             showMouse: number;
             lastFocus: any;
             showList: number;
-            showPlayList: number;
             showInputId: string;
             recording: number;
             replaying: number;

@@ -6,6 +6,7 @@ export interface RecordItem {
   key: string;
   type: string;
   value?: string;
+  mock?: string;
   href?: string;
   clientX?: number;
   clientY?: number;
@@ -40,7 +41,6 @@ export const state = {
       showMouse: 0,
       lastFocus: null as any,
       showList: 1,
-      showPlayList: 1,
       showInputId: "",
       recording: 0,
       replaying: 0,

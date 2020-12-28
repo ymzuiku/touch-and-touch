@@ -5,45 +5,43 @@ import { init, InitOptions } from "../model/init";
 import { DragSvg } from "./svg";
 import { PlayList } from "./PlayList";
 import Pop from "aoife-pop";
-import { Step, TipStep } from "./Step";
 import aoife from "aoife";
 
 const plan = aoife(
   "div",
-  { class: "tat-plan" },
-  aoife("div", { class: "tat-head-row" }, Ctrl()),
+  { class: "tat-plan tat-update", "tat-ignore": true },
   PlayList()
+);
+const dragAndCtrl = aoife(
+  "div",
+  { class: "tat-row tat-head-center", "tat-ignore": true },
+  Drag({
+    query: ".tat-root",
+    "tat-ignore": true,
+    localStorageKey: "tat-drag",
+    children: [DragSvg({})],
+  }),
+  Ctrl()
 );
 
 export const TouchAndTouch = (opt: InitOptions) => {
   init(opt);
   return aoife(
     "div",
-    { "tat-drag-ctrl": true, "tat-ignore": true, class: "tat" },
+    { "tat-ignore": true, class: "tat tat-root" },
     aoife(
       "div",
-      { class: "tat-weight tat-row" },
-      aoife(
-        "div",
-        { class: "tat-row" },
-        Drag({
-          class: "tat-head-center",
-          query: "[tat-drag-ctrl]",
-          "tat-ignore": true,
-          localStorageKey: "tat-drag",
-          children: [DragSvg({})],
-        }),
-        Pop({
-          theme: "light-border",
-          interactive: true,
-          onShow: () => {
-            aoife.waitAppend(plan).then(() => {
-              aoife.next(".tat-plan");
-            });
-          },
-          children: [TipStep(), plan],
-        })
-      )
+      { class: "tat-update tat-weight tat-row" },
+      Pop({
+        theme: "light-border",
+        interactive: true,
+        onShow: () => {
+          aoife.waitAppend(".tat-play-list").then(() => {
+            aoife.next(".tat-play-list");
+          });
+        },
+        children: [dragAndCtrl, plan],
+      })
     )
   );
 };

@@ -1,6 +1,5 @@
 import aoife from "aoife";
 import { getHref } from "./getHref";
-import { initOpt } from "./init";
 import { state } from "./state";
 
 export const recordStart = async () => {
@@ -9,10 +8,9 @@ export const recordStart = async () => {
     {
       recording: 1,
       replaying: 0,
-      showPlayList: 0,
     }
   );
-  aoife.next(".tat-plan");
+  aoife.next(".tat-update");
   // 记录首次页面的url
   const items = await state.recordItems.find();
   let isHaveHref = false;

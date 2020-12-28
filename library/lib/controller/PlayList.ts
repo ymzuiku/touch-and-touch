@@ -1,22 +1,19 @@
 import { state } from "../model/state";
 import css from "template-css";
-import { DeleteSvg, EditorSvg } from "./svg";
+import { CopySvg, DeleteSvg, EditorSvg } from "./svg";
 import { changeInput } from "../model/changeInput";
 import { rename } from "../model/rename";
 import { remove } from "../model/remove";
 import { changeSelectItem } from "../model/changeSelectItem";
 import { changeFilter } from "../model/changeFilter";
 import { getTitle } from "../model/getTitle";
+import { recordCellCopy } from "../model/recordCellCopy";
 
 export const PlayList = () => {
   return aoife(
     "div",
     {
       class: "tat-play-list",
-      hidden: async () => {
-        const ui = await state.ui.findOne();
-        return !ui.showPlayList || !ui.showList;
-      },
     },
     aoife("input", {
       class: "filter",
@@ -112,6 +109,14 @@ export const PlayList = () => {
               changeInput(item._id);
             },
           }),
+          CopySvg({
+            class: "edit",
+            onclick: (e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              recordCellCopy(item._id);
+            },
+          }),
           DeleteSvg({
             class: "edit",
             onclick: (e) => {
@@ -129,7 +134,7 @@ export const PlayList = () => {
 css`
   .tat-play-list {
     font-size: 16px;
-    width: 100%;
+    width: 190px;
   }
   .tat-play-list .filter {
     height: 20px;
@@ -164,7 +169,6 @@ css`
   }
   .tat-play-list .label {
     font-size: 12px;
-    // width: 100px;
     border: 1px solid rgba(0, 0, 0, 0);
     flex: 1;
     ${css.wordBreak(1)}

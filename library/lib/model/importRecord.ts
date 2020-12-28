@@ -21,7 +21,7 @@ export async function importRecord() {
       })
     ) {
       await state.recordList.insertMany(data);
-      aoife.next(".tat-plan");
+      aoife.next(".tat-update");
     }
   } catch (err) {
     console.error(err);
