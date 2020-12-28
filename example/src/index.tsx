@@ -14,6 +14,10 @@ function App() {
       <TouchAndTouch speed={3} onChangeSelected={(cell) => console.log(cell)} />
       <h1>TAT Client</h1>
       {/* <div innerHTML={html}></div> */}
+      <div role="tab" onclick={() => Message.info("role-tab")}>
+        role
+      </div>
+      <input type="aa" />
       <form
         onchange={(e) => {
           (state as any)[e.target.placeholder] = e.target.value;

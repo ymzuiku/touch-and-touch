@@ -499,16 +499,19 @@ var eleSetListen = function (ele) {
         if (ele["tat-" + e]) {
             return;
         }
+        ele["tat-" + e] = 1;
         ele.addEventListener(e, function (event) {
             return __awaiter(this, void 0, void 0, function () {
                 var value, mock, reg, fn, inputEvent, err_1;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            if (ele._tatIgnoreOnce === getEventVal(event)) {
+                            if (ele._tatIgnoreOnce &&
+                                ele._tatIgnoreOnce === getEventVal(event)) {
                                 return [2 /*return*/];
                             }
                             if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 1];
+                            console.log(e, ele);
                             setTimeout(function () {
                                 recordItemAdd({
                                     key: ele.getAttribute("tat-key"),
@@ -621,6 +624,7 @@ var listenTags = [
     "form",
     "li",
     "span",
+    "div",
 ];
 function getAttrAndCloseAttr(item, key) {
     var attr = item.getAttribute(key);
@@ -643,7 +647,7 @@ function setAttrId(ele) {
         return;
     }
     var tag = ele.nodeName.toLocaleLowerCase();
-    if (listenTags.indexOf(tag) === -1 &&
+    if (tag === "div" &&
         !ele.getAttribute("tat-btn") &&
         ele.getAttribute("role") !== "tab" &&
         ele.getAttribute("role") !== "menuitem" &&
@@ -674,7 +678,7 @@ function setAttrId(ele) {
     var type = ele.getAttribute("type");
     ele.setAttribute("tat-key", [
         pageKey,
-        ele.nodeName.toLowerCase(),
+        tag,
         tat && "tat-id:" + tat,
         btn && "tat-btn:" + btn,
         id && "id:" + id,
@@ -685,7 +689,7 @@ function setAttrId(ele) {
         placeholder && "place:" + placeholder,
     ]
         .filter(Boolean)
-        .join(", "));
+        .join(","));
     eleSetListen(ele);
 }
 function eleSetAttr(parent) {

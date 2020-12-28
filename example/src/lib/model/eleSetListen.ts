@@ -18,11 +18,16 @@ export const eleSetListen = (ele: HTMLInputElement) => {
     if ((ele as any)["tat-" + e]) {
       return;
     }
+    (ele as any)["tat-" + e] = 1;
     ele.addEventListener(e, async function (event: Event) {
-      if ((ele as any)._tatIgnoreOnce === getEventVal(event)) {
+      if (
+        (ele as any)._tatIgnoreOnce &&
+        (ele as any)._tatIgnoreOnce === getEventVal(event)
+      ) {
         return;
       }
       if (clicks.indexOf(e) > -1) {
+        console.log(e, ele);
         setTimeout(() => {
           recordItemAdd({
             key: ele.getAttribute("tat-key")!,

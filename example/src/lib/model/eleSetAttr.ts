@@ -9,6 +9,7 @@ const listenTags = [
   "form",
   "li",
   "span",
+  "div",
 ];
 
 function getAttrAndCloseAttr(item: HTMLElement, key: string) {
@@ -33,8 +34,9 @@ function setAttrId(ele: HTMLInputElement) {
     return;
   }
   const tag = ele.nodeName.toLocaleLowerCase();
+
   if (
-    listenTags.indexOf(tag) === -1 &&
+    tag === "div" &&
     !ele.getAttribute("tat-btn") &&
     ele.getAttribute("role") !== "tab" &&
     ele.getAttribute("role") !== "menuitem" &&
@@ -71,7 +73,7 @@ function setAttrId(ele: HTMLInputElement) {
     "tat-key",
     [
       pageKey,
-      ele.nodeName.toLowerCase(),
+      tag,
       tat && "tat-id:" + tat,
       btn && "tat-btn:" + btn,
       id && "id:" + id,
@@ -82,7 +84,7 @@ function setAttrId(ele: HTMLInputElement) {
       placeholder && "place:" + placeholder,
     ]
       .filter(Boolean)
-      .join(", ")
+      .join(",")
   );
   eleSetListen(ele as any);
 }
