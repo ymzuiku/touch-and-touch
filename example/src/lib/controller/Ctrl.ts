@@ -21,6 +21,7 @@ import {
 } from "./svg";
 import { exportRecord } from "../model/exportRecord";
 import { importRecord } from "../model/importRecord";
+import { replayAllFilter } from "../model/replayAllFilter";
 
 function ThePop({ children }: any) {
   return Pop({
@@ -56,25 +57,25 @@ export const Ctrl = () => {
       { class: "tat-row" },
       ThePop({
         children: [
-          PlaySvg({ class: "tat-btn", onclick: replayStart }),
+          PlaySvg({ class: "tat-btn", onclick: () => replayStart() }),
           "Play selected record",
         ],
       }),
       ThePop({
         children: [
-          ReplayAllSvg({ class: "tat-btn", onclick: replayStart }),
+          ReplayAllSvg({ class: "tat-btn", onclick: () => replayAllFilter() }),
           "Play all filter record",
         ],
       }),
       ThePop({
         children: [
-          RecordStartSvg({ class: "tat-btn", onclick: recordStart }),
+          RecordStartSvg({ class: "tat-btn", onclick: () => recordStart() }),
           "Start Record",
         ],
       }),
       ThePop({
         children: [
-          RecordCancelSvg({ class: "tat-btn", onclick: recordClear }),
+          RecordCancelSvg({ class: "tat-btn", onclick: () => recordClear() }),
           "Clear Events",
         ],
       }),

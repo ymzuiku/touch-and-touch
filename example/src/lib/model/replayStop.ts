@@ -9,6 +9,7 @@ export const replayStop = async (success?: boolean) => {
     {
       recording: 0,
       replaying: 0,
+      replayingAll: 0,
       showMouse: 0,
       step: 0,
     }

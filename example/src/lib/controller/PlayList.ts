@@ -8,6 +8,7 @@ import { changeSelectItem } from "../model/changeSelectItem";
 import { changeFilter } from "../model/changeFilter";
 import { getTitle } from "../model/getTitle";
 import { recordCellCopy } from "../model/recordCellCopy";
+import { fixFilterCell } from "../model/fixFilterCell";
 
 export const PlayList = () => {
   return aoife(
@@ -39,23 +40,9 @@ export const PlayList = () => {
               };
             },
             hidden: async () => {
-              const ui = await state.ui.findOne();
-              const filter = ui.filter;
-              if (!filter || !filter.length) {
-                return false;
-              }
-              const item = await state.recordList.index(i);
-              if (!item) {
-                return true;
-              }
-              const title = getTitle(item);
-              let isShow = false;
-              filter.forEach((f) => {
-                if (f && new RegExp(f).test(title)) {
-                  isShow = true;
-                }
-              });
-              return !isShow;
+              const cell = await state.recordList.index(i);
+              const show = await fixFilterCell(cell);
+              return !show;
             },
             onclick: () => changeSelectItem(item._id),
           },
