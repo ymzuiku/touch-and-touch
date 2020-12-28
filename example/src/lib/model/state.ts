@@ -54,6 +54,9 @@ export const state = {
     sort: { updateAt: -1 },
   }),
   recordItems: micoDb.collection<RecordItem>("record-item"),
+  customEvent: micoDb.collection<any>("custom-event", {
+    type: "sessionStorage",
+  }),
 };
 
 // 初始化数据

@@ -1,6 +1,8 @@
+import { recordRemoveCustemEvent } from "./customEvent";
 import { state } from "./state";
 
 export const recordStop = async () => {
+  recordRemoveCustemEvent();
   await state.ui.updateOne(
     {},
     {

@@ -7,6 +7,7 @@ import { initOpt } from "./init";
 import { getHref } from "./getHref";
 import mockjs from "mockjs";
 import { cache } from "./cache";
+import Message from "vanilla-message";
 
 export const replayStart = async () => {
   const items = await state.recordItems.find();
@@ -18,6 +19,8 @@ export const replayStart = async () => {
       replaying: 1,
     }
   );
+  await state.customEvent.deleteMany({});
+  await state.customEvent.insertOne({});
   aoife.next(".tat-update, .tat-mouse");
 
   if (initOpt.onReplay) {
@@ -85,6 +88,32 @@ async function emitInput(
 
   el.value = (item && item.value) || "";
   el.dispatchEvent(inputEvent);
+}
+
+function done(e: any) {
+  Message.info(`[TouchAndTouch] Listened: ${e.detail}`, { outTime: 1500 });
+  state.customEvent.updateOne({}, { [e.detail]: 1 });
+}
+window.addEventListener("tat", done);
+
+function waitGetCustomEvent(detail: string) {
+  const t = Date.now();
+  return new Promise(async (res, rej) => {
+    const custom = await state.customEvent.findOne();
+    const ui = await state.ui.findOne();
+    const getEvent = () => {
+      if (!custom[detail]) {
+        if (Date.now() - t < ui.waitTimeout) {
+          requestAnimationFrame(getEvent);
+        } else {
+          rej("[TouchAndTouch] Unlistened: " + detail);
+        }
+      } else {
+        res(true);
+      }
+    };
+    getEvent();
+  });
 }
 
 function waitGetElement(key: string): Promise<HTMLElement> {
@@ -162,6 +191,8 @@ const startReplay = async (items: RecordItem[]) => {
     if (item.type === "mclick") {
       await sleep(120);
       mouseClick(item);
+    } else if (item.type === "customEvent" && item.value) {
+      await waitGetCustomEvent(item.value);
     } else if (item.key) {
       const el = await waitGetElement(item.key);
       if (el.nodeName !== "FORM" && el.nodeName !== "DIV") {

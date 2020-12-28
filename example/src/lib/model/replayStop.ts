@@ -2,6 +2,8 @@ import { initOpt } from "./init";
 import { state } from "./state";
 
 export const replayStop = async (success?: boolean) => {
+  await state.customEvent.deleteMany({});
+  await state.customEvent.insertOne({});
   await state.ui.updateOne(
     {},
     {

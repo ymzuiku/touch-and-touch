@@ -75,11 +75,13 @@ get("a")!!
 
 ## 主动提交记录
 
-若某些非页面可以反馈的状态，我们希望 TouchAndTouch 进行校验，我们可以在状态达到条件时，主动在代码中提交记录
+若某些非页面可以反馈的状态，我们希望 TouchAndTouch 进行校验，我们可以在状态达到条件时，主动在代码中使用 CustomEvent 提交记录：
 
 ```js
-
+window.dispatchEvent(new CustomEvent("tat", { detail: "done dog" }));
 ```
+
+在播放时，会检测是否有在指定行为获取到 CustomEvent，来校验测试是否失败
 
 ## 生产环境进行测试
 

@@ -6,6 +6,7 @@ import Message from "vanilla-message";
 function App() {
   const state = {
     name: "",
+    name2: "",
     password: "",
   };
   return (
@@ -16,6 +17,12 @@ function App() {
       <form
         onchange={(e) => {
           (state as any)[e.target.placeholder] = e.target.value;
+          if (state.name2 === "dog") {
+            console.log("提交 event");
+            window.dispatchEvent(
+              new CustomEvent("tat", { detail: "done dog" })
+            );
+          }
         }}
         onsubmit={(e) => {
           e.stopPropagation();
