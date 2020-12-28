@@ -27,7 +27,6 @@ export const eleSetListen = (ele: HTMLInputElement) => {
         return;
       }
       if (clicks.indexOf(e) > -1) {
-        console.log(e, ele);
         setTimeout(() => {
           recordItemAdd({
             key: ele.getAttribute("tat-key")!,

@@ -511,7 +511,6 @@ var eleSetListen = function (ele) {
                                 return [2 /*return*/];
                             }
                             if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 1];
-                            console.log(e, ele);
                             setTimeout(function () {
                                 recordItemAdd({
                                     key: ele.getAttribute("tat-key"),
