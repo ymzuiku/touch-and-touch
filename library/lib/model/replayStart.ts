@@ -9,8 +9,13 @@ import mockjs from "mockjs";
 import { cache } from "./cache";
 import Message from "vanilla-message";
 
-export const replayStart = async () => {
-  const items = await state.recordItems.find();
+export const replayStart = async (items?: RecordItem[]) => {
+  if (!items) {
+    items = await state.recordItems.find();
+  }
+  if (items.length < 2) {
+    return;
+  }
   // 开始设置播放的样式
   await state.ui.updateOne(
     {},
@@ -91,7 +96,10 @@ async function emitInput(
 }
 
 function done(e: any) {
-  Message.info(`[TouchAndTouch] Listened: ${e.detail}`, { outTime: 1500, position:'bottom' });
+  Message.info(`[TouchAndTouch] Listened: ${e.detail}`, {
+    outTime: 1500,
+    position: "bottom",
+  });
   state.customEvent.updateOne({}, { [e.detail]: 1 });
 }
 window.addEventListener("tat", done);

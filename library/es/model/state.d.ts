@@ -37,6 +37,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -51,6 +52,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -64,6 +66,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -75,6 +78,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -88,6 +92,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -100,6 +105,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -111,6 +117,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -122,6 +129,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -134,6 +142,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -145,6 +154,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -157,6 +167,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -168,6 +179,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -180,6 +192,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -191,6 +204,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -202,6 +216,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -214,6 +229,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -225,6 +241,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -236,6 +253,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -248,6 +266,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -259,6 +278,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -271,6 +291,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -282,6 +303,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -294,6 +316,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -306,6 +329,7 @@ export declare const state: {
             showInputId: string;
             recording: number;
             replaying: number;
+            replayingAll: number;
             step: number;
             filter: string[];
             waitTimeout: number;

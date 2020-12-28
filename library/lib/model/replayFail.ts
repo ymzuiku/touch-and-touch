@@ -8,7 +8,7 @@ export const replayFail = async (msg: any) => {
     const cell = await state.nowCell.findOne();
     initOpt.onFail(cell, msg);
   } else {
-    Message.error(msg);
+    Message.error(msg, { ok: "Ok", outTime: 999999 });
   }
   await replayStop();
 };

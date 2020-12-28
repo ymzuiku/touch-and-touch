@@ -205,6 +205,7 @@ var state = {
             showInputId: "",
             recording: 0,
             replaying: 0,
+            replayingAll: 0,
             step: 0,
             filter: [],
             waitTimeout: 5000,
@@ -720,6 +721,65 @@ function recordDom() {
     window.addEventListener("touchend", recordMouse);
 }
 
+var fixFilterCell = function (cell) { return __awaiter(void 0, void 0, void 0, function () {
+    var ui, filter, title, isShow;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, state.ui.findOne()];
+            case 1:
+                ui = _a.sent();
+                filter = ui.filter;
+                if (!filter || !filter.length) {
+                    return [2 /*return*/, true];
+                }
+                if (!cell) {
+                    return [2 /*return*/, false];
+                }
+                title = getTitle(cell);
+                isShow = false;
+                filter.forEach(function (f) {
+                    if (f && new RegExp(f).test(title)) {
+                        isShow = true;
+                    }
+                });
+                return [2 /*return*/, isShow];
+        }
+    });
+}); };
+
+var replayAllFilter = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var list, items, _i, list_1, cell, isPlay;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, state.recordList.find()];
+            case 1:
+                list = _a.sent();
+                items = [];
+                _i = 0, list_1 = list;
+                _a.label = 2;
+            case 2:
+                if (!(_i < list_1.length)) return [3 /*break*/, 5];
+                cell = list_1[_i];
+                return [4 /*yield*/, fixFilterCell(cell)];
+            case 3:
+                isPlay = _a.sent();
+                if (isPlay) {
+                    console.log("111");
+                    items = items.concat.apply(items, cell.items);
+                }
+                _a.label = 4;
+            case 4:
+                _i++;
+                return [3 /*break*/, 2];
+            case 5: return [4 /*yield*/, state.ui.updateOne({}, { replayingAll: 1 })];
+            case 6:
+                _a.sent();
+                replayStart(items);
+                return [2 /*return*/];
+        }
+    });
+}); };
+
 var initOpt = {};
 window.addEventListener("keydown", function (e) {
     if (e.key === "Alt") {
@@ -775,13 +835,19 @@ var init = function (opt) {
                     _a.sent();
                     recordDom();
                     setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
-                        var list_1, cell;
+                        var ui, list_1, cell;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0: return [4 /*yield*/, state.ui.findOne()];
                                 case 1:
-                                    if (!(_a.sent()).replaying) return [3 /*break*/, 2];
-                                    replayStart();
+                                    ui = _a.sent();
+                                    if (!ui.replaying) return [3 /*break*/, 2];
+                                    if (ui.replayingAll) {
+                                        replayAllFilter();
+                                    }
+                                    else {
+                                        replayStart();
+                                    }
                                     return [3 /*break*/, 6];
                                 case 2:
                                     if (!initOpt.autoPlayItem) return [3 /*break*/, 6];
@@ -826,6 +892,7 @@ var replayStop = function (success) { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, state.ui.updateOne({}, {
                         recording: 0,
                         replaying: 0,
+                        replayingAll: 0,
                         showMouse: 0,
                         step: 0,
                     })];
@@ -855,7 +922,7 @@ var replayFail = function (msg) { return __awaiter(void 0, void 0, void 0, funct
                 initOpt.onFail(cell, msg);
                 return [3 /*break*/, 3];
             case 2:
-                Message.error(msg);
+                Message.error(msg, { ok: "Ok", outTime: 999999 });
                 _a.label = 3;
             case 3: return [4 /*yield*/, replayStop()];
             case 4:
@@ -865,50 +932,57 @@ var replayFail = function (msg) { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 
-var replayStart = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var items, cell, err_1;
+var replayStart = function (items) { return __awaiter(void 0, void 0, void 0, function () {
+    var cell, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, state.recordItems.find()];
+            case 0:
+                if (!!items) return [3 /*break*/, 2];
+                return [4 /*yield*/, state.recordItems.find()];
             case 1:
                 items = _a.sent();
+                _a.label = 2;
+            case 2:
+                if (items.length < 2) {
+                    return [2 /*return*/];
+                }
                 // 开始设置播放的样式
                 return [4 /*yield*/, state.ui.updateOne({}, {
                         recording: 0,
                         replaying: 1,
                     })];
-            case 2:
+            case 3:
                 // 开始设置播放的样式
                 _a.sent();
                 return [4 /*yield*/, state.customEvent.deleteMany({})];
-            case 3:
-                _a.sent();
-                return [4 /*yield*/, state.customEvent.insertOne({})];
             case 4:
                 _a.sent();
-                aoife.next(".tat-update, .tat-mouse");
-                if (!initOpt.onReplay) return [3 /*break*/, 6];
-                return [4 /*yield*/, state.nowCell.findOne()];
+                return [4 /*yield*/, state.customEvent.insertOne({})];
             case 5:
+                _a.sent();
+                aoife.next(".tat-update, .tat-mouse");
+                if (!initOpt.onReplay) return [3 /*break*/, 7];
+                return [4 /*yield*/, state.nowCell.findOne()];
+            case 6:
                 cell = _a.sent();
                 initOpt.onReplay(cell);
-                _a.label = 6;
-            case 6:
-                _a.trys.push([6, 8, , 10]);
-                return [4 /*yield*/, startReplay(items)];
+                _a.label = 7;
             case 7:
-                _a.sent();
-                return [3 /*break*/, 10];
+                _a.trys.push([7, 9, , 11]);
+                return [4 /*yield*/, startReplay(items)];
             case 8:
+                _a.sent();
+                return [3 /*break*/, 11];
+            case 9:
                 err_1 = _a.sent();
                 return [4 /*yield*/, replayFail(err_1)];
-            case 9:
+            case 10:
                 _a.sent();
-                return [3 /*break*/, 10];
-            case 10: 
+                return [3 /*break*/, 11];
+            case 11: 
             // 还原播放的样式
             return [4 /*yield*/, replayStop(true)];
-            case 11:
+            case 12:
                 // 还原播放的样式
                 _a.sent();
                 return [2 /*return*/];
@@ -971,7 +1045,10 @@ function emitInput(el, item, eventKey) {
 }
 function done(e) {
     var _a;
-    Message.info("[TouchAndTouch] Listened: " + e.detail, { outTime: 1500, position: 'bottom' });
+    Message.info("[TouchAndTouch] Listened: " + e.detail, {
+        outTime: 1500,
+        position: "bottom",
+    });
     state.customEvent.updateOne({}, (_a = {}, _a[e.detail] = 1, _a));
 }
 window.addEventListener("tat", done);
@@ -1315,22 +1392,22 @@ var Ctrl = function () {
                     }
                     return [2 /*return*/, aoife("span", { class: "tat-row" }, ThePop({
                             children: [
-                                PlaySvg({ class: "tat-btn", onclick: replayStart }),
+                                PlaySvg({ class: "tat-btn", onclick: function () { return replayStart(); } }),
                                 "Play selected record",
                             ],
                         }), ThePop({
                             children: [
-                                ReplayAllSvg({ class: "tat-btn", onclick: replayStart }),
+                                ReplayAllSvg({ class: "tat-btn", onclick: function () { return replayAllFilter(); } }),
                                 "Play all filter record",
                             ],
                         }), ThePop({
                             children: [
-                                RecordStartSvg({ class: "tat-btn", onclick: recordStart }),
+                                RecordStartSvg({ class: "tat-btn", onclick: function () { return recordStart(); } }),
                                 "Start Record",
                             ],
                         }), ThePop({
                             children: [
-                                RecordCancelSvg({ class: "tat-btn", onclick: recordClear }),
+                                RecordCancelSvg({ class: "tat-btn", onclick: function () { return recordClear(); } }),
                                 "Clear Events",
                             ],
                         }), 
@@ -1520,30 +1597,16 @@ var PlayList = function () {
                                     });
                                 }); },
                                 hidden: function () { return __awaiter(void 0, void 0, void 0, function () {
-                                    var ui, filter, item, title, isShow;
+                                    var cell, show;
                                     return __generator(this, function (_a) {
                                         switch (_a.label) {
-                                            case 0: return [4 /*yield*/, state.ui.findOne()];
+                                            case 0: return [4 /*yield*/, state.recordList.index(i)];
                                             case 1:
-                                                ui = _a.sent();
-                                                filter = ui.filter;
-                                                if (!filter || !filter.length) {
-                                                    return [2 /*return*/, false];
-                                                }
-                                                return [4 /*yield*/, state.recordList.index(i)];
+                                                cell = _a.sent();
+                                                return [4 /*yield*/, fixFilterCell(cell)];
                                             case 2:
-                                                item = _a.sent();
-                                                if (!item) {
-                                                    return [2 /*return*/, true];
-                                                }
-                                                title = getTitle(item);
-                                                isShow = false;
-                                                filter.forEach(function (f) {
-                                                    if (f && new RegExp(f).test(title)) {
-                                                        isShow = true;
-                                                    }
-                                                });
-                                                return [2 /*return*/, !isShow];
+                                                show = _a.sent();
+                                                return [2 /*return*/, !show];
                                         }
                                     });
                                 }); },

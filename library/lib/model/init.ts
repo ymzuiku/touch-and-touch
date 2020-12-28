@@ -3,6 +3,7 @@ import { changeSelectItem } from "./changeSelectItem";
 import { getTitle } from "./getTitle";
 import { recordCellAdd } from "./recordCellAdd";
 import { recordDom } from "./recordDom";
+import { replayAllFilter } from "./replayAllFilter";
 import { replayStart } from "./replayStart";
 import { RecordCell, state } from "./state";
 
@@ -59,8 +60,13 @@ export const init = async (opt: InitOptions = {}) => {
 
   recordDom();
   setTimeout(async () => {
-    if ((await state.ui.findOne()).replaying) {
-      replayStart();
+    const ui = await state.ui.findOne();
+    if (ui.replaying) {
+      if (ui.replayingAll) {
+        replayAllFilter();
+      } else {
+        replayStart();
+      }
     } else if (initOpt.autoPlayItem) {
       // 根据初始化参数自动播放
       const list = await state.recordList.find();
