@@ -19,5 +19,5 @@ export const recordStop = async () => {
       updateAt: Date.now(),
     }
   );
-  aoife.next(".tat-plan");
+  aoife.next(".tat-plan, .tat-step");
 };

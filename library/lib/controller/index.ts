@@ -4,6 +4,16 @@ import css from "template-css";
 import { init, InitOptions } from "../model/init";
 import { DragSvg } from "./svg";
 import { PlayList } from "./PlayList";
+import Pop from "aoife-pop";
+import { Step, TipStep } from "./Step";
+import aoife from "aoife";
+
+const plan = aoife(
+  "div",
+  { class: "tat-plan" },
+  aoife("div", { class: "tat-head-row" }, Ctrl()),
+  PlayList()
+);
 
 export const TouchAndTouch = (opt: InitOptions) => {
   init(opt);
@@ -12,10 +22,10 @@ export const TouchAndTouch = (opt: InitOptions) => {
     { "tat-drag-ctrl": true, "tat-ignore": true, class: "tat" },
     aoife(
       "div",
-      { class: "tat-plan" },
+      { class: "tat-weight tat-row" },
       aoife(
         "div",
-        { class: "tat-head-row" },
+        { class: "tat-row" },
         Drag({
           class: "tat-head-center",
           query: "[tat-drag-ctrl]",
@@ -23,9 +33,17 @@ export const TouchAndTouch = (opt: InitOptions) => {
           localStorageKey: "tat-drag",
           children: [DragSvg({})],
         }),
-        Ctrl()
-      ),
-      PlayList()
+        Pop({
+          theme: "light-border",
+          interactive: true,
+          onShow: () => {
+            aoife.waitAppend(plan).then(() => {
+              aoife.next(".tat-plan");
+            });
+          },
+          children: [TipStep(), plan],
+        })
+      )
     )
   );
 };
@@ -35,6 +53,7 @@ css`
     display: none !important;
   }
   .tat-head-row {
+    width: 166px;
     ${css.flex("row-start-center")}
   }
   .tat-head-center {
@@ -58,7 +77,6 @@ css`
     color: #00;
     z-index: 9000;
     padding: 6px;
-    width: 160px;
     border: 1px solid rgba(0, 0, 0, 0.13);
     // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);
     border-radius: 4px;

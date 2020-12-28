@@ -1,3 +1,4 @@
+import Message from "vanilla-message";
 import { getTitle } from "./getTitle";
 import { state } from "./state";
 
@@ -7,7 +8,15 @@ export const recordClear = async () => {
     return;
   }
   if (!state.onAlt) {
-    if (!confirm(`Is clear [${lastCell.step}]${getTitle(lastCell)} steps?`)) {
+    if (
+      !(await Message.info(
+        `Is clear this steps: [${lastCell.step}]${getTitle(lastCell)}?`,
+        {
+          ok: "Ok",
+          cancel: "Cancel",
+        }
+      ))
+    ) {
       return;
     }
   }
@@ -23,5 +32,5 @@ export const recordClear = async () => {
   state.nowCell.updateOne({}, { items: [], step: 0 });
   const cell = await state.nowCell.findOne();
   await state.recordList.updateOne({ _id: cell._id }, cell);
-  aoife.next(".tat-plan");
+  aoife.next(".tat-plan, .tat-step");
 };

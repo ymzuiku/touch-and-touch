@@ -38,7 +38,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }>;
         index: (index: number, sort?: {
@@ -53,7 +53,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }>;
         count: () => Promise<number>;
@@ -67,7 +67,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }> | ((val: {
             speed: number;
@@ -79,7 +79,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }) => any) | undefined, sort?: {
             [key: string]: number;
@@ -93,7 +93,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }[]>;
         findOne: (filter?: Partial<{
@@ -106,7 +106,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }> | ((val: {
             speed: number;
@@ -118,7 +118,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }) => any) | undefined) => Promise<{
             speed: number;
@@ -130,7 +130,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }>;
         deleteMany: (filter?: Partial<{
@@ -143,7 +143,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }> | undefined) => Promise<{
             speed: number;
@@ -155,7 +155,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }[]>;
         deleteOne: (filter?: Partial<{
@@ -168,7 +168,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }> | undefined) => Promise<{
             speed: number;
@@ -180,7 +180,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         } | undefined>;
         updateOne: (filter: Partial<{
@@ -193,7 +193,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         } & import("mico-db/umd/collection").BaseColl>, data: Partial<{
             speed: number;
@@ -205,7 +205,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         } & import("mico-db/umd/collection").BaseColl>) => Promise<({
             speed: number;
@@ -217,7 +217,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         } & import("mico-db/umd/collection").BaseColl) | undefined>;
         updateMany: (filter: Partial<{
@@ -230,7 +230,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         } & import("mico-db/umd/collection").BaseColl>, data: Partial<{
             speed: number;
@@ -242,7 +242,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         } & import("mico-db/umd/collection").BaseColl>) => Promise<{
             speed: number;
@@ -254,7 +254,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }[]>;
         insertOne: (data: Partial<{
@@ -267,7 +267,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }>) => Promise<{
             speed: number;
@@ -279,7 +279,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }[]>;
         insertMany: (dataList: Partial<{
@@ -292,7 +292,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }>[]) => Promise<{
             speed: number;
@@ -304,7 +304,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }[]>;
         removeDuplicatie: (key: string) => Promise<{
@@ -317,7 +317,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }[]>;
         set: (dataList: Partial<{
@@ -330,7 +330,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             step: number;
-            filter: string;
+            filter: string[];
             waitTimeout: number;
         }>[]) => Promise<void>;
     };

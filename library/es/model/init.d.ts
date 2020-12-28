@@ -1,6 +1,5 @@
 import { RecordCell } from "./state";
 export interface InitOptions {
-    multiplePage?: boolean;
     speed?: number;
     waitTimeout?: number;
     onFail?: (cell: RecordCell, error: string) => any;

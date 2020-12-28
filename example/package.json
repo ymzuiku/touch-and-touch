@@ -16,7 +16,7 @@
     "localfile": "^1.0.0",
     "mico-db": "^1.2.1",
     "template-css": "^1.0.7",
-    "vanilla-message": "^0.2.2"
+    "vanilla-message": "^1.1.1"
   },
   "devDependencies": {
     "aoife-scripts": "^4.0.2",

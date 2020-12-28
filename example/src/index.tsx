@@ -1,6 +1,7 @@
 import "aoife";
 import TouchAndTouch from "./lib";
 import { html } from "./bootstrap";
+import Message from "vanilla-message";
 
 function App() {
   const state = {

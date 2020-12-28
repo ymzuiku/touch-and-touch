@@ -12,5 +12,5 @@ export const changeSelectItem = async (id: string) => {
   if (initOpt.onChangeSelected) {
     initOpt.onChangeSelected(cell);
   }
-  aoife.next(".tat-plan");
+  aoife.next(".tat-plan, .tat-play-list, .tat-step");
 };

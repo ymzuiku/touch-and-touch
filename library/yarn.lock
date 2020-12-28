@@ -5176,10 +5176,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vanilla-message@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/vanilla-message/-/vanilla-message-0.2.2.tgz#22ef47e815b9ad1b8370a2337e88bf181ba264ed"
-  integrity sha512-AfvBAHzwyx6RgJ8+r9pXuroTaSFkcjJAjMsJot0y5JJrXcFPMe1wp5xLsKBpWu5up7z8vu5918PbkZjn9kZuxg==
+vanilla-message@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vanilla-message/-/vanilla-message-1.1.1.tgz#e5cbaa5f31a4e25a27465b942e07245a0f5847fa"
+  integrity sha512-lq8ZvE/YFmXT6nKXtNwGPgaP6chrcf6KbFPD1B2uTi0yu39cjuI4JlQ2Uv0IzCHD8ZUXP1ABdNB3In3MQqxsHA==
 
 verror@1.10.0:
   version "1.10.0"

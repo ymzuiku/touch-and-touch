@@ -1,12 +1,12 @@
 interface DragProps extends IProps {
+  dragPadding?: number;
   localStorageKey?: string;
   clientX?: number;
   clientY?: number;
   query?: string;
 }
 
-function fixPosition(state: { x: number; y: number }) {
-  const out = 60;
+function fixPosition(out = 30, state: { x: number; y: number }) {
   if (state.x < 0) {
     state.x = 0;
   } else if (state.x > window.innerWidth - out) {
@@ -25,6 +25,7 @@ export const Drag = ({
   clientY,
   query = "[tat-base-drag]",
   localStorageKey,
+  dragPadding,
   style,
   ...rest
 }: DragProps) => {
@@ -43,7 +44,7 @@ export const Drag = ({
       }
       state.x = e.clientX - state.startX;
       state.y = e.clientY - state.startY;
-      fixPosition(state);
+      fixPosition(dragPadding, state);
       // next("[tat-drag]");
       update();
       if (localStorageKey) {
@@ -85,7 +86,7 @@ export const Drag = ({
       }
     }
   }
-  fixPosition(state);
+  fixPosition(dragPadding, state);
   aoife.waitAppend(query).then((ele) => {
     ele.style.position = "fixed";
     update();

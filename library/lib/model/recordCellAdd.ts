@@ -16,5 +16,5 @@ export const recordCellAdd = async () => {
 
   await changeSelectItem(id);
 
-  aoife.next(".tat-plan");
+  aoife.next(".tat-plan, .tat-step");
 };
