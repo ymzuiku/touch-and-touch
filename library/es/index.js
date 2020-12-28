@@ -192,7 +192,7 @@ function getTitle(item) {
     return item.title || dayjs(item.updateAt).format("MM/DD HH:mm");
 }
 
-var micoDb = createMicoDb("tat");
+var micoDb = createMicoDb("tat" + window.location.host);
 var state = {
     onAlt: false,
     ui: micoDb.collection("ui", {

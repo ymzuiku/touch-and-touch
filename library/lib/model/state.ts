@@ -1,5 +1,5 @@
 import { createMicoDb } from "mico-db";
-const micoDb = createMicoDb("tat");
+const micoDb = createMicoDb("tat" + window.location.host);
 
 export interface RecordItem {
   index?: number;
