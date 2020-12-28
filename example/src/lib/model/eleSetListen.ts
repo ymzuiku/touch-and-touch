@@ -1,12 +1,14 @@
 import { getEventVal } from "./getEventVal";
 import { recordItemAdd } from "./recordItemAdd";
+import mockjs from "mockjs";
+import { cache } from "./cache";
 
 export const inputs = ["input", "submit"];
 export const submits = ["submit", "change"];
 export const clicks = ["mousedown", "touchend"];
 export const attrs = [...inputs, ...clicks, ...submits];
 
-export const eleSetListen = (ele: HTMLLIElement) => {
+export const eleSetListen = (ele: HTMLInputElement) => {
   let attrList = attrs;
   if (ele.nodeName === "FORM") {
     attrList = ["change"];
@@ -16,7 +18,11 @@ export const eleSetListen = (ele: HTMLLIElement) => {
     if ((ele as any)["tat-" + e]) {
       return;
     }
-    ele.addEventListener(e, function (event: Event) {
+    ele.addEventListener(e, async function (event: Event) {
+      console.log("ignore", (ele as any)._tatIgnoreOnce, getEventVal(event));
+      if ((ele as any)._tatIgnoreOnce === getEventVal(event)) {
+        return;
+      }
       if (clicks.indexOf(e) > -1) {
         setTimeout(() => {
           recordItemAdd({
@@ -26,10 +32,35 @@ export const eleSetListen = (ele: HTMLLIElement) => {
           });
         }, 20);
       } else {
+        let value = getEventVal(event) as string;
+        let mock = "";
+        console.log("input-", value);
+        const reg = /!!/;
+        if (reg.test(value)) {
+          mock = value.replace(reg, "");
+          try {
+            const fn = new Function("random", "set", "get", "return " + mock);
+            value = await Promise.resolve(
+              fn(mockjs.Random, cache.set, cache.get)
+            );
+            const inputEvent = new InputEvent(e, {
+              data: value,
+              view: window,
+              bubbles: true,
+              cancelable: true,
+            });
+            (ele as any)._tatIgnoreOnce = value;
+            ele.value = value;
+            ele.dispatchEvent(inputEvent);
+          } catch (err) {
+            console.error(err);
+          }
+        }
         recordItemAdd({
           key: ele.getAttribute("tat-key")!,
           type: e,
-          value: getEventVal(event),
+          value,
+          mock,
         });
       }
     });

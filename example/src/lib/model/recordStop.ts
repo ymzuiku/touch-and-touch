@@ -5,7 +5,6 @@ export const recordStop = async () => {
     {},
     {
       recording: 0,
-      showPlayList: 1,
     }
   );
 
@@ -19,5 +18,5 @@ export const recordStop = async () => {
       updateAt: Date.now(),
     }
   );
-  aoife.next(".tat-plan, .tat-step");
+  aoife.next(".tat-update");
 };

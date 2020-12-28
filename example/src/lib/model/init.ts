@@ -50,7 +50,7 @@ export const init = async (opt: InitOptions = {}) => {
     await changeSelectItem(next._id);
   }
 
-  aoife.next(".tat-plan");
+  aoife.next(".tat-update");
 
   await state.ui.updateOne(
     {},

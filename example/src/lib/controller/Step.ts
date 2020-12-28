@@ -1,24 +1,6 @@
 import { state } from "../model/state";
 import css from "template-css";
 
-export const TipStep = () => {
-  return aoife(
-    "div",
-    {
-      class: "tat-step",
-      hidden: async () => {
-        const ui = await state.ui.findOne();
-        return !ui.showList;
-      },
-    },
-    async () => {
-      const ui = await state.ui.findOne();
-      const cell = await state.nowCell.findOne();
-      return ui.step ? `${ui.step}/${cell.step}` : `Done/${cell.step}`;
-    }
-  );
-};
-
 export const Step = () => {
   return aoife(
     "div",
@@ -29,11 +11,18 @@ export const Step = () => {
         return !ui.showList;
       },
     },
-    aoife("span", "Step: "),
     async () => {
       const ui = await state.ui.findOne();
       const cell = await state.nowCell.findOne();
-      return ui.replaying ? `${ui.step}/${cell.step}` : cell.step;
+      let label = "";
+      if (ui.step) {
+        label = `Replaying: ${ui.step}/${cell.step}`;
+      } else if (ui.recording) {
+        label = `Recording: ${cell.step}`;
+      } else {
+        label = `Step: ${cell.step}`;
+      }
+      return label;
     }
   );
 };

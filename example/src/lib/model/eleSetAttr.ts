@@ -66,8 +66,10 @@ function setAttrId(ele: HTMLInputElement) {
       name && "name:" + name,
       type && "type:" + type,
       key && "key:" + key,
-      placeholder && "ph:" + placeholder,
-    ].join(", ")
+      placeholder && "place:" + placeholder,
+    ]
+      .filter(Boolean)
+      .join(", ")
   );
   eleSetListen(ele as any);
 }

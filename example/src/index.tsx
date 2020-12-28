@@ -15,7 +15,6 @@ function App() {
       {/* <div innerHTML={html}></div> */}
       <form
         onchange={(e) => {
-          console.log("eee", e.target.value);
           (state as any)[e.target.placeholder] = e.target.value;
         }}
         onsubmit={(e) => {
@@ -24,6 +23,7 @@ function App() {
         }}
       >
         <input placeholder="name" />
+        <input placeholder="name2" />
         <input placeholder="password" type="password" />
         <div tat-btn="dog" onclick={() => alert("10")}>
           alert

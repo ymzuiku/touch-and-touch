@@ -32,7 +32,7 @@ function ThePop({ children }: any) {
 }
 
 export const Ctrl = () => {
-  return aoife("div", { class: "tat-ctrl" }, async () => {
+  return aoife("div", { class: "tat-update tat-ctrl" }, async () => {
     const ui = await state.ui.findOne();
 
     if (ui.recording) {
@@ -78,12 +78,12 @@ export const Ctrl = () => {
           "Clear Events",
         ],
       }),
-      ThePop({
-        children: [
-          CopySvg({ class: "tat-btn", onclick: recordCellAdd }),
-          "Copy record to new item",
-        ],
-      }),
+      // ThePop({
+      //   children: [
+      //     CopySvg({ class: "tat-btn", onclick: recordCellAdd }),
+      //     "Copy record to new item",
+      //   ],
+      // }),
       ThePop({
         children: [
           DownloadSvg({

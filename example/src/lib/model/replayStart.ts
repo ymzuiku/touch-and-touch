@@ -5,6 +5,8 @@ import { replayStop } from "./replayStop";
 import { replayFail } from "./replayFail";
 import { initOpt } from "./init";
 import { getHref } from "./getHref";
+import mockjs from "mockjs";
+import { cache } from "./cache";
 
 export const replayStart = async () => {
   const items = await state.recordItems.find();
@@ -14,10 +16,9 @@ export const replayStart = async () => {
     {
       recording: 0,
       replaying: 1,
-      showPlayList: 0,
     }
   );
-  aoife.next(".tat-plan, .tat-step, .tat-mouse");
+  aoife.next(".tat-update, .tat-mouse");
 
   if (initOpt.onReplay) {
     const cell = await state.nowCell.findOne();
@@ -68,6 +69,11 @@ async function emitInput(
   ) {
     await state.ui.updateOne({}, { lastFocus: el });
     el.focus();
+  }
+
+  if (item.mock) {
+    const fn = new Function("random", "set", "get", "return " + item.mock);
+    item.value = await Promise.resolve(fn(mockjs.Random, cache.set, cache.get));
   }
 
   const inputEvent = new InputEvent(eventKey, {

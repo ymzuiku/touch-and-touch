@@ -9,10 +9,9 @@ export const replayStop = async (success?: boolean) => {
       replaying: 0,
       showMouse: 0,
       step: 0,
-      showPlayList: 1,
     }
   );
-  aoife.next(".tat-plan, .tat-step, .tat-mouse");
+  aoife.next(".tat-update, .tat-mouse");
   if (success && initOpt.onSuccess) {
     const cell = await state.nowCell.findOne();
     initOpt.onSuccess(cell);
