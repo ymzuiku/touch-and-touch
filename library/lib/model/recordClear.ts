@@ -2,8 +2,8 @@ import Message from "vanilla-message";
 import { getTitle } from "./getTitle";
 import { state } from "./state";
 
-export const recordClear = async () => {
-  const lastCell = await state.nowCell.findOne();
+export const recordClear = async (id: string) => {
+  const lastCell = await state.recordList.findOne({ _id: id });
   if (lastCell.step === 0) {
     return;
   }
@@ -20,17 +20,15 @@ export const recordClear = async () => {
       return;
     }
   }
-  state.ui.updateOne(
-    {},
-    {
-      recording: 0,
-      replaying: 0,
-      showList: 1,
-    }
-  );
-  state.recordItems.set([]);
-  state.nowCell.updateOne({}, { items: [], step: 0 });
-  const cell = await state.nowCell.findOne();
-  await state.recordList.updateOne({ _id: cell._id }, cell);
+  // state.ui.updateOne(
+  //   {},
+  //   {
+  //     recording: 0,
+  //     replaying: 0,
+  //     showList: 1,
+  //   }
+  // );
+  // state.recordItems.set([]);
+  await state.recordList.updateOne({ _id: id }, { items: [], step: 0 });
   aoife.next(".tat-update");
 };

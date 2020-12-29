@@ -1,10 +1,10 @@
 import Pop from 'aoife-pop';
 import css from 'template-css';
-import Message from 'vanilla-message';
-import dayjs from 'dayjs';
-import micoDb$1, { createMicoDb } from 'mico-db';
 import aoife$1 from 'aoife';
+import Message from 'vanilla-message';
+import micoDb$1, { createMicoDb } from 'mico-db';
 import mockjs from 'mockjs';
+import dayjs from 'dayjs';
 import aoifeSvg from 'aoife-svg';
 import localfile from 'localfile';
 
@@ -188,10 +188,6 @@ var Drag = function (_a) {
         } }, rest), children);
 };
 
-function getTitle(item) {
-    return item.title || dayjs(item.updateAt).format("MM/DD HH:mm");
-}
-
 var micoDb = createMicoDb("tat" + window.location.host);
 var state = {
     onAlt: false,
@@ -224,46 +220,6 @@ var state = {
 // state.recordItems.get();
 // state.recordList.get();
 
-var recordClear = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var lastCell, cell;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, state.nowCell.findOne()];
-            case 1:
-                lastCell = _a.sent();
-                if (lastCell.step === 0) {
-                    return [2 /*return*/];
-                }
-                if (!!state.onAlt) return [3 /*break*/, 3];
-                return [4 /*yield*/, Message.info("Is clear this steps: [" + lastCell.step + "]" + getTitle(lastCell) + "?", {
-                        ok: "Ok",
-                        cancel: "Cancel",
-                    })];
-            case 2:
-                if (!(_a.sent())) {
-                    return [2 /*return*/];
-                }
-                _a.label = 3;
-            case 3:
-                state.ui.updateOne({}, {
-                    recording: 0,
-                    replaying: 0,
-                    showList: 1,
-                });
-                state.recordItems.set([]);
-                state.nowCell.updateOne({}, { items: [], step: 0 });
-                return [4 /*yield*/, state.nowCell.findOne()];
-            case 4:
-                cell = _a.sent();
-                return [4 /*yield*/, state.recordList.updateOne({ _id: cell._id }, cell)];
-            case 5:
-                _a.sent();
-                aoife.next(".tat-update");
-                return [2 /*return*/];
-        }
-    });
-}); };
-
 function customEvent(e) {
     if (e.detail) {
         Message.info("[TouchAndTouch] Listened: " + e.detail, { outTime: 1500, position: 'bottom' });
@@ -286,7 +242,7 @@ function getHref(href) {
     return list[1] || "/";
 }
 
-var recordStart = function () { return __awaiter(void 0, void 0, void 0, function () {
+var recordContinue = function () { return __awaiter(void 0, void 0, void 0, function () {
     var items, isHaveHref, i;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -587,6 +543,10 @@ var changeSelectItem = function (id) { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); };
+
+function getTitle(item) {
+    return item.title || dayjs(item.updateAt).format("MM/DD HH:mm");
+}
 
 var recordCellAdd = function () { return __awaiter(void 0, void 0, void 0, function () {
     var items, id;
@@ -1289,17 +1249,6 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
 var Step = function () {
     return aoife("div", {
         class: "tat-step",
-        hidden: function () { return __awaiter(void 0, void 0, void 0, function () {
-            var ui;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, state.ui.findOne()];
-                    case 1:
-                        ui = _a.sent();
-                        return [2 /*return*/, !ui.showList];
-                }
-            });
-        }); },
     }, function () { return __awaiter(void 0, void 0, void 0, function () {
         var ui, cell, label;
         return __generator(this, function (_a) {
@@ -1330,20 +1279,21 @@ var templateObject_1;
 
 var DragSvg = aoifeSvg("\n<svg t=\"1608724287002\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2814\" width=\"200\" height=\"200\"><path d=\"M362.666667 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2815\"></path><path d=\"M661.333333 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2816\"></path><path d=\"M362.666667 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2817\"></path><path d=\"M661.333333 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2818\"></path><path d=\"M362.666667 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2819\"></path><path d=\"M661.333333 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2820\"></path></svg>\n");
 var EditorSvg = aoifeSvg("\n<svg t=\"1608542607404\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1140\" width=\"1em\" height=\"1em\"><path d=\"M896 801.216V864H128v-62.784h768z m-204.288-678.4l155.36 155.36-463.136 463.136-156.864 1.504 1.504-156.864L691.712 122.816z m-0.864 89.632L291.712 611.584l-0.64 67.232 67.2-0.64L757.44 279.04l-66.56-66.56z\" fill=\"#f00\" p-id=\"1141\"></path></svg>\n");
-var RecordStartSvg = aoifeSvg("<svg t=\"1608542641961\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1886\" width=\"200px\" height=\"200px\"><path d=\"M512 1024c282.833455 0 512-229.166545 512-512S794.833455 0 512 0 0 229.166545 0 512s229.166545 512 512 512z\" fill=\"#f00\"  p-id=\"1887\"></path></svg>");
+var RecordAgainSvg = aoifeSvg("<svg t=\"1609231838403\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"12509\" width=\"200\" height=\"200\"><path d=\"M511.953038 76.651228C271.156005 76.651228 75.945597 271.860432 75.945597 512.658669c0 240.794625 195.209204 436.002625 436.007441 436.002625 240.794625 0 436.002625-195.208 436.002625-436.002625C948.00985 271.860432 752.801849 76.651228 511.953038 76.651228L511.953038 76.651228zM708.138806 649.912243c16.287302 16.286098 16.287302 42.649708 0 58.93099-16.281281 16.287302-42.644892 16.287302-58.93099 0L511.732679 571.423486 374.258746 708.843233c-16.28369 16.287302-42.644892 16.287302-58.932194 0-16.282486-16.281281-16.282486-42.644892 0-58.93099l137.52812-137.473933L315.380739 375.017359c-16.282486-16.28369-16.282486-42.646096 0-58.932194 16.286098-16.282486 42.648504-16.282486 58.932194 0l137.419747 137.473933 137.473933-137.473933c16.286098-16.282486 42.649708-16.282486 58.93099 0 16.287302 16.286098 16.287302 42.648504 0 58.932194L570.71906 512.43831 708.138806 649.912243 708.138806 649.912243zM708.138806 649.912243\" p-id=\"12510\"></path></svg>", "1.1em", "1.1em");
+var RecordContinueSvg = aoifeSvg("<svg t=\"1608542641961\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1886\" width=\"200px\" height=\"200px\"><path d=\"M512 1024c282.833455 0 512-229.166545 512-512S794.833455 0 512 0 0 229.166545 0 512s229.166545 512 512 512z\" fill=\"#f00\"  p-id=\"1887\"></path></svg>", "1em", "1em");
 var RecordStopSvg = aoifeSvg("<svg t=\"1608738155473\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1785\" width=\"200\" height=\"200\"><path d=\"M512 0c-282.784 0-512 229.216-512 512s229.216 512 512 512 512-229.216 512-512-229.216-512-512-512zM512 928c-229.76 0-416-186.24-416-416s186.24-416 416-416 416 186.24 416 416-186.24 416-416 416zM320 320l384 0 0 384-384 0z\" p-id=\"1786\"></path></svg>");
 var ReplayStopSvg = aoifeSvg("<svg t=\"1608544642733\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1144\" width=\"200\" height=\"200\"><path d=\"M32 32m160 0l640 0q160 0 160 160l0 640q0 160-160 160l-640 0q-160 0-160-160l0-640q0-160 160-160Z\" fill=\"#364F6B\" p-id=\"1145\"></path></svg>");
 var ReplayAllSvg = aoifeSvg("<svg t=\"1609043479737\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"5003\" width=\"200\" height=\"200\"><path d=\"M465.5 844.3V581.5L113.6 844.3V179.7l351.9 262.8V179.7l445 332.3-445 332.3z\" fill=\"\" p-id=\"5004\"></path></svg>", "1.2em", "1.2em");
 var MoreSvg = aoifeSvg("<svg t=\"1609043662724\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"5747\" width=\"200\" height=\"200\"><path d=\"M128.141125 383.858875C57.578831 383.858875 0 441.437707 0 512c0 70.562293 57.578831 128.141125 128.141125 128.141125 70.562293 0 128.141125-57.578831 128.141125-128.141125C256.282249 441.437707 198.703418 383.858875 128.141125 383.858875zM512 383.858875C441.437707 383.858875 383.858875 441.437707 383.858875 512c0 70.562293 57.578831 128.141125 128.141125 128.141125 70.562293 0 128.141125-57.578831 128.141125-128.141125C640.141125 441.437707 582.562293 383.858875 512 383.858875zM895.858875 383.858875c-70.562293 0-128.141125 57.578831-128.141125 128.141125 0 70.562293 57.578831 128.141125 128.141125 128.141125 70.562293 0 128.141125-57.578831 128.141125-128.141125C1024 441.437707 966.985667 383.858875 895.858875 383.858875z\" p-id=\"5748\"></path></svg>");
-var RecordCancelSvg = aoifeSvg("<svg t=\"1608544898326\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1760\" width=\"200\" height=\"200\"><path d=\"M512 128C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z m0 85.333333c66.133333 0 128 23.466667 179.2 59.733334L273.066667 691.2C236.8 640 213.333333 578.133333 213.333333 512c0-164.266667 134.4-298.666667 298.666667-298.666667z m0 597.333334c-66.133333 0-128-23.466667-179.2-59.733334l418.133333-418.133333C787.2 384 810.666667 445.866667 810.666667 512c0 164.266667-134.4 298.666667-298.666667 298.666667z\" fill=\"#D50000\" p-id=\"1761\"></path></svg>", "1.2em", "1.2em");
+var ThinMoreSvg = aoifeSvg("<svg t=\"1609231381688\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"10465\" width=\"200\" height=\"200\"><path d=\"M689.777778 512c0-66.673778 54.229333-120.888889 120.888889-120.888889s120.888889 54.229333 120.888889 120.888889c0 66.659556-54.229333 120.888889-120.888889 120.888889s-120.888889-54.229333-120.888889-120.888889z m184.888889 0c0-35.285333-28.714667-64-64-64s-64 28.714667-64 64 28.714667 64 64 64 64-28.714667 64-64zM391.111111 512c0-66.673778 54.229333-120.888889 120.888889-120.888889s120.888889 54.229333 120.888889 120.888889c0 66.659556-54.229333 120.888889-120.888889 120.888889s-120.888889-54.229333-120.888889-120.888889z m184.888889 0c0-35.285333-28.714667-64-64-64s-64 28.714667-64 64 28.714667 64 64 64 64-28.714667 64-64zM92.444444 512c0-66.673778 54.229333-120.888889 120.888889-120.888889s120.888889 54.229333 120.888889 120.888889c0 66.659556-54.229333 120.888889-120.888889 120.888889S92.444444 578.659556 92.444444 512z m184.888889 0c0-35.285333-28.714667-64-64-64s-64 28.714667-64 64 28.714667 64 64 64 64-28.714667 64-64z\" fill=\"\" p-id=\"10466\"></path></svg>");
+var CancelSvg = aoifeSvg("<svg t=\"1608544898326\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1760\" width=\"200\" height=\"200\"><path d=\"M512 128C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z m0 85.333333c66.133333 0 128 23.466667 179.2 59.733334L273.066667 691.2C236.8 640 213.333333 578.133333 213.333333 512c0-164.266667 134.4-298.666667 298.666667-298.666667z m0 597.333334c-66.133333 0-128-23.466667-179.2-59.733334l418.133333-418.133333C787.2 384 810.666667 445.866667 810.666667 512c0 164.266667-134.4 298.666667-298.666667 298.666667z\" fill=\"#D50000\" p-id=\"1761\"></path></svg>", "1.2em", "1.2em");
 var CtrlExpendSvg = aoifeSvg("<svg t=\"1608568357635\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1893\" width=\"200\" height=\"200\"><path d=\"M512 704.412l311.598-311.598-73.226-73.226L512 557.441 273.627 319.588l-73.226 73.226L512 704.412z\" p-id=\"1894\"></path></svg>");
 var DeleteSvg = aoifeSvg("<svg t=\"1608624070479\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2977\" width=\"200\" height=\"200\"><path d=\"M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72z\" p-id=\"2978\"></path><path d=\"M864 256H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z\" p-id=\"2979\"></path></svg>");
 var PlaySvg = aoifeSvg("\n<svg t=\"1608653010083\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2669\" width=\"200\" height=\"200\"><path d=\"M254.132978 880.390231c-6.079462 0-12.155854-1.511423-17.643845-4.497431-11.828396-6.482645-19.195178-18.85851-19.195178-32.341592L217.293955 180.465165c0-13.483082 7.366781-25.898857 19.195178-32.346709 11.787464-6.483668 26.226315-5.928013 37.57478 1.363044L789.797957 481.028615c10.536984 6.77531 16.908088 18.456351 16.908088 30.979572 0 12.523221-6.371104 24.203238-16.908088 30.982642L274.063913 874.53385C267.983427 878.403994 261.060761 880.390231 254.132978 880.390231L254.132978 880.390231zM254.132978 880.390231\" p-id=\"2670\"></path></svg>", "1.2em", "1.2em");
-var CopySvg = aoifeSvg("<svg t=\"1609140690840\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2475\" width=\"200\" height=\"200\"><path d=\"M571.52 909.44H280.96c-61.44 0-111.36-49.92-111.36-111.36V387.2c0-61.44 49.92-111.36 111.36-111.36h290.56c61.44 0 111.36 49.92 111.36 111.36v410.88c0 61.44-49.92 111.36-111.36 111.36z m-290.56-569.6c-26.24 0-47.36 21.12-47.36 47.36v410.88c0 26.24 21.12 47.36 47.36 47.36h290.56c26.24 0 47.36-21.12 47.36-47.36V387.2c0-26.24-21.12-47.36-47.36-47.36H280.96z\" fill=\"#515151\" p-id=\"2476\"></path><path d=\"M775.68 742.4c-17.92 0-32-14.08-32-32V333.44c0-66.56-53.76-120.32-120.32-120.32h-256c-17.92 0-32-14.08-32-32s14.08-32 32-32h256c101.76 0 184.32 82.56 184.32 184.32V710.4c0 17.28-14.08 32-32 32z\" fill=\"#515151\" p-id=\"2477\"></path></svg>", 
-// `<svg t="1608656646797" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1759" width="200" height="200"><path d="M808.768 197.312c10.432 0 17.408 6.912 17.408 17.344l0 485.568c0 10.368-6.976 17.344-17.408 17.344l-87.296 0c-19.136 0-34.944 15.552-34.944 34.624 0 19.136 15.808 34.688 34.944 34.688l104.768 0c38.464 0 69.824-31.168 69.824-69.312l0-520.32C896 159.168 864.64 128 826.176 128l-384 0c-38.4 0-69.824 31.232-69.824 69.312l0 34.688c0 19.072 15.68 34.688 34.88 34.688 19.2 0 34.88-15.616 34.88-34.688L442.112 214.656c0-10.432 6.976-17.344 17.408-17.344L808.768 197.312z" p-id="1760"></path><path d="M128 363.968l0 469.376C128 867.84 160.32 896 199.808 896l394.944 0c39.488 0 71.872-28.16 71.872-62.656L666.624 363.968c0-34.432-32.384-62.592-71.872-62.592L199.808 301.376C160.32 301.376 128 329.536 128 363.968z" p-id="1761"></path></svg>`,
-"1.2em", "1.2em");
+var CopySvg = aoifeSvg("<svg t=\"1609140690840\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2475\" width=\"200\" height=\"200\"><path d=\"M571.52 909.44H280.96c-61.44 0-111.36-49.92-111.36-111.36V387.2c0-61.44 49.92-111.36 111.36-111.36h290.56c61.44 0 111.36 49.92 111.36 111.36v410.88c0 61.44-49.92 111.36-111.36 111.36z m-290.56-569.6c-26.24 0-47.36 21.12-47.36 47.36v410.88c0 26.24 21.12 47.36 47.36 47.36h290.56c26.24 0 47.36-21.12 47.36-47.36V387.2c0-26.24-21.12-47.36-47.36-47.36H280.96z\" fill=\"#515151\" p-id=\"2476\"></path><path d=\"M775.68 742.4c-17.92 0-32-14.08-32-32V333.44c0-66.56-53.76-120.32-120.32-120.32h-256c-17.92 0-32-14.08-32-32s14.08-32 32-32h256c101.76 0 184.32 82.56 184.32 184.32V710.4c0 17.28-14.08 32-32 32z\" fill=\"#515151\" p-id=\"2477\"></path></svg>", "1.2em", "1.2em");
 var DownloadSvg = aoifeSvg("<svg t=\"1609045064135\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"8424\" width=\"200\" height=\"200\"><path d=\"M877.489158 381.468085 668.638503 381.468085 668.638503 68.191078 355.361497 68.191078l0 313.277006L146.509818 381.468085l365.489158 365.489158L877.489158 381.468085zM146.509818 851.382571l0 104.425328L877.489158 955.807898 877.489158 851.382571 146.509818 851.382571z\" p-id=\"8425\"></path></svg>");
 var LoaclFileSvg = aoifeSvg("<svg t=\"1609045128202\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"11972\" width=\"200\" height=\"200\"><path d=\"M873.9 873.8H136.1c-20.6 0-37.4-16.7-37.4-37.4V198.3c0-29.2 23.7-52.9 52.9-52.9h187.8c10.3 0 20.1 4.2 27.1 11.7l119.6 126.1c7.1 7.4 16.9 11.7 27.1 11.7h360.6c29.2 0 52.9 23.7 52.9 52.9V821c0.1 29.1-23.6 52.8-52.8 52.8z\" p-id=\"11973\"></path></svg>");
+var ShowSvg = aoifeSvg("<svg t=\"1609228844565\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"5423\" width=\"200\" height=\"200\"><path d=\"M0 0 256 0 256 256 0 256zM384 64 1024 64 1024 192 384 192zM0 384 256 384 256 640 0 640zM384 448 1024 448 1024 576 384 576zM0 768 256 768 256 1024 0 1024zM384 832 1024 832 1024 960 384 960z\" p-id=\"5424\"></path></svg>");
 
 function exportRecord() {
     return __awaiter(this, void 0, void 0, function () {
@@ -1403,17 +1353,54 @@ function importRecord() {
     });
 }
 
+var recordAgain = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, state.nowCell.updateOne({}, { step: 0, items: [] })];
+            case 1:
+                _a.sent();
+                return [4 /*yield*/, state.recordItems.deleteMany()];
+            case 2:
+                _a.sent();
+                recordContinue();
+                return [2 /*return*/];
+        }
+    });
+}); };
+
+var showList = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var ui;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, state.ui.findOne()];
+            case 1:
+                ui = _a.sent();
+                return [4 /*yield*/, state.ui.updateOne({}, {
+                        showList: ui.showList ? 0 : 1,
+                    })];
+            case 2:
+                _a.sent();
+                aoife$1.next(".tat-update");
+                return [2 /*return*/];
+        }
+    });
+}); };
+
 function ThePop(_a) {
     var children = _a.children;
     return Pop({
         animation: void 0,
         placement: "top",
         followCursor: "horizontal",
-        children: [children[0], aoife("div", { class: "tat-fm" }, children[1])],
+        children: [children[0], aoife$1("div", { class: "tat-fm" }, children[1])],
     });
 }
+function MoreItem(_a) {
+    var children = _a.children, onclick = _a.onclick;
+    return aoife$1("div", { class: "tat-more-item", onclick: onclick }, children[0], children[1]);
+}
 var Ctrl = function () {
-    return aoife("div", { class: "tat-update tat-ctrl" }, function () { return __awaiter(void 0, void 0, void 0, function () {
+    return aoife$1("div", { class: "tat-update tat-ctrl" }, function () { return __awaiter(void 0, void 0, void 0, function () {
         var ui;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -1421,50 +1408,64 @@ var Ctrl = function () {
                 case 1:
                     ui = _a.sent();
                     if (ui.recording) {
-                        return [2 /*return*/, aoife("span", { class: "tat-row" }, RecordStopSvg({ class: "tat-btn", onclick: recordStop }), Step())];
+                        return [2 /*return*/, aoife$1("span", { class: "tat-row" }, RecordStopSvg({ class: "tat-btn", onclick: recordStop }), Step())];
                     }
                     if (ui.replaying) {
-                        return [2 /*return*/, aoife("span", { class: "tat-row" }, ReplayStopSvg({ class: "tat-btn", onclick: function () { return replayStop(); } }), Step())];
+                        return [2 /*return*/, aoife$1("span", { class: "tat-row" }, ReplayStopSvg({ class: "tat-btn", onclick: function () { return replayStop(); } }), Step())];
                     }
-                    return [2 /*return*/, aoife("span", { class: "tat-row" }, ThePop({
+                    return [2 /*return*/, aoife$1("span", { class: "tat-row" }, ThePop({
                             children: [
                                 PlaySvg({ class: "tat-btn", onclick: function () { return replayStart(); } }),
                                 "Play selected record",
                             ],
                         }), ThePop({
                             children: [
-                                ReplayAllSvg({ class: "tat-btn", onclick: function () { return replayAllFilter(); } }),
+                                ReplayAllSvg({
+                                    class: "tat-btn",
+                                    onclick: function () { return replayAllFilter(); },
+                                }),
                                 "Play all filter record",
                             ],
                         }), ThePop({
                             children: [
-                                RecordStartSvg({ class: "tat-btn", onclick: function () { return recordStart(); } }),
-                                "Start Record",
-                            ],
-                        }), ThePop({
-                            children: [
-                                RecordCancelSvg({ class: "tat-btn", onclick: function () { return recordClear(); } }),
-                                "Clear Events",
-                            ],
-                        }), 
-                        // ThePop({
-                        //   children: [
-                        //     CopySvg({ class: "tat-btn", onclick: recordCellAdd }),
-                        //     "Copy record to new item",
-                        //   ],
-                        // }),
-                        ThePop({
-                            children: [
-                                DownloadSvg({
+                                RecordContinueSvg({
                                     class: "tat-btn",
-                                    onclick: exportRecord,
+                                    onclick: function () { return recordContinue(); },
                                 }),
-                                "Copy record to new item",
+                                "Record continue",
                             ],
                         }), ThePop({
                             children: [
-                                LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
-                                "Copy record to new item",
+                                RecordAgainSvg({ class: "tat-btn", onclick: function () { return recordAgain(); } }),
+                                "Record again",
+                            ],
+                        }), Pop({
+                            placement: "right",
+                            children: [
+                                MoreSvg({ class: "tat-btn" }),
+                                aoife$1("div", MoreItem({
+                                    onclick: function () { return showList(); },
+                                    children: [
+                                        ShowSvg({
+                                            class: "tat-btn",
+                                        }),
+                                        "List show/hidden",
+                                    ],
+                                }), MoreItem({
+                                    onclick: exportRecord,
+                                    children: [
+                                        DownloadSvg({
+                                            class: "tat-btn",
+                                        }),
+                                        "Download records",
+                                    ],
+                                }), MoreItem({
+                                    onclick: importRecord,
+                                    children: [
+                                        LoaclFileSvg({ class: "tat-btn" }),
+                                        "Load records from file",
+                                    ],
+                                })),
                             ],
                         })
                         // aoife("div", { style: "flex:1" })
@@ -1490,7 +1491,7 @@ var Ctrl = function () {
         });
     }); });
 };
-css(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .tat-row {\n    display: flex;\n    ", "\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"], ["\n  .tat-row {\n    display: flex;\n    ", "\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"])), css.flex("row-center-center"));
+css(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .tat-row {\n    display: flex;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"], ["\n  .tat-row {\n    display: flex;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"])), css.flex("row-center-center"));
 var templateObject_1$1;
 
 var changeInput = function (id) { return __awaiter(void 0, void 0, void 0, function () {
@@ -1592,7 +1593,18 @@ var recordCellCopy = function (id) { return __awaiter(void 0, void 0, void 0, fu
 
 var PlayList = function () {
     return aoife("div", {
-        class: "tat-play-list",
+        class: "tat-update, tat-play-list",
+        hidden: function () { return __awaiter(void 0, void 0, void 0, function () {
+            var ui;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, state.ui.findOne()];
+                    case 1:
+                        ui = _a.sent();
+                        return [2 /*return*/, !ui.showList || ui.recording || ui.replaying];
+                }
+            });
+        }); },
     }, aoife("input", {
         class: "filter",
         placeholder: "FilterA, FilterB...",
@@ -1733,13 +1745,31 @@ var PlayList = function () {
                                     e.preventDefault();
                                     remove(item._id);
                                 },
-                            }));
+                            })
+                            // Pop({
+                            //   placement: "right",
+                            //   children: [
+                            //     ThinMoreSvg({ class: "edit" }),
+                            //     aoife(
+                            //       "div",
+                            //       CancelSvg({
+                            //         class: "tat-list-pop",
+                            //         onclick: (e) => {
+                            //           e.stopPropagation();
+                            //           e.preventDefault();
+                            //           recordClear(item._id);
+                            //         },
+                            //       }),
+                            //     ),
+                            //   ],
+                            // })
+                            );
                         })];
             }
         });
     }); }));
 };
-css(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .tat-play-list {\n    font-size: 16px;\n    width: 190px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 120px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 200px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"], ["\n  .tat-play-list {\n    font-size: 16px;\n    width: 190px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 120px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 200px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"])), css.flex("row-center-center"), css.wordBreak(1), css.flex("row-start-center"));
+css(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .tat-play-list {\n    font-size: 16px;\n    width: 170px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 120px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 100px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"], ["\n  .tat-play-list {\n    font-size: 16px;\n    width: 170px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 120px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 100px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"])), css.flex("row-center-center"), css.wordBreak(1), css.flex("row-start-center"));
 var templateObject_1$2;
 
 var plan = aoife$1("div", { class: "tat-plan tat-update", "tat-ignore": true }, PlayList());
@@ -1751,18 +1781,22 @@ var dragAndCtrl = aoife$1("div", { class: "tat-row tat-head-center", "tat-ignore
 }), Ctrl());
 var TouchAndTouch = function (opt) {
     init(opt);
-    return aoife$1("div", { "tat-ignore": true, class: "tat tat-root" }, aoife$1("div", { class: "tat-update tat-weight tat-row" }, Pop({
-        theme: "light-border",
-        interactive: true,
-        onShow: function () {
-            aoife$1.waitAppend(".tat-play-list").then(function () {
-                aoife$1.next(".tat-play-list");
-            });
-        },
-        children: [dragAndCtrl, plan],
-    })));
+    return aoife$1("div", { "tat-ignore": true, class: "tat tat-root" }, aoife$1("div", 
+    // { class: "tat-update tat-weight tat-row" },
+    dragAndCtrl, plan
+    // Pop({
+    //   theme: "light-border",
+    //   interactive: true,
+    //   onShow: () => {
+    //     aoife.waitAppend(".tat-play-list").then(() => {
+    //       aoife.next(".tat-play-list");
+    //     });
+    //   },
+    //   children: [],
+    // })
+    ));
 };
-css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    width: 166px;\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    width: 166px;\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
+css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
 var templateObject_1$3;
 
 export default TouchAndTouch;

@@ -1,27 +1,29 @@
 import Pop from "aoife-pop";
 import css from "template-css";
-import { recordClear } from "../model/recordClear";
-import { recordStart } from "../model/recordStart";
+import { recordContinue } from "../model/recordContinue";
 import { recordStop } from "../model/recordStop";
 import { state } from "../model/state";
 import { replayStart } from "../model/replayStart";
-import { recordCellAdd } from "../model/recordCellAdd";
 import { replayStop } from "../model/replayStop";
 import { Step } from "./Step";
 import {
-  RecordStartSvg,
+  RecordContinueSvg,
   RecordStopSvg,
-  RecordCancelSvg,
   ReplayStopSvg,
   PlaySvg,
-  CopySvg,
   ReplayAllSvg,
   DownloadSvg,
   LoaclFileSvg,
+  MoreSvg,
+  RecordAgainSvg,
+  ShowSvg,
 } from "./svg";
 import { exportRecord } from "../model/exportRecord";
 import { importRecord } from "../model/importRecord";
 import { replayAllFilter } from "../model/replayAllFilter";
+import { recordAgain } from "../model/recordAgain";
+import { showList } from "../model/showList";
+import aoife from "aoife";
 
 function ThePop({ children }: any) {
   return Pop({
@@ -30,6 +32,15 @@ function ThePop({ children }: any) {
     followCursor: "horizontal",
     children: [children[0], aoife("div", { class: "tat-fm" }, children[1])],
   });
+}
+
+function MoreItem({ children, onclick }: any) {
+  return aoife(
+    "div",
+    { class: "tat-more-item", onclick },
+    children[0],
+    children[1]
+  );
 }
 
 export const Ctrl = () => {
@@ -63,41 +74,60 @@ export const Ctrl = () => {
       }),
       ThePop({
         children: [
-          ReplayAllSvg({ class: "tat-btn", onclick: () => replayAllFilter() }),
+          ReplayAllSvg({
+            class: "tat-btn",
+            onclick: () => replayAllFilter(),
+          }),
           "Play all filter record",
         ],
       }),
       ThePop({
         children: [
-          RecordStartSvg({ class: "tat-btn", onclick: () => recordStart() }),
-          "Start Record",
-        ],
-      }),
-      ThePop({
-        children: [
-          RecordCancelSvg({ class: "tat-btn", onclick: () => recordClear() }),
-          "Clear Events",
-        ],
-      }),
-      // ThePop({
-      //   children: [
-      //     CopySvg({ class: "tat-btn", onclick: recordCellAdd }),
-      //     "Copy record to new item",
-      //   ],
-      // }),
-      ThePop({
-        children: [
-          DownloadSvg({
+          RecordContinueSvg({
             class: "tat-btn",
-            onclick: exportRecord,
+            onclick: () => recordContinue(),
           }),
-          "Copy record to new item",
+          "Record continue",
         ],
       }),
       ThePop({
         children: [
-          LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
-          "Copy record to new item",
+          RecordAgainSvg({ class: "tat-btn", onclick: () => recordAgain() }),
+          "Record again",
+        ],
+      }),
+      Pop({
+        placement: "right",
+        children: [
+          MoreSvg({ class: "tat-btn" }),
+          aoife(
+            "div",
+            MoreItem({
+              onclick: () => showList(),
+              children: [
+                ShowSvg({
+                  class: "tat-btn",
+                }),
+                "List show/hidden",
+              ],
+            }),
+            MoreItem({
+              onclick: exportRecord,
+              children: [
+                DownloadSvg({
+                  class: "tat-btn",
+                }),
+                "Download records",
+              ],
+            }),
+            MoreItem({
+              onclick: importRecord,
+              children: [
+                LoaclFileSvg({ class: "tat-btn" }),
+                "Load records from file",
+              ],
+            })
+          ),
         ],
       })
       // aoife("div", { style: "flex:1" })
@@ -126,6 +156,22 @@ css`
   .tat-row {
     display: flex;
     ${css.flex("row-center-center")}
+  }
+  .tat-more-item {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    height: 30px;
+    background: rgba(255, 255, 255, 0);
+    padding: 4px;
+  }
+  .tat-more-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .tat-more-item:active {
+    background: rgba(255, 255, 255, 0.1);
   }
   .tat-ctrl {
     display: flex;

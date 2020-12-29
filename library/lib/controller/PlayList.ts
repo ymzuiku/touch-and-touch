@@ -1,6 +1,13 @@
 import { state } from "../model/state";
 import css from "template-css";
-import { CopySvg, DeleteSvg, EditorSvg } from "./svg";
+import {
+  CopySvg,
+  DeleteSvg,
+  EditorSvg,
+  CancelSvg,
+  MoreSvg,
+  ThinMoreSvg,
+} from "./svg";
 import { changeInput } from "../model/changeInput";
 import { rename } from "../model/rename";
 import { remove } from "../model/remove";
@@ -9,12 +16,19 @@ import { changeFilter } from "../model/changeFilter";
 import { getTitle } from "../model/getTitle";
 import { recordCellCopy } from "../model/recordCellCopy";
 import { fixFilterCell } from "../model/fixFilterCell";
+import { recordClear } from "../model/recordClear";
+import Pop from "aoife-pop";
+import aoifeSvg from "aoife-svg";
 
 export const PlayList = () => {
   return aoife(
     "div",
     {
-      class: "tat-play-list",
+      class: "tat-update, tat-play-list",
+      hidden: async () => {
+        const ui = await state.ui.findOne();
+        return !ui.showList || ui.recording || ui.replaying;
+      },
     },
     aoife("input", {
       class: "filter",
@@ -112,6 +126,25 @@ export const PlayList = () => {
               remove(item._id);
             },
           })
+          // Pop({
+          //   placement: "right",
+          //   children: [
+          //     ThinMoreSvg({ class: "edit" }),
+          //     aoife(
+          //       "div",
+
+          //       CancelSvg({
+          //         class: "tat-list-pop",
+          //         onclick: (e) => {
+          //           e.stopPropagation();
+          //           e.preventDefault();
+          //           recordClear(item._id);
+          //         },
+          //       }),
+
+          //     ),
+          //   ],
+          // })
         );
       });
     })
@@ -121,7 +154,7 @@ export const PlayList = () => {
 css`
   .tat-play-list {
     font-size: 16px;
-    width: 190px;
+    width: 170px;
   }
   .tat-play-list .filter {
     height: 20px;
@@ -148,7 +181,7 @@ css`
   }
   .tat-play-list .cells {
     width: 100%;
-    height: 200px;
+    height: 100px;
     overflow-y: auto;
   }
   .tat-play-list .edit:hover {

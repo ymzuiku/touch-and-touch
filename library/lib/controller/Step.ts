@@ -6,10 +6,10 @@ export const Step = () => {
     "div",
     {
       class: "tat-step",
-      hidden: async () => {
-        const ui = await state.ui.findOne();
-        return !ui.showList;
-      },
+      // hidden: async () => {
+      //   const ui = await state.ui.findOne();
+      //   return !ui.showList;
+      // },
     },
     async () => {
       const ui = await state.ui.findOne();

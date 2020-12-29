@@ -31,17 +31,19 @@ export const TouchAndTouch = (opt: InitOptions) => {
     { "tat-ignore": true, class: "tat tat-root" },
     aoife(
       "div",
-      { class: "tat-update tat-weight tat-row" },
-      Pop({
-        theme: "light-border",
-        interactive: true,
-        onShow: () => {
-          aoife.waitAppend(".tat-play-list").then(() => {
-            aoife.next(".tat-play-list");
-          });
-        },
-        children: [dragAndCtrl, plan],
-      })
+      // { class: "tat-update tat-weight tat-row" },
+      dragAndCtrl,
+      plan
+      // Pop({
+      //   theme: "light-border",
+      //   interactive: true,
+      //   onShow: () => {
+      //     aoife.waitAppend(".tat-play-list").then(() => {
+      //       aoife.next(".tat-play-list");
+      //     });
+      //   },
+      //   children: [],
+      // })
     )
   );
 };
@@ -51,7 +53,6 @@ css`
     display: none !important;
   }
   .tat-head-row {
-    width: 166px;
     ${css.flex("row-start-center")}
   }
   .tat-head-center {

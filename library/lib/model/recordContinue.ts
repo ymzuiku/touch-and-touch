@@ -3,7 +3,7 @@ import { recordListenCustemEvent } from "./customEvent";
 import { getHref } from "./getHref";
 import { state } from "./state";
 
-export const recordStart = async () => {
+export const recordContinue = async () => {
   await state.ui.updateOne(
     {},
     {
