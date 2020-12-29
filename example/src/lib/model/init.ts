@@ -15,7 +15,12 @@ export interface InitOptions {
   onReplay?: (cell: RecordCell) => any;
   onChangeData?: (cells: RecordCell[]) => any;
   onChangeSelected?: (cell: RecordCell) => any;
+  initData?: () => Promise<RecordCell[]>;
   autoPlayItem?: string;
+  valueProxy?: {
+    set: any;
+    get: any;
+  };
 }
 
 export const initOpt: InitOptions = {};
@@ -33,6 +38,12 @@ window.addEventListener("keyup", (e) => {
 
 export const init = async (opt: InitOptions = {}) => {
   Object.assign(initOpt, opt);
+  const ui = await state.ui.findOne();
+  if (initOpt.initData && !ui.replaying && !ui.recording) {
+    const list = await initOpt.initData();
+    await state.recordList.deleteMany();
+    await state.recordList.insertMany(list);
+  }
   state.recordList.proxy.onChange = initOpt.onChangeData;
   let list = await state.recordList.find();
   // 若列表为空，初始化一个内容

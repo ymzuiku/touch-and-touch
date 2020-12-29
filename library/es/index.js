@@ -1050,14 +1050,21 @@ function emitInput(el, item, eventKey) {
                     _a.value = _b.sent();
                     _b.label = 4;
                 case 4:
-                    inputEvent = new InputEvent(eventKey, {
+                    inputEvent = new InputEvent("input", {
+                        // inputType: "insertText",
                         data: item.value,
                         view: window,
                         bubbles: true,
                         cancelable: true,
                     });
-                    el.value = (item && item.value) || "";
-                    el.dispatchEvent(inputEvent);
+                    // el.setAttribute("value", (item && item.value) || "");
+                    try {
+                        el.value = (item && item.value) || "";
+                        el.dispatchEvent(inputEvent);
+                    }
+                    catch (err) {
+                        console.error(err);
+                    }
                     return [2 /*return*/];
             }
         });
