@@ -814,48 +814,63 @@ window.addEventListener("keyup", function (e) {
 var init = function (opt) {
     if (opt === void 0) { opt = {}; }
     return __awaiter(void 0, void 0, void 0, function () {
-        var list, old, next;
+        var ui, list_1, list, old, next;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     Object.assign(initOpt, opt);
+                    return [4 /*yield*/, state.ui.findOne()];
+                case 1:
+                    ui = _a.sent();
+                    if (!(initOpt.initData && !ui.replaying && !ui.recording)) return [3 /*break*/, 5];
+                    return [4 /*yield*/, initOpt.initData()];
+                case 2:
+                    list_1 = _a.sent();
+                    return [4 /*yield*/, state.recordList.deleteMany()];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, state.recordList.insertMany(list_1)];
+                case 4:
+                    _a.sent();
+                    _a.label = 5;
+                case 5:
                     state.recordList.proxy.onChange = initOpt.onChangeData;
                     return [4 /*yield*/, state.recordList.find()];
-                case 1:
+                case 6:
                     list = _a.sent();
-                    if (!(list.length === 0)) return [3 /*break*/, 4];
+                    if (!(list.length === 0)) return [3 /*break*/, 9];
                     return [4 /*yield*/, recordCellAdd()];
-                case 2:
+                case 7:
                     _a.sent();
                     return [4 /*yield*/, state.recordList.find()];
-                case 3:
+                case 8:
                     list = _a.sent();
-                    _a.label = 4;
-                case 4: return [4 /*yield*/, state.nowCell.findOne()];
-                case 5:
+                    _a.label = 9;
+                case 9: return [4 /*yield*/, state.nowCell.findOne()];
+                case 10:
                     old = _a.sent();
-                    if (!!old._id) return [3 /*break*/, 8];
-                    if (!(list && list[list.length - 1])) return [3 /*break*/, 7];
+                    if (!!old._id) return [3 /*break*/, 13];
+                    if (!(list && list[list.length - 1])) return [3 /*break*/, 12];
                     return [4 /*yield*/, changeSelectItem(list[list.length - 1]._id)];
-                case 6:
+                case 11:
                     _a.sent();
-                    _a.label = 7;
-                case 7: return [3 /*break*/, 11];
-                case 8: return [4 /*yield*/, state.nowCell.findOne()];
-                case 9:
+                    _a.label = 12;
+                case 12: return [3 /*break*/, 16];
+                case 13: return [4 /*yield*/, state.nowCell.findOne()];
+                case 14:
                     next = _a.sent();
                     return [4 /*yield*/, changeSelectItem(next._id)];
-                case 10:
+                case 15:
                     _a.sent();
-                    _a.label = 11;
-                case 11:
+                    _a.label = 16;
+                case 16:
                     aoife$1.next(".tat-update");
                     return [4 /*yield*/, state.ui.updateOne({}, { speed: opt.speed || 1, waitTimeout: opt.waitTimeout || 5000 })];
-                case 12:
+                case 17:
                     _a.sent();
                     recordDom();
                     setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
-                        var ui, list_1, cell;
+                        var ui, list_2, cell;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0: return [4 /*yield*/, state.ui.findOne()];
@@ -873,8 +888,8 @@ var init = function (opt) {
                                     if (!initOpt.autoPlayItem) return [3 /*break*/, 6];
                                     return [4 /*yield*/, state.recordList.find()];
                                 case 3:
-                                    list_1 = _a.sent();
-                                    cell = list_1.find(function (v) {
+                                    list_2 = _a.sent();
+                                    cell = list_2.find(function (v) {
                                         var title = getTitle(v);
                                         if (title.indexOf(initOpt.autoPlayItem) > -1) {
                                             return true;
@@ -1057,14 +1072,8 @@ function emitInput(el, item, eventKey) {
                         bubbles: true,
                         cancelable: true,
                     });
-                    // el.setAttribute("value", (item && item.value) || "");
-                    try {
-                        el.value = (item && item.value) || "";
-                        el.dispatchEvent(inputEvent);
-                    }
-                    catch (err) {
-                        console.error(err);
-                    }
+                    el.value = (item && item.value) || "";
+                    el.dispatchEvent(inputEvent);
                     return [2 /*return*/];
             }
         });
