@@ -134,3 +134,20 @@ if (sessionStorage.getItem("tat-creator")) {
 ```js
 window.tat();
 ```
+
+## 云端同步
+
+- initData: 初始化列表数据
+- onChangeData: 当数据写入 indexed 变更时的回调用
+
+```ts
+TouchAndTouch({
+  initData:async ()=>{
+    const data = fetch(...); // get list from cloud
+    return data;
+  },
+  onChangeData:(list)=>{
+    fetch(...); // push list to cloud
+  }
+})
+```

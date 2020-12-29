@@ -1,6 +1,6 @@
 import { fixFilterCell } from "./fixFilterCell";
 import { replayStart } from "./replayStart";
-import { RecordCell, RecordItem, state } from "./state";
+import { RecordItem, state } from "./state";
 
 export const replayAllFilter = async () => {
   const list = await state.recordList.find();

@@ -20,15 +20,6 @@ export const recordClear = async (id: string) => {
       return;
     }
   }
-  // state.ui.updateOne(
-  //   {},
-  //   {
-  //     recording: 0,
-  //     replaying: 0,
-  //     showList: 1,
-  //   }
-  // );
-  // state.recordItems.set([]);
   await state.recordList.updateOne({ _id: id }, { items: [], step: 0 });
   aoife.next(".tat-update");
 };

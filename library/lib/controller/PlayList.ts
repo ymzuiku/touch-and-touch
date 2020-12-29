@@ -1,13 +1,6 @@
 import { state } from "../model/state";
 import css from "template-css";
-import {
-  CopySvg,
-  DeleteSvg,
-  EditorSvg,
-  CancelSvg,
-  MoreSvg,
-  ThinMoreSvg,
-} from "./svg";
+import { CopySvg, DeleteSvg, EditorSvg } from "./svg";
 import { changeInput } from "../model/changeInput";
 import { rename } from "../model/rename";
 import { remove } from "../model/remove";
@@ -16,9 +9,6 @@ import { changeFilter } from "../model/changeFilter";
 import { getTitle } from "../model/getTitle";
 import { recordCellCopy } from "../model/recordCellCopy";
 import { fixFilterCell } from "../model/fixFilterCell";
-import { recordClear } from "../model/recordClear";
-import Pop from "aoife-pop";
-import aoifeSvg from "aoife-svg";
 
 export const PlayList = () => {
   return aoife(

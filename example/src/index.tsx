@@ -1,6 +1,5 @@
 import "aoife";
 import TouchAndTouch from "./lib";
-import { html } from "./bootstrap";
 import Message from "vanilla-message";
 
 function App() {
@@ -11,7 +10,7 @@ function App() {
   };
   return (
     <div tat-id="form" class="app">
-      <TouchAndTouch speed={3} onChangeSelected={(cell) => console.log(cell)} />
+      <TouchAndTouch speed={3} />
       <h1>TAT Client</h1>
       {/* <div innerHTML={html}></div> */}
       <div role="tab" onclick={() => Message.info("role-tab")}>
@@ -25,7 +24,6 @@ function App() {
         onchange={(e) => {
           (state as any)[e.target.placeholder] = e.target.value;
           if (state.name2 === "dog") {
-            console.log("提交 event");
             window.dispatchEvent(
               new CustomEvent("tat", { detail: "done dog" })
             );
