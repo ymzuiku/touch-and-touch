@@ -209,7 +209,7 @@ var state = {
     }),
     nowCell: micoDb.collection("nowCell"),
     recordList: micoDb.collection("record-list", {
-        sort: { updateAt: -1 },
+        sort: { title: 1 },
     }),
     recordItems: micoDb.collection("record-item"),
     customEvent: micoDb.collection("custom-event", {
@@ -293,7 +293,7 @@ var recordStop = function () { return __awaiter(void 0, void 0, void 0, function
                 return [4 /*yield*/, state.recordItems.find()];
             case 3:
                 items = _a.sent();
-                return [4 /*yield*/, state.recordList.updateOne({ _id: cell._id }, __assign(__assign({}, cell), { items: items, updateAt: Date.now() }))];
+                return [4 /*yield*/, state.recordList.updateOne({ _id: cell._id }, __assign(__assign({}, cell), { items: items }))];
             case 4:
                 _a.sent();
                 aoife.next(".tat-update");
@@ -599,9 +599,6 @@ function getAttrAndCloseAttr(item, key) {
     }
     return attr || "";
 }
-var loadPageKey = function () {
-    return window.location.pathname + window.location.hash.split("?")[0];
-};
 var attrKeys = {};
 function setAttrId(ele) {
     if (ele.closest("[tat-ignore]")) {
@@ -621,30 +618,13 @@ function setAttrId(ele) {
         ele.getAttribute("type") !== "button") {
         return;
     }
-    var pageKey = loadPageKey();
     var selfId = ele.getAttribute("id");
     if (selfId) {
-        ele.setAttribute("tat-key", pageKey + selfId);
+        ele.setAttribute("tat-key", selfId);
         return eleSetListen(ele);
     }
     var id = getAttrAndCloseAttr(ele, "id");
-    var btn = ele.getAttribute("tat-btn");
-    var placeholder = ele.getAttribute("placeholder");
-    var name = ele.getAttribute("name");
-    var role = ele.getAttribute("role");
-    var type = ele.getAttribute("type");
-    var tatKey = [
-        pageKey,
-        tag,
-        id && "id:" + id,
-        name && "name:" + name,
-        type && "type:" + type,
-        role && "role:" + role,
-        placeholder && "place:" + placeholder,
-        btn && "tat-btn:" + btn,
-    ]
-        .filter(Boolean)
-        .join(",");
+    var tatKey = [tag, id && "id:" + id].filter(Boolean).join(",");
     if (initOpt.autoUseContext && attrKeys[tatKey]) {
         tatKey += "_" + ele.textContent;
     }
@@ -1392,10 +1372,6 @@ function ThePop(_a) {
         children: [children[0], aoife$1("div", { class: "tat-fm" }, children[1])],
     });
 }
-function MoreItem(_a) {
-    var children = _a.children, onclick = _a.onclick;
-    return aoife$1("div", { class: "tat-more-item", onclick: onclick }, children[0], children[1]);
-}
 var Ctrl = function () {
     return aoife$1("div", { class: "tat-update tat-ctrl" }, function () { return __awaiter(void 0, void 0, void 0, function () {
         var ui;
@@ -1436,60 +1412,33 @@ var Ctrl = function () {
                                 RecordAgainSvg({ class: "tat-btn", onclick: function () { return recordAgain(); } }),
                                 "Record again",
                             ],
-                        }), Pop({
-                            placement: "right",
-                            zIndex: 15100,
+                        }), aoife$1("span", { style: "flex:1" }), ThePop({
                             children: [
-                                MoreSvg({ class: "tat-btn" }),
-                                aoife$1("div", MoreItem({
-                                    onclick: function () { return showList(); },
-                                    children: [
-                                        ShowSvg({
-                                            class: "tat-btn",
-                                        }),
-                                        "List show/hidden",
-                                    ],
-                                }), MoreItem({
+                                DownloadSvg({
+                                    class: "tat-btn",
                                     onclick: exportRecord,
-                                    children: [
-                                        DownloadSvg({
-                                            class: "tat-btn",
-                                        }),
-                                        "Download records",
-                                    ],
-                                }), MoreItem({
-                                    onclick: importRecord,
-                                    children: [
-                                        LoaclFileSvg({ class: "tat-btn" }),
-                                        "Load records from file",
-                                    ],
-                                })),
+                                }),
+                                "Download records",
                             ],
-                        })
-                        // aoife("div", { style: "flex:1" })
-                        // aoife(
-                        //   "div",
-                        //   {
-                        //     class: "tat-btn",
-                        //     hidden: async () => {
-                        //       const ui = await state.ui.findOne();
-                        //       return ui.recording || ui.replaying;
-                        //     },
-                        //     onclick: showList,
-                        //   },
-                        //   CtrlExpendSvg({
-                        //     class: async () => {
-                        //       const ui = await state.ui.findOne();
-                        //       return "tat-show-list-icon " + (ui.showList && "tat-show-list");
-                        //     },
-                        //   })
-                        // )
-                        )];
+                        }), ThePop({
+                            children: [
+                                LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
+                                "Load records from file",
+                            ],
+                        }), ThePop({
+                            children: [
+                                ShowSvg({
+                                    class: "tat-btn",
+                                    onclick: function () { return showList(); },
+                                }),
+                                "List show/hidden",
+                            ],
+                        }))];
             }
         });
     }); });
 };
-css(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .tat-row {\n    display: flex;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"], ["\n  .tat-row {\n    display: flex;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"])), css.flex("row-center-center"));
+css(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .tat-row {\n    display: flex;\n    width: 100%;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"], ["\n  .tat-row {\n    display: flex;\n    width: 100%;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    padding: 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-icon {\n    width: 16px;\n    height: 16px;\n  }\n\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"])), css.flex("row-center-center"));
 var templateObject_1$1;
 
 var changeInput = function (id) { return __awaiter(void 0, void 0, void 0, function () {
@@ -1731,52 +1680,50 @@ var PlayList = function () {
                                             return [2 /*return*/];
                                     }
                                 });
-                            }); }), EditorSvg({
-                                class: "edit",
-                                onclick: function (e) {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                    changeInput(item._id);
-                                },
-                            }), CopySvg({
-                                class: "edit",
-                                onclick: function (e) {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                    recordCellCopy(item._id);
-                                },
-                            }), DeleteSvg({
-                                class: "edit",
-                                onclick: function (e) {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                    remove(item._id);
-                                },
-                            })
-                            // Pop({
-                            //   placement: "right",
-                            //   children: [
-                            //     ThinMoreSvg({ class: "edit" }),
-                            //     aoife(
-                            //       "div",
-                            //       CancelSvg({
-                            //         class: "tat-list-pop",
-                            //         onclick: (e) => {
-                            //           e.stopPropagation();
-                            //           e.preventDefault();
-                            //           recordClear(item._id);
-                            //         },
-                            //       }),
-                            //     ),
-                            //   ],
-                            // })
-                            );
+                            }); }), Pop({
+                                placement: "right",
+                                zIndex: 15100,
+                                children: [
+                                    ThinMoreSvg({ class: "edit" }),
+                                    aoife("div", { class: "tat-row" }, EditorSvg({
+                                        class: "tat-btn edit",
+                                        onclick: function (e) {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            changeInput(item._id);
+                                        },
+                                    }), CopySvg({
+                                        class: "tat-btn edit",
+                                        onclick: function (e) {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            recordCellCopy(item._id);
+                                        },
+                                    }), DeleteSvg({
+                                        class: "tat-btn edit",
+                                        onclick: function (e) {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            remove(item._id);
+                                        },
+                                    })
+                                    // CancelSvg({
+                                    //   class: "tat-list-pop",
+                                    //   onclick: (e) => {
+                                    //     e.stopPropagation();
+                                    //     e.preventDefault();
+                                    //     recordClear(item._id);
+                                    //   },
+                                    // })
+                                    ),
+                                ],
+                            }));
                         })];
             }
         });
     }); }));
 };
-css(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .tat-play-list {\n    font-size: 16px;\n    width: 240px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 150px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 100px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"], ["\n  .tat-play-list {\n    font-size: 16px;\n    width: 240px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 150px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 100px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"])), css.flex("row-center-center"), css.wordBreak(1), css.flex("row-start-center"));
+css(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .tat-play-list {\n    font-size: 16px;\n    width: 240px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 200px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 100px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"], ["\n  .tat-play-list {\n    font-size: 16px;\n    width: 240px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 200px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 100px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"])), css.flex("row-center-center"), css.wordBreak(1), css.flex("row-start-center"));
 var templateObject_1$2;
 
 var plan = aoife$1("div", { class: "tat-plan tat-update", "tat-ignore": true }, PlayList());

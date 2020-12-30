@@ -52,7 +52,7 @@ export const state = {
   }),
   nowCell: micoDb.collection<RecordCell>("nowCell"),
   recordList: micoDb.collection<RecordCell>("record-list", {
-    sort: { updateAt: -1 },
+    sort: { title: 1 },
   }),
   recordItems: micoDb.collection<RecordItem>("record-item"),
   customEvent: micoDb.collection<any>("custom-event", {

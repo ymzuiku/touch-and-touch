@@ -17,7 +17,6 @@ export const recordStop = async () => {
     {
       ...cell,
       items,
-      updateAt: Date.now(),
     }
   );
   aoife.next(".tat-update");

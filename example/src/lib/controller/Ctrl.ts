@@ -34,15 +34,6 @@ function ThePop({ children }: any) {
   });
 }
 
-function MoreItem({ children, onclick }: any) {
-  return aoife(
-    "div",
-    { class: "tat-more-item", onclick },
-    children[0],
-    children[1]
-  );
-}
-
 export const Ctrl = () => {
   return aoife("div", { class: "tat-update tat-ctrl" }, async () => {
     const ui = await state.ui.findOne();
@@ -96,59 +87,31 @@ export const Ctrl = () => {
           "Record again",
         ],
       }),
-      Pop({
-        placement: "right",
-        zIndex: 15100,
+      aoife("span", { style: "flex:1" }),
+      ThePop({
         children: [
-          MoreSvg({ class: "tat-btn" }),
-          aoife(
-            "div",
-            MoreItem({
-              onclick: () => showList(),
-              children: [
-                ShowSvg({
-                  class: "tat-btn",
-                }),
-                "List show/hidden",
-              ],
-            }),
-            MoreItem({
-              onclick: exportRecord,
-              children: [
-                DownloadSvg({
-                  class: "tat-btn",
-                }),
-                "Download records",
-              ],
-            }),
-            MoreItem({
-              onclick: importRecord,
-              children: [
-                LoaclFileSvg({ class: "tat-btn" }),
-                "Load records from file",
-              ],
-            })
-          ),
+          DownloadSvg({
+            class: "tat-btn",
+            onclick: exportRecord,
+          }),
+          "Download records",
+        ],
+      }),
+      ThePop({
+        children: [
+          LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
+          "Load records from file",
+        ],
+      }),
+      ThePop({
+        children: [
+          ShowSvg({
+            class: "tat-btn",
+            onclick: () => showList(),
+          }),
+          "List show/hidden",
         ],
       })
-      // aoife("div", { style: "flex:1" })
-      // aoife(
-      //   "div",
-      //   {
-      //     class: "tat-btn",
-      //     hidden: async () => {
-      //       const ui = await state.ui.findOne();
-      //       return ui.recording || ui.replaying;
-      //     },
-      //     onclick: showList,
-      //   },
-      //   CtrlExpendSvg({
-      //     class: async () => {
-      //       const ui = await state.ui.findOne();
-      //       return "tat-show-list-icon " + (ui.showList && "tat-show-list");
-      //     },
-      //   })
-      // )
     );
   });
 };
@@ -156,6 +119,7 @@ export const Ctrl = () => {
 css`
   .tat-row {
     display: flex;
+    width: 100%;
     ${css.flex("row-center-center")}
   }
   .tat-more-item {

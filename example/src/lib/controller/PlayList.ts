@@ -1,6 +1,6 @@
 import { state } from "../model/state";
 import css from "template-css";
-import { CopySvg, DeleteSvg, EditorSvg } from "./svg";
+import { CopySvg, DeleteSvg, EditorSvg, ThinMoreSvg } from "./svg";
 import { changeInput } from "../model/changeInput";
 import { rename } from "../model/rename";
 import { remove } from "../model/remove";
@@ -9,6 +9,7 @@ import { changeFilter } from "../model/changeFilter";
 import { getTitle } from "../model/getTitle";
 import { recordCellCopy } from "../model/recordCellCopy";
 import { fixFilterCell } from "../model/fixFilterCell";
+import Pop from "aoife-pop";
 
 export const PlayList = () => {
   return aoife(
@@ -92,49 +93,49 @@ export const PlayList = () => {
               }
             }
           ),
-          EditorSvg({
-            class: "edit",
-            onclick: (e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              changeInput(item._id);
-            },
-          }),
-          CopySvg({
-            class: "edit",
-            onclick: (e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              recordCellCopy(item._id);
-            },
-          }),
-          DeleteSvg({
-            class: "edit",
-            onclick: (e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              remove(item._id);
-            },
+          Pop({
+            placement: "right",
+            zIndex: 15100,
+            children: [
+              ThinMoreSvg({ class: "edit" }),
+              aoife(
+                "div",
+                { class: "tat-row" },
+                EditorSvg({
+                  class: "tat-btn edit",
+                  onclick: (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    changeInput(item._id);
+                  },
+                }),
+                CopySvg({
+                  class: "tat-btn edit",
+                  onclick: (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    recordCellCopy(item._id);
+                  },
+                }),
+                DeleteSvg({
+                  class: "tat-btn edit",
+                  onclick: (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    remove(item._id);
+                  },
+                })
+                // CancelSvg({
+                //   class: "tat-list-pop",
+                //   onclick: (e) => {
+                //     e.stopPropagation();
+                //     e.preventDefault();
+                //     recordClear(item._id);
+                //   },
+                // })
+              ),
+            ],
           })
-          // Pop({
-          //   placement: "right",
-          //   children: [
-          //     ThinMoreSvg({ class: "edit" }),
-          //     aoife(
-          //       "div",
-
-          //       CancelSvg({
-          //         class: "tat-list-pop",
-          //         onclick: (e) => {
-          //           e.stopPropagation();
-          //           e.preventDefault();
-          //           recordClear(item._id);
-          //         },
-          //       }),
-
-          //     ),
-          //   ],
-          // })
         );
       });
     })
@@ -167,7 +168,7 @@ css`
     height: 20px;
     font-size: 12px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: 150px;
+    width: 200px;
     outline: none;
   }
   .tat-play-list .cells {

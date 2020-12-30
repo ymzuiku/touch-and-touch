@@ -49,31 +49,15 @@ function setAttrId(ele: HTMLInputElement) {
   ) {
     return;
   }
-  const pageKey = loadPageKey();
+
   const selfId = ele.getAttribute("id");
   if (selfId) {
-    ele.setAttribute("tat-key", pageKey + selfId);
+    ele.setAttribute("tat-key", selfId);
     return eleSetListen(ele as any);
   }
 
   const id = getAttrAndCloseAttr(ele, "id");
-  const btn = ele.getAttribute("tat-btn");
-  const placeholder = ele.getAttribute("placeholder");
-  const name = ele.getAttribute("name");
-  const role = ele.getAttribute("role");
-  const type = ele.getAttribute("type");
-  let tatKey = [
-    pageKey,
-    tag,
-    id && "id:" + id,
-    name && "name:" + name,
-    type && "type:" + type,
-    role && "role:" + role,
-    placeholder && "place:" + placeholder,
-    btn && "tat-btn:" + btn,
-  ]
-    .filter(Boolean)
-    .join(",");
+  let tatKey = [tag, id && "id:" + id].filter(Boolean).join(",");
 
   if (initOpt.autoUseContext && attrKeys[tatKey]) {
     tatKey += "_" + ele.textContent;

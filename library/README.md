@@ -48,9 +48,8 @@ document.body.append(TouchAndTouch());
 
 唯一标示的优先级别：
 
-1. tat-id
-2. id
-3. tag + type + name + role + placeholder + id(冒泡寻找父元素的 id) + tat-btn
+1. id
+2. 冒泡寻找父元素的 id + nodeName
 
 其中若无 tat-id, 且无 id，则会冒泡查找父元素，直到找到为止.
 
