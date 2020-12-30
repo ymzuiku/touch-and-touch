@@ -105,7 +105,7 @@ export const Ctrl = () => {
             class: "tat-btn",
             style: async () => {
               if (initOpt.ignoreAutoId) {
-                return { opacity: 0 };
+                return { display: "none" };
               }
               const ui = await state.ui.findOne();
 

@@ -1490,7 +1490,7 @@ var Ctrl = function () {
                                             switch (_a.label) {
                                                 case 0:
                                                     if (initOpt.ignoreAutoId) {
-                                                        return [2 /*return*/, { opacity: 0 }];
+                                                        return [2 /*return*/, { display: "none" }];
                                                     }
                                                     return [4 /*yield*/, state.ui.findOne()];
                                                 case 1:
