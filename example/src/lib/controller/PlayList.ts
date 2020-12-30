@@ -145,7 +145,7 @@ export const PlayList = () => {
 css`
   .tat-play-list {
     font-size: 16px;
-    width: 240px;
+    width: 250px;
   }
   .tat-play-list .filter {
     height: 20px;
@@ -173,7 +173,7 @@ css`
   }
   .tat-play-list .cells {
     width: 100%;
-    height: 100px;
+    height: 140px;
     overflow-y: auto;
   }
   .tat-play-list .edit:hover {

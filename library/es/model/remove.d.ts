@@ -1,1 +1,1 @@
-export declare const remove: (id: string) => Promise<unknown>;
+export declare const remove: (id: string) => Promise<void>;

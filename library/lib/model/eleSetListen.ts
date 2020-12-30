@@ -10,9 +10,6 @@ export const attrs = [...inputs, ...clicks, ...submits];
 
 export const eleSetListen = (ele: HTMLInputElement) => {
   let attrList = attrs;
-  // if (ele.nodeName === "FORM") {
-  //   attrList = ["submit"];
-  // }
 
   attrList.forEach((e: string) => {
     if ((ele as any)["tat-" + e]) {
@@ -20,6 +17,7 @@ export const eleSetListen = (ele: HTMLInputElement) => {
     }
     (ele as any)["tat-" + e] = 1;
     ele.addEventListener(e, async function (event: Event) {
+      // event.stopPropagation();
       if (
         (ele as any)._tatIgnoreOnce &&
         (ele as any)._tatIgnoreOnce === getEventVal(event)
@@ -29,6 +27,7 @@ export const eleSetListen = (ele: HTMLInputElement) => {
       if (clicks.indexOf(e) > -1) {
         setTimeout(() => {
           recordItemAdd({
+            id: ele.id || "",
             key: ele.getAttribute("tat-key")!,
             type: e,
             value: getEventVal(event),
@@ -46,6 +45,7 @@ export const eleSetListen = (ele: HTMLInputElement) => {
               fn(mockjs.Random, cache.set, cache.get)
             );
             recordItemAdd({
+              id: ele.id || "",
               key: ele.getAttribute("tat-key")!,
               type: "change",
               value,
@@ -65,6 +65,7 @@ export const eleSetListen = (ele: HTMLInputElement) => {
           }
         }
         recordItemAdd({
+          id: ele.id || "",
           key: ele.getAttribute("tat-key")!,
           type: e,
           value,

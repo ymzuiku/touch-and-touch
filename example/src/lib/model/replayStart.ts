@@ -125,12 +125,20 @@ function waitGetCustomEvent(detail: string) {
   });
 }
 
-function waitGetElement(key: string): Promise<HTMLElement> {
+function waitGetElement(id: string, key: string): Promise<HTMLElement> {
   const t = Date.now();
   return new Promise(async (res, rej) => {
     const getEl = async () => {
-      const e = document.querySelector(`[tat-key="${key}"]`) as HTMLElement;
       const ui = await state.ui.findOne();
+      let e: HTMLElement;
+      if (!ui.replaying) {
+        return res(document.createElement("span"));
+      }
+      if (ui.autoRecordId) {
+        e = document.querySelector(`[tat-key="${key}"]`) as HTMLElement;
+      } else {
+        e = document.getElementById(id) as HTMLElement;
+      }
       if (
         !e ||
         e.hidden ||
@@ -203,11 +211,12 @@ const startReplay = async (items: RecordItem[]) => {
     } else if (item.type === "customEvent" && item.value) {
       await waitGetCustomEvent(item.value);
     } else if (item.key) {
-      const el = await waitGetElement(item.key);
+      const el = await waitGetElement(item.id, item.key);
       if (el.nodeName !== "FORM" && el.nodeName !== "DIV") {
         scrollIntoView(el);
         await sleep(16);
       }
+
       if (clicks.indexOf(item.type) > -1) {
         if (el.nodeName !== "DIV") {
           getEleCenter(el, item);

@@ -11,6 +11,7 @@ const matchPlanMClick: any = {
 function recordMouse(event: any) {
   if (matchPlanMClick[event.target.nodeName]) {
     recordItemAdd({
+      id: "",
       key: "",
       type: "mclick",
       clientX: event.clientX,

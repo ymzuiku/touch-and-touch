@@ -12,6 +12,8 @@ const listenTags = [
   "div",
 ];
 
+let num = 0;
+
 function getAttrAndCloseAttr(item: HTMLElement, key: string) {
   let attr = item.getAttribute(key);
   if (!attr) {
@@ -45,7 +47,9 @@ function setAttrId(ele: HTMLInputElement) {
     ele.getAttribute("role") !== "switch" &&
     ele.getAttribute("role") !== "button" &&
     ele.getAttribute("type") !== "submit" &&
-    ele.getAttribute("type") !== "button"
+    ele.getAttribute("type") !== "button" &&
+    ele.getAttribute("type") !== "combobox" &&
+    !ele.getAttribute("tabindex")
   ) {
     return;
   }
@@ -56,16 +60,50 @@ function setAttrId(ele: HTMLInputElement) {
     return eleSetListen(ele as any);
   }
 
-  const id = getAttrAndCloseAttr(ele, "id");
-  let tatKey = [tag, id && "id:" + id].filter(Boolean).join(",");
+  // const eid = ele.getAttribute("id");
+  // const tatKey = [tag, eid && "id:" + eid].filter(Boolean).join(",");
+  // ele.setAttribute("tat-key", tatKey);
+  if (!initOpt.ignoreAutoId) {
+    const id = getAttrAndCloseAttr(ele, "id");
+    const tid = getAttrAndCloseAttr(ele, "tat-id");
+    const name = ele.getAttribute("name");
+    const tatBtn = ele.getAttribute("tat-btn");
+    const cn = ele.getAttribute("class");
+    const role = ele.getAttribute("role");
+    const type = ele.getAttribute("type");
+    const key = ele.getAttribute("key");
+    const alt = ele.getAttribute("alt");
+    const src = ele.getAttribute("src");
+    const placeholder = ele.getAttribute("placeholder");
 
-  if (initOpt.autoUseContext && attrKeys[tatKey]) {
-    tatKey += "_" + ele.textContent;
-  }
+    let tatKey = [
+      tag,
+      id && "id:" + id,
+      tid && "tat-id:" + tid,
+      tatBtn && "tat-btn:" + tatBtn,
+      name && "name:" + name,
+      cn && "class:" + cn,
+      role && "role:" + role,
+      type && "type:" + type,
+      key && "key:" + key,
+      alt && "alt:" + alt,
+      src && "src:" + src,
+      placeholder && "placeholder:" + placeholder,
+    ]
+      .filter(Boolean)
+      .join(",");
 
-  ele.setAttribute("tat-key", tatKey);
-  if (initOpt.autoUseContext) {
+    if (attrKeys[tatKey]) {
+      tatKey += "_" + ele.textContent;
+    }
+
+    if (attrKeys[tatKey]) {
+      num += 1;
+      tatKey += "_" + num;
+    }
+
     attrKeys[tatKey] = 1;
+    ele.setAttribute("tat-key", tatKey);
   }
 
   eleSetListen(ele as any);

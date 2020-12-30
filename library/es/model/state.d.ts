@@ -1,5 +1,6 @@
 export interface RecordItem {
     index?: number;
+    id: string;
     key: string;
     type: string;
     value?: string;
@@ -38,6 +39,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -53,6 +55,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -67,6 +70,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -79,6 +83,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -93,6 +98,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -106,6 +112,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -118,6 +125,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -130,6 +138,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -143,6 +152,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -155,6 +165,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -168,6 +179,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -180,6 +192,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -193,6 +206,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -205,6 +219,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -217,6 +232,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -230,6 +246,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -242,6 +259,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -254,6 +272,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -267,6 +286,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -279,6 +299,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -292,6 +313,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -304,6 +326,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -317,6 +340,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;
@@ -330,6 +354,7 @@ export declare const state: {
             recording: number;
             replaying: number;
             replayingAll: number;
+            autoRecordId: boolean;
             step: number;
             filter: string[];
             waitTimeout: number;

@@ -17,6 +17,8 @@ import {
   MoreSvg,
   RecordAgainSvg,
   ShowSvg,
+  AutoIdSvg,
+  NewFileSvg,
 } from "./svg";
 import { exportRecord } from "../model/exportRecord";
 import { importRecord } from "../model/importRecord";
@@ -24,6 +26,9 @@ import { replayAllFilter } from "../model/replayAllFilter";
 import { recordAgain } from "../model/recordAgain";
 import { showList } from "../model/showList";
 import aoife from "aoife";
+import { changeAutoRecordId } from "../model/changeAutoRecordId";
+import { initOpt } from "../model/init";
+import { recordCellAdd } from "../model/recordCellAdd";
 
 function ThePop({ children }: any) {
   return Pop({
@@ -59,6 +64,12 @@ export const Ctrl = () => {
       { class: "tat-row" },
       ThePop({
         children: [
+          NewFileSvg({ class: "tat-btn", onclick: () => recordCellAdd() }),
+          "New item",
+        ],
+      }),
+      ThePop({
+        children: [
           PlaySvg({ class: "tat-btn", onclick: () => replayStart() }),
           "Play selected record",
         ],
@@ -90,6 +101,36 @@ export const Ctrl = () => {
       aoife("span", { style: "flex:1" }),
       ThePop({
         children: [
+          AutoIdSvg({
+            class: "tat-btn",
+            style: async () => {
+              if (initOpt.ignoreAutoId) {
+                return { opacity: 0 };
+              }
+              const ui = await state.ui.findOne();
+
+              return { opacity: ui.autoRecordId ? 1 : 0.4 };
+            },
+            onclick: () => changeAutoRecordId(),
+          }),
+          "Use auto Record Id (Not recommended)",
+        ],
+      }),
+      ThePop({
+        children: [
+          ShowSvg({
+            class: "tat-btn",
+            style: async () => {
+              const ui = await state.ui.findOne();
+              return { opacity: ui.showList ? 1 : 0.4 };
+            },
+            onclick: () => showList(),
+          }),
+          "List show/hidden",
+        ],
+      }),
+      ThePop({
+        children: [
           DownloadSvg({
             class: "tat-btn",
             onclick: exportRecord,
@@ -101,15 +142,6 @@ export const Ctrl = () => {
         children: [
           LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
           "Load records from file",
-        ],
-      }),
-      ThePop({
-        children: [
-          ShowSvg({
-            class: "tat-btn",
-            onclick: () => showList(),
-          }),
-          "List show/hidden",
         ],
       })
     );

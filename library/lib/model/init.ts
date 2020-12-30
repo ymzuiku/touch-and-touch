@@ -10,6 +10,7 @@ import { RecordCell, state } from "./state";
 export interface InitOptions {
   speed?: number;
   waitTimeout?: number;
+  ignoreAutoId?: boolean;
   onFail?: (cell: RecordCell, error: string) => any;
   onSuccess?: (cell: RecordCell) => any;
   onReplay?: (cell: RecordCell) => any;
@@ -17,7 +18,6 @@ export interface InitOptions {
   onChangeSelected?: (cell: RecordCell) => any;
   initData?: () => Promise<RecordCell[]>;
   autoPlayItem?: string;
-  autoUseContext?: boolean | number;
   valueProxy?: {
     set: any;
     get: any;

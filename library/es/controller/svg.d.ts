@@ -15,3 +15,5 @@ export declare const CopySvg: (props: IProps) => HTMLElement;
 export declare const DownloadSvg: (props: IProps) => HTMLElement;
 export declare const LoaclFileSvg: (props: IProps) => HTMLElement;
 export declare const ShowSvg: (props: IProps) => HTMLElement;
+export declare const AutoIdSvg: (props: IProps) => HTMLElement;
+export declare const NewFileSvg: (props: IProps) => HTMLElement;

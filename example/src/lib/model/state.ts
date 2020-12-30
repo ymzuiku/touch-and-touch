@@ -3,6 +3,7 @@ const micoDb = createMicoDb("tat" + window.location.host);
 
 export interface RecordItem {
   index?: number;
+  id: string;
   key: string;
   type: string;
   value?: string;
@@ -45,6 +46,7 @@ export const state = {
       recording: 0,
       replaying: 0,
       replayingAll: 0,
+      autoRecordId: false,
       step: 0,
       filter: [] as string[],
       waitTimeout: 5000,
@@ -52,7 +54,7 @@ export const state = {
   }),
   nowCell: micoDb.collection<RecordCell>("nowCell"),
   recordList: micoDb.collection<RecordCell>("record-list", {
-    sort: { title: 1 },
+    sort: { updateAt: -1 },
   }),
   recordItems: micoDb.collection<RecordItem>("record-item"),
   customEvent: micoDb.collection<any>("custom-event", {

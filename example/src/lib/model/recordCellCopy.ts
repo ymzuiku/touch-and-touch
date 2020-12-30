@@ -9,7 +9,7 @@ export const recordCellCopy = async (id: string) => {
     ...cell,
     title: dayjs(Date.now()).format("MM/DD HH:mm"),
     _id: nextId,
-    updateAt: Date.now(),
+    updateAt: cell.updateAt + 1,
   });
 
   await changeSelectItem(nextId);
