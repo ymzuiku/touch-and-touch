@@ -144,7 +144,7 @@ export const PlayList = () => {
 css`
   .tat-play-list {
     font-size: 16px;
-    width: 170px;
+    width: 240px;
   }
   .tat-play-list .filter {
     height: 20px;
@@ -160,13 +160,14 @@ css`
     height: 18px;
     padding: 2px 2px;
     margin-right: 2px;
+    font-size: 12px;
     ${css.flex("row-center-center")}
   }
   .tat-play-list .input {
     height: 20px;
     font-size: 12px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: 120px;
+    width: 150px;
     outline: none;
   }
   .tat-play-list .cells {
