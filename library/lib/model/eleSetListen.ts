@@ -10,9 +10,9 @@ export const attrs = [...inputs, ...clicks, ...submits];
 
 export const eleSetListen = (ele: HTMLInputElement) => {
   let attrList = attrs;
-  if (ele.nodeName === "FORM") {
-    attrList = ["change"];
-  }
+  // if (ele.nodeName === "FORM") {
+  //   attrList = ["submit"];
+  // }
 
   attrList.forEach((e: string) => {
     if ((ele as any)["tat-" + e]) {
@@ -45,6 +45,12 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             value = await Promise.resolve(
               fn(mockjs.Random, cache.set, cache.get)
             );
+            recordItemAdd({
+              key: ele.getAttribute("tat-key")!,
+              type: "change",
+              value,
+              mock,
+            });
             const inputEvent = new InputEvent(e, {
               data: value,
               view: window,
@@ -53,7 +59,7 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             });
             (ele as any)._tatIgnoreOnce = value;
             ele.value = value;
-            ele.dispatchEvent(inputEvent);
+            return ele.dispatchEvent(inputEvent);
           } catch (err) {
             console.error(err);
           }

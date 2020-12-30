@@ -4,7 +4,6 @@ import css from "template-css";
 import { init, InitOptions } from "../model/init";
 import { DragSvg } from "./svg";
 import { PlayList } from "./PlayList";
-import Pop from "aoife-pop";
 import aoife from "aoife";
 
 const plan = aoife(
@@ -29,22 +28,7 @@ export const TouchAndTouch = (opt: InitOptions) => {
   return aoife(
     "div",
     { "tat-ignore": true, class: "tat tat-root" },
-    aoife(
-      "div",
-      // { class: "tat-update tat-weight tat-row" },
-      dragAndCtrl,
-      plan
-      // Pop({
-      //   theme: "light-border",
-      //   interactive: true,
-      //   onShow: () => {
-      //     aoife.waitAppend(".tat-play-list").then(() => {
-      //       aoife.next(".tat-play-list");
-      //     });
-      //   },
-      //   children: [],
-      // })
-    )
+    aoife("div", dragAndCtrl, plan)
   );
 };
 
@@ -74,7 +58,7 @@ css`
     backdrop-filter: blur(9px);
     background: rgba(255, 255, 255, 0.85);
     color: #00;
-    z-index: 9000;
+    z-index: 15000;
     padding: 6px;
     border: 1px solid rgba(0, 0, 0, 0.13);
     // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);

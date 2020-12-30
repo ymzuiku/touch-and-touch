@@ -17,6 +17,7 @@ export interface InitOptions {
   onChangeSelected?: (cell: RecordCell) => any;
   initData?: () => Promise<RecordCell[]>;
   autoPlayItem?: string;
+  autoUseContext?: boolean | number;
   valueProxy?: {
     set: any;
     get: any;

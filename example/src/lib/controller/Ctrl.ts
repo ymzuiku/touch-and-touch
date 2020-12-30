@@ -98,6 +98,7 @@ export const Ctrl = () => {
       }),
       Pop({
         placement: "right",
+        zIndex: 15100,
         children: [
           MoreSvg({ class: "tat-btn" }),
           aoife(

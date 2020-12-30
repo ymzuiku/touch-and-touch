@@ -448,9 +448,9 @@ var clicks = ["mousedown", "touchend"];
 var attrs = __spreadArrays(inputs, clicks, submits);
 var eleSetListen = function (ele) {
     var attrList = attrs;
-    if (ele.nodeName === "FORM") {
-        attrList = ["change"];
-    }
+    // if (ele.nodeName === "FORM") {
+    //   attrList = ["submit"];
+    // }
     attrList.forEach(function (e) {
         if (ele["tat-" + e]) {
             return;
@@ -488,6 +488,12 @@ var eleSetListen = function (ele) {
                             return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
                         case 3:
                             value = _a.sent();
+                            recordItemAdd({
+                                key: ele.getAttribute("tat-key"),
+                                type: "change",
+                                value: value,
+                                mock: mock,
+                            });
                             inputEvent = new InputEvent(e, {
                                 data: value,
                                 view: window,
@@ -496,8 +502,7 @@ var eleSetListen = function (ele) {
                             });
                             ele._tatIgnoreOnce = value;
                             ele.value = value;
-                            ele.dispatchEvent(inputEvent);
-                            return [3 /*break*/, 5];
+                            return [2 /*return*/, ele.dispatchEvent(inputEvent)];
                         case 4:
                             err_1 = _a.sent();
                             console.error(err_1);
@@ -580,7 +585,6 @@ var listenTags = [
     "button",
     "textarea",
     "select",
-    "form",
     "li",
     "span",
     "div",
@@ -618,20 +622,13 @@ function setAttrId(ele) {
         return;
     }
     var pageKey = loadPageKey();
-    var selfTatid = ele.getAttribute("tat-id");
-    if (selfTatid) {
-        ele.setAttribute("tat-key", pageKey + selfTatid);
-        return eleSetListen(ele);
-    }
     var selfId = ele.getAttribute("id");
     if (selfId) {
         ele.setAttribute("tat-key", pageKey + selfId);
         return eleSetListen(ele);
     }
-    var tat = getAttrAndCloseAttr(ele, "tat-id");
-    var btn = getAttrAndCloseAttr(ele, "tat-btn");
     var id = getAttrAndCloseAttr(ele, "id");
-    var key = getAttrAndCloseAttr(ele, "key");
+    var btn = ele.getAttribute("tat-btn");
     var placeholder = ele.getAttribute("placeholder");
     var name = ele.getAttribute("name");
     var role = ele.getAttribute("role");
@@ -639,22 +636,22 @@ function setAttrId(ele) {
     var tatKey = [
         pageKey,
         tag,
-        tat && "tat-id:" + tat,
-        btn && "tat-btn:" + btn,
         id && "id:" + id,
         name && "name:" + name,
         type && "type:" + type,
-        key && "key:" + key,
         role && "role:" + role,
         placeholder && "place:" + placeholder,
+        btn && "tat-btn:" + btn,
     ]
         .filter(Boolean)
         .join(",");
-    if (attrKeys[tatKey]) {
+    if (initOpt.autoUseContext && attrKeys[tatKey]) {
         tatKey += "_" + ele.textContent;
     }
     ele.setAttribute("tat-key", tatKey);
-    attrKeys[tatKey] = 1;
+    if (initOpt.autoUseContext) {
+        attrKeys[tatKey] = 1;
+    }
     eleSetListen(ele);
 }
 function eleSetAttr(parent) {
@@ -1025,7 +1022,7 @@ function emitInput(el, item, eventKey) {
                     _a.value = _b.sent();
                     _b.label = 4;
                 case 4:
-                    inputEvent = new InputEvent("input", {
+                    inputEvent = new InputEvent(item.type, {
                         // inputType: "insertText",
                         data: item.value,
                         view: window,
@@ -1441,6 +1438,7 @@ var Ctrl = function () {
                             ],
                         }), Pop({
                             placement: "right",
+                            zIndex: 15100,
                             children: [
                                 MoreSvg({ class: "tat-btn" }),
                                 aoife$1("div", MoreItem({
@@ -1790,22 +1788,9 @@ var dragAndCtrl = aoife$1("div", { class: "tat-row tat-head-center", "tat-ignore
 }), Ctrl());
 var TouchAndTouch = function (opt) {
     init(opt);
-    return aoife$1("div", { "tat-ignore": true, class: "tat tat-root" }, aoife$1("div", 
-    // { class: "tat-update tat-weight tat-row" },
-    dragAndCtrl, plan
-    // Pop({
-    //   theme: "light-border",
-    //   interactive: true,
-    //   onShow: () => {
-    //     aoife.waitAppend(".tat-play-list").then(() => {
-    //       aoife.next(".tat-play-list");
-    //     });
-    //   },
-    //   children: [],
-    // })
-    ));
+    return aoife$1("div", { "tat-ignore": true, class: "tat tat-root" }, aoife$1("div", dragAndCtrl, plan));
 };
-css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 9000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
+css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 15000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 15000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
 var templateObject_1$3;
 
 export default TouchAndTouch;

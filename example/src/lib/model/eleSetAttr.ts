@@ -1,4 +1,5 @@
 import { eleSetListen } from "./eleSetListen";
+import { initOpt } from "./init";
 
 const listenTags = [
   "input",
@@ -6,7 +7,6 @@ const listenTags = [
   "button",
   "textarea",
   "select",
-  "form",
   "li",
   "span",
   "div",
@@ -50,22 +50,14 @@ function setAttrId(ele: HTMLInputElement) {
     return;
   }
   const pageKey = loadPageKey();
-  const selfTatid = ele.getAttribute("tat-id");
-  if (selfTatid) {
-    ele.setAttribute("tat-key", pageKey + selfTatid);
-    return eleSetListen(ele as any);
-  }
-
   const selfId = ele.getAttribute("id");
   if (selfId) {
     ele.setAttribute("tat-key", pageKey + selfId);
     return eleSetListen(ele as any);
   }
 
-  const tat = getAttrAndCloseAttr(ele, "tat-id");
-  const btn = getAttrAndCloseAttr(ele, "tat-btn");
   const id = getAttrAndCloseAttr(ele, "id");
-  const key = getAttrAndCloseAttr(ele, "key");
+  const btn = ele.getAttribute("tat-btn");
   const placeholder = ele.getAttribute("placeholder");
   const name = ele.getAttribute("name");
   const role = ele.getAttribute("role");
@@ -73,24 +65,24 @@ function setAttrId(ele: HTMLInputElement) {
   let tatKey = [
     pageKey,
     tag,
-    tat && "tat-id:" + tat,
-    btn && "tat-btn:" + btn,
     id && "id:" + id,
     name && "name:" + name,
     type && "type:" + type,
-    key && "key:" + key,
     role && "role:" + role,
     placeholder && "place:" + placeholder,
+    btn && "tat-btn:" + btn,
   ]
     .filter(Boolean)
     .join(",");
 
-  if (attrKeys[tatKey]) {
+  if (initOpt.autoUseContext && attrKeys[tatKey]) {
     tatKey += "_" + ele.textContent;
   }
 
   ele.setAttribute("tat-key", tatKey);
-  attrKeys[tatKey] = 1;
+  if (initOpt.autoUseContext) {
+    attrKeys[tatKey] = 1;
+  }
 
   eleSetListen(ele as any);
 }

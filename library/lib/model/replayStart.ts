@@ -84,7 +84,7 @@ async function emitInput(
     item.value = await Promise.resolve(fn(mockjs.Random, cache.set, cache.get));
   }
 
-  const inputEvent = new InputEvent("input", {
+  const inputEvent = new InputEvent(item.type, {
     // inputType: "insertText",
     data: item.value,
     view: window,
