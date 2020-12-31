@@ -104,7 +104,7 @@ export const Ctrl = () => {
           AutoIdSvg({
             class: "tat-btn",
             style: async () => {
-              if (initOpt.ignoreAutoId) {
+              if (!initOpt.useAutoId) {
                 return { display: "none" };
               }
               const ui = await state.ui.findOne();

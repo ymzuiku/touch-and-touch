@@ -10,7 +10,9 @@ import { RecordCell, state } from "./state";
 export interface InitOptions {
   speed?: number;
   waitTimeout?: number;
-  ignoreAutoId?: boolean;
+  useAutoId?: boolean;
+  useRecordMouse?: boolean;
+  useRecordInput?: boolean;
   onFail?: (cell: RecordCell, error: string) => any;
   onSuccess?: (cell: RecordCell) => any;
   onReplay?: (cell: RecordCell) => any;

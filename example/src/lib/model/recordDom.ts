@@ -1,4 +1,5 @@
 import { eleSetAttr } from "./eleSetAttr";
+import { initOpt } from "./init";
 import { recordItemAdd } from "./recordItemAdd";
 
 const matchPlanMClick: any = {
@@ -10,13 +11,15 @@ const matchPlanMClick: any = {
 // 记录页面点击位置
 function recordMouse(event: any) {
   if (matchPlanMClick[event.target.nodeName]) {
-    recordItemAdd({
-      id: "",
-      key: "",
-      type: "mclick",
-      clientX: event.clientX,
-      clientY: event.clientY,
-    });
+    if (initOpt.useRecordMouse) {
+      recordItemAdd({
+        id: "",
+        key: "",
+        type: "mclick",
+        clientX: event.clientX,
+        clientY: event.clientY,
+      });
+    }
   }
 }
 

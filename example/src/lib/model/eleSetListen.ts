@@ -2,11 +2,12 @@ import { getEventVal } from "./getEventVal";
 import { recordItemAdd } from "./recordItemAdd";
 import mockjs from "mockjs";
 import { cache } from "./cache";
+import { initOpt } from "./init";
 
-export const inputs = ["input", "submit"];
+export const inputs = ["input"];
 export const submits = ["submit", "change"];
 export const clicks = ["mousedown", "touchend"];
-export const attrs = [...inputs, ...clicks, ...submits];
+export const attrs = [...clicks, ...submits];
 
 export const eleSetListen = (ele: HTMLInputElement) => {
   let attrList = attrs;
@@ -44,13 +45,17 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             value = await Promise.resolve(
               fn(mockjs.Random, cache.set, cache.get)
             );
-            recordItemAdd({
-              id: ele.id || "",
-              key: ele.getAttribute("tat-key")!,
-              type: "change",
-              value,
-              mock,
-            });
+            // 默认情况下忽略 input，但是用于 mock 计算
+            if (initOpt.useRecordInput || e !== "input") {
+              recordItemAdd({
+                id: ele.id || "",
+                key: ele.getAttribute("tat-key")!,
+                type: "change",
+                value,
+                ...(mock && { mock }),
+              });
+            }
+
             const inputEvent = new InputEvent(e, {
               data: value,
               view: window,

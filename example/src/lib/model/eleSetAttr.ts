@@ -63,7 +63,7 @@ function setAttrId(ele: HTMLInputElement) {
   // const eid = ele.getAttribute("id");
   // const tatKey = [tag, eid && "id:" + eid].filter(Boolean).join(",");
   // ele.setAttribute("tat-key", tatKey);
-  if (!initOpt.ignoreAutoId) {
+  if (initOpt.useAutoId) {
     const id = getAttrAndCloseAttr(ele, "id");
     const tid = getAttrAndCloseAttr(ele, "tat-id");
     const name = ele.getAttribute("name");

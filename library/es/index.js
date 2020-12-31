@@ -443,88 +443,6 @@ var cache = {
     }); },
 };
 
-var inputs = ["input", "submit"];
-var submits = ["submit", "change"];
-var clicks = ["mousedown", "touchend"];
-var attrs = __spreadArrays(inputs, clicks, submits);
-var eleSetListen = function (ele) {
-    var attrList = attrs;
-    attrList.forEach(function (e) {
-        if (ele["tat-" + e]) {
-            return;
-        }
-        ele["tat-" + e] = 1;
-        ele.addEventListener(e, function (event) {
-            return __awaiter(this, void 0, void 0, function () {
-                var value, mock, reg, fn, inputEvent, err_1;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            // event.stopPropagation();
-                            if (ele._tatIgnoreOnce &&
-                                ele._tatIgnoreOnce === getEventVal(event)) {
-                                return [2 /*return*/];
-                            }
-                            if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 1];
-                            setTimeout(function () {
-                                recordItemAdd({
-                                    id: ele.id || "",
-                                    key: ele.getAttribute("tat-key"),
-                                    type: e,
-                                    value: getEventVal(event),
-                                });
-                            }, 20);
-                            return [3 /*break*/, 6];
-                        case 1:
-                            value = getEventVal(event);
-                            mock = "";
-                            reg = /!!/;
-                            if (!reg.test(value)) return [3 /*break*/, 5];
-                            mock = value.replace(reg, "");
-                            _a.label = 2;
-                        case 2:
-                            _a.trys.push([2, 4, , 5]);
-                            fn = new Function("random", "set", "get", "return " + mock);
-                            return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
-                        case 3:
-                            value = _a.sent();
-                            recordItemAdd({
-                                id: ele.id || "",
-                                key: ele.getAttribute("tat-key"),
-                                type: "change",
-                                value: value,
-                                mock: mock,
-                            });
-                            inputEvent = new InputEvent(e, {
-                                data: value,
-                                view: window,
-                                bubbles: true,
-                                cancelable: true,
-                            });
-                            ele._tatIgnoreOnce = value;
-                            ele.value = value;
-                            return [2 /*return*/, ele.dispatchEvent(inputEvent)];
-                        case 4:
-                            err_1 = _a.sent();
-                            console.error(err_1);
-                            return [3 /*break*/, 5];
-                        case 5:
-                            recordItemAdd({
-                                id: ele.id || "",
-                                key: ele.getAttribute("tat-key"),
-                                type: e,
-                                value: value,
-                                mock: mock,
-                            });
-                            _a.label = 6;
-                        case 6: return [2 /*return*/];
-                    }
-                });
-            });
-        });
-    });
-};
-
 var changeSelectItem = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var cell, items;
     return __generator(this, function (_a) {
@@ -629,7 +547,7 @@ function setAttrId(ele) {
     // const eid = ele.getAttribute("id");
     // const tatKey = [tag, eid && "id:" + eid].filter(Boolean).join(",");
     // ele.setAttribute("tat-key", tatKey);
-    if (!initOpt.ignoreAutoId) {
+    if (initOpt.useAutoId) {
         var id = getAttrAndCloseAttr(ele, "id");
         var tid = getAttrAndCloseAttr(ele, "tat-id");
         var name_1 = ele.getAttribute("name");
@@ -681,13 +599,15 @@ var matchPlanMClick = {
 // 记录页面点击位置
 function recordMouse(event) {
     if (matchPlanMClick[event.target.nodeName]) {
-        recordItemAdd({
-            id: "",
-            key: "",
-            type: "mclick",
-            clientX: event.clientX,
-            clientY: event.clientY,
-        });
+        if (initOpt.useRecordMouse) {
+            recordItemAdd({
+                id: "",
+                key: "",
+                type: "mclick",
+                clientX: event.clientX,
+                clientY: event.clientY,
+            });
+        }
     }
 }
 function recordDom() {
@@ -883,6 +803,84 @@ var init = function (opt) {
                     }); });
                     return [2 /*return*/];
             }
+        });
+    });
+};
+
+var submits = ["submit", "change"];
+var clicks = ["mousedown", "touchend"];
+var attrs = __spreadArrays(clicks, submits);
+var eleSetListen = function (ele) {
+    var attrList = attrs;
+    attrList.forEach(function (e) {
+        if (ele["tat-" + e]) {
+            return;
+        }
+        ele["tat-" + e] = 1;
+        ele.addEventListener(e, function (event) {
+            return __awaiter(this, void 0, void 0, function () {
+                var value, mock, reg, fn, inputEvent, err_1;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            // event.stopPropagation();
+                            if (ele._tatIgnoreOnce &&
+                                ele._tatIgnoreOnce === getEventVal(event)) {
+                                return [2 /*return*/];
+                            }
+                            if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 1];
+                            setTimeout(function () {
+                                recordItemAdd({
+                                    id: ele.id || "",
+                                    key: ele.getAttribute("tat-key"),
+                                    type: e,
+                                    value: getEventVal(event),
+                                });
+                            }, 20);
+                            return [3 /*break*/, 6];
+                        case 1:
+                            value = getEventVal(event);
+                            mock = "";
+                            reg = /!!/;
+                            if (!reg.test(value)) return [3 /*break*/, 5];
+                            mock = value.replace(reg, "");
+                            _a.label = 2;
+                        case 2:
+                            _a.trys.push([2, 4, , 5]);
+                            fn = new Function("random", "set", "get", "return " + mock);
+                            return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
+                        case 3:
+                            value = _a.sent();
+                            // 默认情况下忽略 input，但是用于 mock 计算
+                            if (initOpt.useRecordInput || e !== "input") {
+                                recordItemAdd(__assign({ id: ele.id || "", key: ele.getAttribute("tat-key"), type: "change", value: value }, (mock && { mock: mock })));
+                            }
+                            inputEvent = new InputEvent(e, {
+                                data: value,
+                                view: window,
+                                bubbles: true,
+                                cancelable: true,
+                            });
+                            ele._tatIgnoreOnce = value;
+                            ele.value = value;
+                            return [2 /*return*/, ele.dispatchEvent(inputEvent)];
+                        case 4:
+                            err_1 = _a.sent();
+                            console.error(err_1);
+                            return [3 /*break*/, 5];
+                        case 5:
+                            recordItemAdd({
+                                id: ele.id || "",
+                                key: ele.getAttribute("tat-key"),
+                                type: e,
+                                value: value,
+                                mock: mock,
+                            });
+                            _a.label = 6;
+                        case 6: return [2 /*return*/];
+                    }
+                });
+            });
         });
     });
 };
@@ -1489,7 +1487,7 @@ var Ctrl = function () {
                                         return __generator(this, function (_a) {
                                             switch (_a.label) {
                                                 case 0:
-                                                    if (initOpt.ignoreAutoId) {
+                                                    if (!initOpt.useAutoId) {
                                                         return [2 /*return*/, { display: "none" }];
                                                     }
                                                     return [4 /*yield*/, state.ui.findOne()];
