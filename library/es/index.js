@@ -811,15 +811,15 @@ var submits = ["submit", "change"];
 var clicks = ["mousedown", "touchend"];
 var attrs = __spreadArrays(clicks, submits);
 var eleSetListen = function (ele) {
-    var attrList = attrs;
-    attrList.forEach(function (e) {
+    // const attrList = attrs;
+    attrs.forEach(function (e) {
         if (ele["tat-" + e]) {
             return;
         }
         ele["tat-" + e] = 1;
         ele.addEventListener(e, function (event) {
             return __awaiter(this, void 0, void 0, function () {
-                var value, mock, reg, fn, inputEvent, err_1;
+                var value, mock, reg, fn, key_1, inputEvent, err_1, key;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -853,7 +853,8 @@ var eleSetListen = function (ele) {
                             value = _a.sent();
                             // 默认情况下忽略 input，但是用于 mock 计算
                             if (initOpt.useRecordInput || e !== "input") {
-                                recordItemAdd(__assign({ id: ele.id || "", key: ele.getAttribute("tat-key"), type: "change", value: value }, (mock && { mock: mock })));
+                                key_1 = ele.getAttribute("tat-key");
+                                recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key_1 && { key: key_1 })), { type: "change", value: value }), (mock && { mock: mock })));
                             }
                             inputEvent = new InputEvent(e, {
                                 data: value,
@@ -869,13 +870,8 @@ var eleSetListen = function (ele) {
                             console.error(err_1);
                             return [3 /*break*/, 5];
                         case 5:
-                            recordItemAdd({
-                                id: ele.id || "",
-                                key: ele.getAttribute("tat-key"),
-                                type: e,
-                                value: value,
-                                mock: mock,
-                            });
+                            key = ele.getAttribute("tat-key");
+                            recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }), (mock && { mock: mock })));
                             _a.label = 6;
                         case 6: return [2 /*return*/];
                     }
@@ -1198,8 +1194,7 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 if (item.href) {
                     if (item.href.indexOf("#/") > -1 &&
                         getHref(window.location.href) === item.href) {
-                        window.location.href = item.href;
-                        window.location.reload();
+                        window.location.replace(item.href);
                     }
                     else {
                         window.location.href = item.href;
@@ -1295,6 +1290,7 @@ var Step = function () {
 css(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  .tat-step {\n    // color: #fff;\n    // background: rgb(188 172 202);\n    // border-radius: 40px;\n    padding: 4px;\n    font-size: 12px !important;\n    cursor: pointer;\n    width: calc(100% - 8px);\n    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n    // margin-bottom: 2px;\n  }\n"], ["\n  .tat-step {\n    // color: #fff;\n    // background: rgb(188 172 202);\n    // border-radius: 40px;\n    padding: 4px;\n    font-size: 12px !important;\n    cursor: pointer;\n    width: calc(100% - 8px);\n    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n    // margin-bottom: 2px;\n  }\n"])));
 var templateObject_1;
 
+var CodeSvg = aoifeSvg("\n<svg t=\"1609439023623\" class=\"icon\" viewBox=\"0 0 1097 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"3732\" width=\"200\" height=\"200\"><path d=\"M352.585143 799.414857l-28.562286 28.562286a18.285714 18.285714 0 0 1-26.294857 0L31.451429 561.700571a18.285714 18.285714 0 0 1 0-26.294857l266.276571-266.276571a18.285714 18.285714 0 0 1 26.294857 0l28.562286 28.562286a18.285714 18.285714 0 0 1 0 26.294857L128 548.571429l224.585143 224.585142a18.285714 18.285714 0 0 1 0 26.294858z m337.700571-609.718857l-213.138285 737.718857a18.139429 18.139429 0 0 1-22.272 12.580572l-35.437715-9.728a18.505143 18.505143 0 0 1-12.580571-22.857143L619.995429 169.691429a18.139429 18.139429 0 0 1 22.272-12.580572l35.437714 9.728a18.505143 18.505143 0 0 1 12.580571 22.857143z m375.442286 372.004571L799.451429 827.977143a18.285714 18.285714 0 0 1-26.294858 0l-28.562285-28.562286a18.285714 18.285714 0 0 1 0-26.294857l224.585143-224.585143-224.585143-224.585143a18.285714 18.285714 0 0 1 0-26.294857l28.562285-28.562286a18.285714 18.285714 0 0 1 26.294858 0l266.276571 266.276572a18.285714 18.285714 0 0 1 0 26.294857z\" fill=\"\" p-id=\"3733\"></path></svg>\n");
 var DragSvg = aoifeSvg("\n<svg t=\"1608724287002\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2814\" width=\"200\" height=\"200\"><path d=\"M362.666667 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2815\"></path><path d=\"M661.333333 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2816\"></path><path d=\"M362.666667 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2817\"></path><path d=\"M661.333333 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2818\"></path><path d=\"M362.666667 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2819\"></path><path d=\"M661.333333 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2820\"></path></svg>\n");
 var EditorSvg = aoifeSvg("\n<svg t=\"1608542607404\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1140\" width=\"1em\" height=\"1em\"><path d=\"M896 801.216V864H128v-62.784h768z m-204.288-678.4l155.36 155.36-463.136 463.136-156.864 1.504 1.504-156.864L691.712 122.816z m-0.864 89.632L291.712 611.584l-0.64 67.232 67.2-0.64L757.44 279.04l-66.56-66.56z\" fill=\"#f00\" p-id=\"1141\"></path></svg>\n");
 var RecordAgainSvg = aoifeSvg("<svg t=\"1609231838403\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"12509\" width=\"200\" height=\"200\"><path d=\"M511.953038 76.651228C271.156005 76.651228 75.945597 271.860432 75.945597 512.658669c0 240.794625 195.209204 436.002625 436.007441 436.002625 240.794625 0 436.002625-195.208 436.002625-436.002625C948.00985 271.860432 752.801849 76.651228 511.953038 76.651228L511.953038 76.651228zM708.138806 649.912243c16.287302 16.286098 16.287302 42.649708 0 58.93099-16.281281 16.287302-42.644892 16.287302-58.93099 0L511.732679 571.423486 374.258746 708.843233c-16.28369 16.287302-42.644892 16.287302-58.932194 0-16.282486-16.281281-16.282486-42.644892 0-58.93099l137.52812-137.473933L315.380739 375.017359c-16.282486-16.28369-16.282486-42.646096 0-58.932194 16.286098-16.282486 42.648504-16.282486 58.932194 0l137.419747 137.473933 137.473933-137.473933c16.286098-16.282486 42.649708-16.282486 58.93099 0 16.287302 16.286098 16.287302 42.648504 0 58.932194L570.71906 512.43831 708.138806 649.912243 708.138806 649.912243zM708.138806 649.912243\" p-id=\"12510\"></path></svg>", "1.1em", "1.1em");
@@ -1641,6 +1637,81 @@ var recordCellCopy = function (id) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 
+var changeCellData = function (id, code) { return __awaiter(void 0, void 0, void 0, function () {
+    var items;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                try {
+                    items = JSON.parse(code);
+                    if (Object.prototype.toString.call(items) !== "[object Array]") {
+                        throw "items need a array";
+                    }
+                }
+                catch (err) {
+                    Message.error(err.toString(), { style: { zIndex: 16000 } });
+                    return [2 /*return*/, false];
+                }
+                return [4 /*yield*/, state.recordList.updateOne({ _id: id }, { items: items })];
+            case 1:
+                _a.sent();
+                return [2 /*return*/, true];
+        }
+    });
+}); };
+
+var findCellDate = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var cell;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, state.recordList.findOne({ _id: id })];
+            case 1:
+                cell = _a.sent();
+                return [2 /*return*/, JSON.stringify(cell.items, null, 2)];
+        }
+    });
+}); };
+
+var CodePlan = (function (_a) {
+    var id = _a.id;
+    var ele = aoife$1("div", { id: "tat-code-plan", class: "tat-code-plan", "tat-ignore": true }, aoife$1("div", { class: "plan" }, aoife$1("div", { class: "button-plan" }, aoife$1("button", {
+        onclick: function (e) { return __awaiter(void 0, void 0, void 0, function () {
+            var textarea, done;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        textarea = document.getElementById("tat-code-plan-textarea");
+                        return [4 /*yield*/, changeCellData(id, textarea.value)];
+                    case 1:
+                        done = _a.sent();
+                        console.log("bbbb", done);
+                        if (done) {
+                            ele.remove();
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        }); },
+    }, "Save"), aoife$1("button", {
+        onclick: function () {
+            ele.remove();
+        },
+    }, "Cancel")), aoife$1("textarea", {
+        tabindex: 0,
+        dir: "ltr",
+        autocapitalize: "off",
+        autocomplete: "off",
+        autocorrect: "off",
+        id: "tat-code-plan-textarea",
+        spellcheck: false,
+        class: "",
+        value: function () { return findCellDate(id); },
+    })));
+    return ele;
+});
+css(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .tat-code-plan {\n    position: fixed;\n    top: 0px;\n    left: 0px;\n    width: 100vw;\n    height: 100vh;\n    z-index: 15010;\n  }\n  .tat-code-plan .plan {\n    ", "\n    height: 100%;\n  }\n  .tat-code-plan .button-plan {\n    position: fixed;\n    top: 0px;\n    right: 0px;\n    padding: 14px;\n  }\n  .tat-code-plan button {\n    ", "\n    margin: 6px;\n    background: #77f;\n    color: #fff;\n    padding: 8px 16px;\n    border-radius: 4px;\n  }\n  .tat-code-plan button:hover {\n    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);\n  }\n  .tat-code-plan button:active {\n    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);\n    background: #55f;\n  }\n  .tat-code-plan textarea {\n    ", ";\n    box-sizing: border-box;\n    width: 100%;\n    font-size: 14px;\n    flex: 1;\n    border: none;\n    background: #fff;\n  }\n"], ["\n  .tat-code-plan {\n    position: fixed;\n    top: 0px;\n    left: 0px;\n    width: 100vw;\n    height: 100vh;\n    z-index: 15010;\n  }\n  .tat-code-plan .plan {\n    ", "\n    height: 100%;\n  }\n  .tat-code-plan .button-plan {\n    position: fixed;\n    top: 0px;\n    right: 0px;\n    padding: 14px;\n  }\n  .tat-code-plan button {\n    ", "\n    margin: 6px;\n    background: #77f;\n    color: #fff;\n    padding: 8px 16px;\n    border-radius: 4px;\n  }\n  .tat-code-plan button:hover {\n    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);\n  }\n  .tat-code-plan button:active {\n    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);\n    background: #55f;\n  }\n  .tat-code-plan textarea {\n    ", ";\n    box-sizing: border-box;\n    width: 100%;\n    font-size: 14px;\n    flex: 1;\n    border: none;\n    background: #fff;\n  }\n"])), css.flex("col-start-start"), css.clear(), css.clear());
+var templateObject_1$2;
+
 var PlayList = function () {
     return aoife("div", {
         class: "tat-update, tat-play-list",
@@ -1665,6 +1736,9 @@ var PlayList = function () {
                     case 0: return [4 /*yield*/, state.ui.findOne()];
                     case 1:
                         ui = _a.sent();
+                        if (!ui.filter) {
+                            return [2 /*return*/, ""];
+                        }
                         return [2 /*return*/, ui.filter.join(", ")];
                 }
             });
@@ -1786,6 +1860,14 @@ var PlayList = function () {
                                             e.preventDefault();
                                             changeInput(item._id);
                                         },
+                                    }), CodeSvg({
+                                        class: "tat-btn edit",
+                                        onclick: function (e) {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            document.body.append(CodePlan({ id: item._id }));
+                                            // changeCellData(item._id);
+                                        },
                                     }), CopySvg({
                                         class: "tat-btn edit",
                                         onclick: function (e) {
@@ -1817,8 +1899,8 @@ var PlayList = function () {
         });
     }); }));
 };
-css(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .tat-play-list {\n    font-size: 16px;\n    width: 250px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 200px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 140px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"], ["\n  .tat-play-list {\n    font-size: 16px;\n    width: 250px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 200px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 140px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"])), css.flex("row-center-center"), css.wordBreak(1), css.flex("row-start-center"));
-var templateObject_1$2;
+css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat-play-list {\n    font-size: 16px;\n    width: 250px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 200px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 140px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"], ["\n  .tat-play-list {\n    font-size: 16px;\n    width: 250px;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 4px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 8px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    ", "\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: 200px;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 140px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    ", "\n  }\n  .tat-play-list .cell-selected {\n    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;\n    border-radius: 0px 2px 2px 0px !important;\n  }\n  .tat-play-list .cell {\n    border-left: 2px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    ", "\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .cell:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n"])), css.flex("row-center-center"), css.wordBreak(1), css.flex("row-start-center"));
+var templateObject_1$3;
 
 var plan = aoife$1("div", { class: "tat-plan tat-update", "tat-ignore": true }, PlayList());
 var dragAndCtrl = aoife$1("div", { class: "tat-row tat-head-center", "tat-ignore": true }, Drag({
@@ -1831,8 +1913,8 @@ var TouchAndTouch = function (opt) {
     init(opt);
     return aoife$1("div", { "tat-ignore": true, class: "tat tat-root" }, aoife$1("div", dragAndCtrl, plan));
 };
-css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 15000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 15000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
-var templateObject_1$3;
+css(templateObject_1$4 || (templateObject_1$4 = __makeTemplateObject(["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 15000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-head-row {\n    ", "\n  }\n  .tat-head-center {\n    ", "\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 16px;\n  }\n  .tat {\n    font-size: 16px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #00;\n    z-index: 15000;\n    padding: 6px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])), css.flex("row-start-center"), css.flex("row-center-center"));
+var templateObject_1$4;
 
 export default TouchAndTouch;
 //# sourceMappingURL=index.js.map

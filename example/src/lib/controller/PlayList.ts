@@ -1,6 +1,6 @@
 import { state } from "../model/state";
 import css from "template-css";
-import { CopySvg, DeleteSvg, EditorSvg, ThinMoreSvg } from "./svg";
+import { CodeSvg, CopySvg, DeleteSvg, EditorSvg, ThinMoreSvg } from "./svg";
 import { changeInput } from "../model/changeInput";
 import { rename } from "../model/rename";
 import { remove } from "../model/remove";
@@ -10,6 +10,7 @@ import { getTitle } from "../model/getTitle";
 import { recordCellCopy } from "../model/recordCellCopy";
 import { fixFilterCell } from "../model/fixFilterCell";
 import Pop from "aoife-pop";
+import CodePlan from "./CodePlan";
 
 export const PlayList = () => {
   return aoife(
@@ -26,6 +27,9 @@ export const PlayList = () => {
       placeholder: "FilterA, FilterB...",
       defaultValue: async () => {
         const ui = await state.ui.findOne();
+        if (!ui.filter) {
+          return "";
+        }
         return ui.filter.join(", ");
       },
       oninput: (e) => changeFilter(e.target.value),
@@ -107,6 +111,15 @@ export const PlayList = () => {
                     e.stopPropagation();
                     e.preventDefault();
                     changeInput(item._id);
+                  },
+                }),
+                CodeSvg({
+                  class: "tat-btn edit",
+                  onclick: (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    document.body.append(CodePlan({ id: item._id }));
+                    // changeCellData(item._id);
                   },
                 }),
                 CopySvg({

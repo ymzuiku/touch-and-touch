@@ -1,3 +1,4 @@
+export declare const CodeSvg: (props: IProps) => HTMLElement;
 export declare const DragSvg: (props: IProps) => HTMLElement;
 export declare const EditorSvg: (props: IProps) => HTMLElement;
 export declare const RecordAgainSvg: (props: IProps) => HTMLElement;

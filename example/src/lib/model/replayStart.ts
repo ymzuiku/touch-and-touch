@@ -198,8 +198,7 @@ const startReplay = async (items: RecordItem[]) => {
         item.href.indexOf("#/") > -1 &&
         getHref(window.location.href) === item.href
       ) {
-        window.location.href = item.href;
-        window.location.reload();
+        window.location.replace(item.href);
       } else {
         window.location.href = item.href;
       }
@@ -211,7 +210,7 @@ const startReplay = async (items: RecordItem[]) => {
     } else if (item.type === "customEvent" && item.value) {
       await waitGetCustomEvent(item.value);
     } else if (item.key) {
-      const el = await waitGetElement(item.id, item.key);
+      const el = await waitGetElement(item.id!, item.key);
       if (el.nodeName !== "FORM" && el.nodeName !== "DIV") {
         scrollIntoView(el);
         await sleep(16);

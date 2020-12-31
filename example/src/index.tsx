@@ -19,7 +19,7 @@ function App() {
       <div role="tab" onclick={() => Message.info("role-tab2")}>
         role2
       </div>
-      <input type="aa" />
+      <input id="aa" type="aa" />
       <form
         onchange={(e) => {
           (state as any)[e.target.placeholder] = e.target.value;
@@ -34,13 +34,15 @@ function App() {
           alert(JSON.stringify(state));
         }}
       >
-        <input placeholder="name" />
+        <input id="name" placeholder="name" />
         <input placeholder="name2" />
-        <input placeholder="password" type="password" />
+        <input id="password" placeholder="password" type="password" />
         <div tat-btn="dog" onclick={() => alert("10")}>
           alert
         </div>
-        <button name="submit">Submit</button>
+        <button id="submit" name="submit">
+          Submit
+        </button>
       </form>
     </div>
   );

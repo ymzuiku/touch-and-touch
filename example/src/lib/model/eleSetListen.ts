@@ -10,9 +10,8 @@ export const clicks = ["mousedown", "touchend"];
 export const attrs = [...clicks, ...submits];
 
 export const eleSetListen = (ele: HTMLInputElement) => {
-  let attrList = attrs;
-
-  attrList.forEach((e: string) => {
+  // const attrList = attrs;
+  attrs.forEach((e: string) => {
     if ((ele as any)["tat-" + e]) {
       return;
     }
@@ -47,9 +46,10 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             );
             // 默认情况下忽略 input，但是用于 mock 计算
             if (initOpt.useRecordInput || e !== "input") {
+              const key = ele.getAttribute("tat-key");
               recordItemAdd({
-                id: ele.id || "",
-                key: ele.getAttribute("tat-key")!,
+                ...(ele.id && { id: ele.id }),
+                ...(key && { key }),
                 type: "change",
                 value,
                 ...(mock && { mock }),
@@ -69,12 +69,13 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             console.error(err);
           }
         }
+        const key = ele.getAttribute("tat-key");
         recordItemAdd({
-          id: ele.id || "",
-          key: ele.getAttribute("tat-key")!,
+          ...(ele.id && { id: ele.id }),
+          ...(key && { key }),
           type: e,
           value,
-          mock,
+          ...(mock && { mock }),
         });
       }
     });

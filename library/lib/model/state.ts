@@ -3,8 +3,8 @@ const micoDb = createMicoDb("tat" + window.location.host);
 
 export interface RecordItem {
   index?: number;
-  id: string;
-  key: string;
+  id?: string;
+  key?: string;
   type: string;
   value?: string;
   mock?: string;
