@@ -1161,6 +1161,8 @@ function sleep(t) {
         });
     }); });
 }
+var lastReloadTime = 0;
+var reloadNum = 0;
 var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, function () {
     var i, _i, items_1, item, ui, el;
     return __generator(this, function (_a) {
@@ -1194,7 +1196,17 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 if (item.href) {
                     if (item.href.indexOf("#/") > -1 &&
                         getHref(window.location.href) === item.href) {
-                        window.location.replace(item.href);
+                        window.location.href = item.href;
+                        if (Date.now() - lastReloadTime < 100) {
+                            reloadNum += 1;
+                        }
+                        else {
+                            reloadNum = 0;
+                        }
+                        if (reloadNum < 3) {
+                            lastReloadTime = Date.now();
+                            window.location.reload();
+                        }
                     }
                     else {
                         window.location.href = item.href;

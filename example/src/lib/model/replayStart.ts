@@ -174,6 +174,9 @@ function sleep(t: number) {
   });
 }
 
+let lastReloadTime = 0;
+let reloadNum = 0;
+
 const startReplay = async (items: RecordItem[]) => {
   let i = 0;
   await state.ui.updateOne(
@@ -198,7 +201,16 @@ const startReplay = async (items: RecordItem[]) => {
         item.href.indexOf("#/") > -1 &&
         getHref(window.location.href) === item.href
       ) {
-        window.location.replace(item.href);
+        window.location.href = item.href;
+        if (Date.now() - lastReloadTime < 100) {
+          reloadNum += 1;
+        } else {
+          reloadNum = 0;
+        }
+        if (reloadNum < 3) {
+          lastReloadTime = Date.now();
+          window.location.reload();
+        }
       } else {
         window.location.href = item.href;
       }
