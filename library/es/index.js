@@ -807,9 +807,10 @@ var init = function (opt) {
     });
 };
 
+var inputs = ["input"];
 var submits = ["submit", "change"];
 var clicks = ["mousedown", "touchend"];
-var attrs = __spreadArrays(clicks, submits);
+var attrs = __spreadArrays(inputs, clicks, submits);
 var eleSetListen = function (ele) {
     // const attrList = attrs;
     attrs.forEach(function (e) {
@@ -819,7 +820,7 @@ var eleSetListen = function (ele) {
         ele["tat-" + e] = 1;
         ele.addEventListener(e, function (event) {
             return __awaiter(this, void 0, void 0, function () {
-                var value, mock, reg, fn, key_1, inputEvent, err_1, key;
+                var value, mock, reg, fn, key, inputEvent, err_1, key;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -842,21 +843,19 @@ var eleSetListen = function (ele) {
                             value = getEventVal(event);
                             mock = "";
                             reg = /!!/;
+                            console.log(value, "111111");
                             if (!reg.test(value)) return [3 /*break*/, 5];
                             mock = value.replace(reg, "");
                             _a.label = 2;
                         case 2:
                             _a.trys.push([2, 4, , 5]);
-                            fn = new Function("random", "set", "get", "return " + mock);
+                            fn = new Function("mock", "set", "get", "return " + mock);
                             return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
                         case 3:
                             value = _a.sent();
-                            // 默认情况下忽略 input，但是用于 mock 计算
-                            if (initOpt.useRecordInput || e !== "input") {
-                                key_1 = ele.getAttribute("tat-key");
-                                recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key_1 && { key: key_1 })), { type: "change", value: value }), (mock && { mock: mock })));
-                            }
-                            inputEvent = new InputEvent(e, {
+                            key = ele.getAttribute("tat-key");
+                            recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: "change", value: value }), (mock && { mock: mock })));
+                            inputEvent = new InputEvent("change", {
                                 data: value,
                                 view: window,
                                 bubbles: true,
@@ -870,8 +869,11 @@ var eleSetListen = function (ele) {
                             console.error(err_1);
                             return [3 /*break*/, 5];
                         case 5:
-                            key = ele.getAttribute("tat-key");
-                            recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }), (mock && { mock: mock })));
+                            // 若 无useRecordInput，忽略 input 事件
+                            if (initOpt.useRecordInput || e !== "input") {
+                                key = ele.getAttribute("tat-key");
+                                recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }), (mock && { mock: mock })));
+                            }
                             _a.label = 6;
                         case 6: return [2 /*return*/];
                     }
@@ -1025,7 +1027,7 @@ function emitInput(el, item, eventKey) {
                     _b.label = 2;
                 case 2:
                     if (!item.mock) return [3 /*break*/, 4];
-                    fn = new Function("random", "set", "get", "return " + item.mock);
+                    fn = new Function("mock", "set", "get", "return " + item.mock);
                     _a = item;
                     return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
                 case 3:

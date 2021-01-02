@@ -80,7 +80,7 @@ async function emitInput(
   }
 
   if (item.mock) {
-    const fn = new Function("random", "set", "get", "return " + item.mock);
+    const fn = new Function("mock", "set", "get", "return " + item.mock);
     item.value = await Promise.resolve(fn(mockjs.Random, cache.set, cache.get));
   }
 

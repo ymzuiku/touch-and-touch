@@ -7,7 +7,7 @@ import { initOpt } from "./init";
 export const inputs = ["input"];
 export const submits = ["submit", "change"];
 export const clicks = ["mousedown", "touchend"];
-export const attrs = [...clicks, ...submits];
+export const attrs = [...inputs, ...clicks, ...submits];
 
 export const eleSetListen = (ele: HTMLInputElement) => {
   // const attrList = attrs;
@@ -37,26 +37,25 @@ export const eleSetListen = (ele: HTMLInputElement) => {
         let value = getEventVal(event) as string;
         let mock = "";
         const reg = /!!/;
+        console.log(value, "111111");
         if (reg.test(value)) {
           mock = value.replace(reg, "");
           try {
-            const fn = new Function("random", "set", "get", "return " + mock);
+            const fn = new Function("mock", "set", "get", "return " + mock);
             value = await Promise.resolve(
               fn(mockjs.Random, cache.set, cache.get)
             );
-            // 默认情况下忽略 input，但是用于 mock 计算
-            if (initOpt.useRecordInput || e !== "input") {
-              const key = ele.getAttribute("tat-key");
-              recordItemAdd({
-                ...(ele.id && { id: ele.id }),
-                ...(key && { key }),
-                type: "change",
-                value,
-                ...(mock && { mock }),
-              });
-            }
 
-            const inputEvent = new InputEvent(e, {
+            const key = ele.getAttribute("tat-key");
+            recordItemAdd({
+              ...(ele.id && { id: ele.id }),
+              ...(key && { key }),
+              type: "change",
+              value,
+              ...(mock && { mock }),
+            });
+
+            const inputEvent = new InputEvent("change", {
               data: value,
               view: window,
               bubbles: true,
@@ -69,14 +68,18 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             console.error(err);
           }
         }
-        const key = ele.getAttribute("tat-key");
-        recordItemAdd({
-          ...(ele.id && { id: ele.id }),
-          ...(key && { key }),
-          type: e,
-          value,
-          ...(mock && { mock }),
-        });
+
+        // 若 无useRecordInput，忽略 input 事件
+        if (initOpt.useRecordInput || e !== "input") {
+          const key = ele.getAttribute("tat-key");
+          recordItemAdd({
+            ...(ele.id && { id: ele.id }),
+            ...(key && { key }),
+            type: e,
+            value,
+            ...(mock && { mock }),
+          });
+        }
       }
     });
   });
