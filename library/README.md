@@ -80,7 +80,7 @@ touch-and-touch 在刚开始设计中，是可以自动拼接元素身上的属�
 在 input 过程中可以直接输入：
 
 ```js
-random.word(5, 10)!!
+mock.word(5, 10)!!
 ```
 
 当输入值的过程， `touch-and-touch` 发现 `!!` 结尾的值时，会把 input value 作为函数进行执行，并且把返回值输入到输入框中, 当播放时，会重新执行函数，获取新的随机值进行测试
@@ -90,7 +90,7 @@ random.word(5, 10)!!
 1. 在第一输入框的输入过程中，可以直接输入：
 
 ```js
-set("a", random.phone())!!
+set("a", mock.phone())!!
 ```
 
 此时会获取一个随机手机号，并且存到 a 变量中，变量 a 会存储在 indexedDb 数据库中
