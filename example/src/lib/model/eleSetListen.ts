@@ -37,7 +37,6 @@ export const eleSetListen = (ele: HTMLInputElement) => {
         let value = getEventVal(event) as string;
         let mock = "";
         const reg = /!!/;
-        console.log(value, "111111");
         if (reg.test(value)) {
           mock = value.replace(reg, "");
           try {

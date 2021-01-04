@@ -8,7 +8,6 @@ export const replayAllFilter = async () => {
   for (const cell of list) {
     const isPlay = await fixFilterCell(cell);
     if (isPlay) {
-      console.log("111");
       items = items.concat(...cell.items);
     }
   }

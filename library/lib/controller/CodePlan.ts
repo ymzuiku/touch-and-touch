@@ -21,7 +21,6 @@ export default ({ id }: { id: string }) => {
                 "tat-code-plan-textarea"
               ) as HTMLTextAreaElement;
               const done = await changeCellData(id, textarea.value);
-              console.log("bbbb", done);
               if (done) {
                 ele.remove();
               }

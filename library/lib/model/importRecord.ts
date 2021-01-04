@@ -7,7 +7,6 @@ export async function importRecord() {
   try {
     const data = JSON.parse(value);
     data.forEach((item: any) => {
-      console.log(item);
       if (!item._id) {
         throw "File type error";
       }

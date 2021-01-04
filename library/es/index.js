@@ -677,7 +677,6 @@ var replayAllFilter = function () { return __awaiter(void 0, void 0, void 0, fun
             case 3:
                 isPlay = _a.sent();
                 if (isPlay) {
-                    console.log("111");
                     items = items.concat.apply(items, cell.items);
                 }
                 _a.label = 4;
@@ -843,7 +842,6 @@ var eleSetListen = function (ele) {
                             value = getEventVal(event);
                             mock = "";
                             reg = /!!/;
-                            console.log(value, "111111");
                             if (!reg.test(value)) return [3 /*break*/, 5];
                             mock = value.replace(reg, "");
                             _a.label = 2;
@@ -1353,7 +1351,6 @@ function importRecord() {
                     _a.trys.push([2, 6, , 7]);
                     data = JSON.parse(value);
                     data.forEach(function (item) {
-                        console.log(item);
                         if (!item._id) {
                             throw "File type error";
                         }
@@ -1698,7 +1695,6 @@ var CodePlan = (function (_a) {
                         return [4 /*yield*/, changeCellData(id, textarea.value)];
                     case 1:
                         done = _a.sent();
-                        console.log("bbbb", done);
                         if (done) {
                             ele.remove();
                         }
