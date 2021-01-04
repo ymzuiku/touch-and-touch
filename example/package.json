@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/mockjs": "^1.0.3",
-    "aoife": "^1.4.9",
+    "aoife": "^1.5.1",
     "aoife-pop": "^1.0.3",
     "aoife-svg": "^1.0.6",
     "dayjs": "^1.9.7",
