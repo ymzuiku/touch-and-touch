@@ -1725,34 +1725,45 @@ function loadScriptList() {
     return Promise.all(srcs.map(function (src) { return loadScript(src); }));
 }
 
-loadScriptList("https://unpkg.com/prettier@2.2.1/standalone.js", "https://unpkg.com/prettier@2.2.1/standalone.js", "https://unpkg.com/prettier@2.2.1/parser-babel.js"
-// "https://unpkg.com/prettier@2.2.1/parser-markdown.js",
-// "https://unpkg.com/prettier@2.2.1/parser-html.js",
-// "https://unpkg.com/prettier@2.2.1/parser-postcss.js"
-);
-var changeFormat = function (code) { return __awaiter(void 0, void 0, void 0, function () {
-    var prettier, prettierPlugins, out;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, waitValue(function () { return window.prettier; })];
-            case 1:
-                prettier = _a.sent();
-                prettierPlugins = window.prettierPlugins;
-                out = prettier.format(code, {
-                    parser: "json",
-                    plugins: prettierPlugins,
-                    printWidth: 120,
-                    tabWidth: 2,
-                    singleQute: false,
-                    trailingComma: "all",
-                    jsxBracketSameLine: true,
-                    singleQuote: true,
-                    semi: true,
-                });
-                return [2 /*return*/, out];
-        }
+loadScriptList("https://unpkg.com/prettier@2.2.1/standalone.js", "https://unpkg.com/prettier@2.2.1/standalone.js", "https://unpkg.com/prettier@2.2.1/parser-babel.js");
+var changeFormat = function (code) {
+    if (code === void 0) { code = ""; }
+    return __awaiter(void 0, void 0, void 0, function () {
+        var prettier, prettierPlugins, out;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, waitValue(function () { return window.prettier; }, 1000 * 20)];
+                case 1:
+                    prettier = _a.sent();
+                    if (!prettier) {
+                        Message.error("Unload prettier, check the network, please.", {
+                            style: { zIndex: 16000 },
+                        });
+                        return [2 /*return*/, false];
+                    }
+                    prettierPlugins = window.prettierPlugins;
+                    try {
+                        out = prettier.format(code, {
+                            parser: "json",
+                            plugins: prettierPlugins,
+                            printWidth: 120,
+                            tabWidth: 2,
+                            singleQute: false,
+                            trailingComma: "all",
+                            jsxBracketSameLine: true,
+                            singleQuote: true,
+                            semi: true,
+                        });
+                        return [2 /*return*/, out];
+                    }
+                    catch (err) {
+                        Message.error(err.toString(), { style: { zIndex: 16000 } });
+                    }
+                    return [2 /*return*/];
+            }
+        });
     });
-}); };
+};
 
 var findCellDate = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var cell;
@@ -1766,31 +1777,59 @@ var findCellDate = function (id) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 
+var tabKeyDown = function (e) {
+    if (e.keyCode == 9) {
+        e.preventDefault();
+        var indent = "  ";
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+        var sele = window.getSelection();
+        if (sele) {
+            var selected = window.getSelection().toString();
+            selected = indent + selected.replace(/\n/g, "\n" + indent);
+            this.value =
+                this.value.substring(0, start) + selected + this.value.substring(end);
+            this.setSelectionRange(start + indent.length, start + selected.length);
+        }
+    }
+};
+function formatText() {
+    return __awaiter(this, void 0, void 0, function () {
+        var textarea, val;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    textarea = document.getElementById("tat-code-plan-textarea");
+                    return [4 /*yield*/, changeFormat(textarea.value)];
+                case 1:
+                    val = _a.sent();
+                    if (!val) {
+                        return [2 /*return*/, false];
+                    }
+                    textarea.value = val;
+                    return [2 /*return*/, true];
+            }
+        });
+    });
+}
 var CodePlan = (function (_a) {
     var id = _a.id;
     var ele = aoife$1("div", { id: "tat-code-plan", class: "tat-code-plan", "tat-ignore": true }, aoife$1("div", { class: "plan" }, aoife$1("div", { class: "button-plan" }, aoife$1("button", {
-        onclick: function (e) { return __awaiter(void 0, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = e;
-                        return [4 /*yield*/, changeFormat(e.value)];
-                    case 1:
-                        _a.value = _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        }); },
+        onclick: formatText,
     }, "Format"), aoife$1("button", {
         onclick: function (e) { return __awaiter(void 0, void 0, void 0, function () {
-            var textarea, done;
+            var isRight, textarea, done;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, formatText()];
+                    case 1:
+                        isRight = _a.sent();
+                        if (!isRight) {
+                            return [2 /*return*/];
+                        }
                         textarea = document.getElementById("tat-code-plan-textarea");
                         return [4 /*yield*/, changeCellData(id, textarea.value)];
-                    case 1:
+                    case 2:
                         done = _a.sent();
                         if (done) {
                             ele.remove();
@@ -1806,6 +1845,7 @@ var CodePlan = (function (_a) {
     }, "Cancel")), aoife$1("textarea", {
         tabindex: 0,
         dir: "ltr",
+        onkeydown: tabKeyDown,
         autocapitalize: "off",
         autocomplete: "off",
         autocorrect: "off",

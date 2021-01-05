@@ -1,1 +1,1 @@
-export declare const changeFormat: (code: string) => Promise<any>;
+export declare const changeFormat: (code?: string) => Promise<any>;
