@@ -5228,6 +5228,11 @@ w3c-xmlserializer@^2.0.0:
   dependencies:
     xml-name-validator "^3.0.0"
 
+wait-value@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/wait-value/-/wait-value-0.2.0.tgz#7b29c5c047e6dd0f08d9bf81db00bff93cb370cf"
+  integrity sha512-gF9twFFHJoFfxRty02V06lqQD6OhDPPT6b0cva/UByjy6+L6TTY/92WATUbRKXKn4D4Z8zlg/wMYDYgKV9yikg==
+
 walker@^1.0.7, walker@~1.0.5:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"

@@ -1,7 +1,37 @@
 import aoife from "aoife";
 import css from "template-css";
 import { changeCellData } from "../model/changeCellData";
+import { changeFormat } from "../model/changeFormat";
 import { findCellDate } from "../model/findCellDate";
+
+const tabKeyDown = function (this: any, e: any) {
+  if (e.keyCode == 9) {
+    e.preventDefault();
+    const indent = "  ";
+    const start = this.selectionStart;
+    const end = this.selectionEnd;
+    const sele = window.getSelection();
+    if (sele) {
+      let selected = window.getSelection()!.toString();
+      selected = indent + selected.replace(/\n/g, "\n" + indent);
+      this.value =
+        this.value.substring(0, start) + selected + this.value.substring(end);
+      this.setSelectionRange(start + indent.length, start + selected.length);
+    }
+  }
+};
+
+async function formatText() {
+  const textarea = document.getElementById(
+    "tat-code-plan-textarea"
+  ) as HTMLTextAreaElement;
+  const val = await changeFormat(textarea.value);
+  if (!val) {
+    return false;
+  }
+  textarea.value = val;
+  return true;
+}
 
 export default ({ id }: { id: string }) => {
   const ele = aoife(
@@ -16,7 +46,18 @@ export default ({ id }: { id: string }) => {
         aoife(
           "button",
           {
+            onclick: formatText,
+          },
+          "Format"
+        ),
+        aoife(
+          "button",
+          {
             onclick: async (e: any) => {
+              const isRight = await formatText();
+              if (!isRight) {
+                return;
+              }
               const textarea = document.getElementById(
                 "tat-code-plan-textarea"
               ) as HTMLTextAreaElement;
@@ -41,6 +82,7 @@ export default ({ id }: { id: string }) => {
       aoife("textarea", {
         tabindex: 0,
         dir: "ltr",
+        onkeydown: tabKeyDown,
         autocapitalize: "off",
         autocomplete: "off",
         autocorrect: "off",

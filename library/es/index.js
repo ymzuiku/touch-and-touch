@@ -7,6 +7,7 @@ import mockjs from 'mockjs';
 import dayjs from 'dayjs';
 import aoifeSvg from 'aoife-svg';
 import localfile from 'localfile';
+import waitValue from 'wait-value';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -819,16 +820,21 @@ var eleSetListen = function (ele) {
         ele["tat-" + e] = 1;
         ele.addEventListener(e, function (event) {
             return __awaiter(this, void 0, void 0, function () {
-                var value, mock, reg, baseValue, fn, key, inputEvent, err_1, key;
+                var ui, value, mock, reg, baseValue, fn, key, inputEvent, err_1, key;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
+                        case 0: return [4 /*yield*/, state.ui.findOne()];
+                        case 1:
+                            ui = _a.sent();
+                            if (ui.replaying) {
+                                return [2 /*return*/];
+                            }
                             // event.stopPropagation();
                             if (ele._tatIgnoreOnce &&
                                 ele._tatIgnoreOnce === getEventVal(event)) {
                                 return [2 /*return*/];
                             }
-                            if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 1];
+                            if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 2];
                             setTimeout(function () {
                                 recordItemAdd({
                                     id: ele.id || "",
@@ -837,20 +843,20 @@ var eleSetListen = function (ele) {
                                     value: getEventVal(event),
                                 });
                             }, 20);
-                            return [3 /*break*/, 6];
-                        case 1:
+                            return [3 /*break*/, 7];
+                        case 2:
                             value = getEventVal(event);
                             mock = "";
                             reg = /!!$/;
-                            if (!reg.test(value)) return [3 /*break*/, 5];
+                            if (!reg.test(value)) return [3 /*break*/, 6];
                             baseValue = value;
                             mock = value.replace(reg, "");
-                            _a.label = 2;
-                        case 2:
-                            _a.trys.push([2, 4, , 5]);
+                            _a.label = 3;
+                        case 3:
+                            _a.trys.push([3, 5, , 6]);
                             fn = new Function("mock", "set", "get", "return " + mock);
                             return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
-                        case 3:
+                        case 4:
                             value = _a.sent();
                             key = ele.getAttribute("tat-key");
                             recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: "change", value: baseValue }));
@@ -863,18 +869,18 @@ var eleSetListen = function (ele) {
                             ele._tatIgnoreOnce = value;
                             ele.value = value;
                             return [2 /*return*/, ele.dispatchEvent(inputEvent)];
-                        case 4:
+                        case 5:
                             err_1 = _a.sent();
                             console.error(err_1);
-                            return [3 /*break*/, 5];
-                        case 5:
+                            return [3 /*break*/, 6];
+                        case 6:
                             // 若 无useRecordInput，忽略 input 事件
                             if (initOpt.useRecordInput || e !== "input") {
                                 key = ele.getAttribute("tat-key");
                                 recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }));
                             }
-                            _a.label = 6;
-                        case 6: return [2 /*return*/];
+                            _a.label = 7;
+                        case 7: return [2 /*return*/];
                     }
                 });
             });
@@ -1012,6 +1018,7 @@ function emitInput(el, item, eventKey) {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    item = __assign({}, item);
                     if (el.closest("[tat-ignore]")) {
                         return [2 /*return*/];
                     }
@@ -1673,6 +1680,80 @@ var changeCellData = function (id, code) { return __awaiter(void 0, void 0, void
     });
 }); };
 
+var cache$1 = {};
+var iconfonts = document.createElement("style");
+iconfonts.id = "iconfonts";
+iconfonts.textContent = "\n.icon {\nwidth: 100%; height: 100%;\nvertical-align: -0.15em;\nfill: currentColor;\noverflow: hidden;\n}\n  ";
+document.head.append(iconfonts);
+var waitingCached = function (src) {
+    return new Promise(function (res) {
+        var relaod = function () {
+            setTimeout(function () {
+                if (cache$1[src] === 2) {
+                    res(void 0);
+                }
+                else {
+                    relaod();
+                }
+            }, 50);
+        };
+        relaod();
+    });
+};
+function loadScript(href) {
+    if (cache$1[href] === 1) {
+        return waitingCached(href);
+    }
+    cache$1[href] = 1;
+    return new Promise(function (res) {
+        var el = document.createElement("script");
+        // el.setAttribute("src", href);
+        el.src = href;
+        // el.setAttribute("type", "text/javascript");
+        el.onload = function () {
+            res(void 0);
+            cache$1[href] = 2;
+        };
+        document.head.append(el);
+    });
+}
+function loadScriptList() {
+    var srcs = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        srcs[_i] = arguments[_i];
+    }
+    return Promise.all(srcs.map(function (src) { return loadScript(src); }));
+}
+
+loadScriptList("https://unpkg.com/prettier@2.2.1/standalone.js", "https://unpkg.com/prettier@2.2.1/standalone.js", "https://unpkg.com/prettier@2.2.1/parser-babel.js"
+// "https://unpkg.com/prettier@2.2.1/parser-markdown.js",
+// "https://unpkg.com/prettier@2.2.1/parser-html.js",
+// "https://unpkg.com/prettier@2.2.1/parser-postcss.js"
+);
+var changeFormat = function (code) { return __awaiter(void 0, void 0, void 0, function () {
+    var prettier, prettierPlugins, out;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, waitValue(function () { return window.prettier; })];
+            case 1:
+                prettier = _a.sent();
+                prettierPlugins = window.prettierPlugins;
+                out = prettier.format(code, {
+                    parser: "json",
+                    plugins: prettierPlugins,
+                    printWidth: 120,
+                    tabWidth: 2,
+                    singleQute: false,
+                    trailingComma: "all",
+                    jsxBracketSameLine: true,
+                    singleQuote: true,
+                    semi: true,
+                });
+                return [2 /*return*/, out];
+        }
+    });
+}); };
+
 var findCellDate = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var cell;
     return __generator(this, function (_a) {
@@ -1688,6 +1769,20 @@ var findCellDate = function (id) { return __awaiter(void 0, void 0, void 0, func
 var CodePlan = (function (_a) {
     var id = _a.id;
     var ele = aoife$1("div", { id: "tat-code-plan", class: "tat-code-plan", "tat-ignore": true }, aoife$1("div", { class: "plan" }, aoife$1("div", { class: "button-plan" }, aoife$1("button", {
+        onclick: function (e) { return __awaiter(void 0, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = e;
+                        return [4 /*yield*/, changeFormat(e.value)];
+                    case 1:
+                        _a.value = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); },
+    }, "Format"), aoife$1("button", {
         onclick: function (e) { return __awaiter(void 0, void 0, void 0, function () {
             var textarea, done;
             return __generator(this, function (_a) {

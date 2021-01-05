@@ -66,6 +66,7 @@ async function emitInput(
   item: RecordItem,
   eventKey: string
 ) {
+  item = {...item};
   if (el.closest("[tat-ignore]")) {
     return;
   }

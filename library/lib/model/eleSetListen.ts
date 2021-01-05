@@ -3,6 +3,7 @@ import { recordItemAdd } from "./recordItemAdd";
 import mockjs from "mockjs";
 import { cache } from "./cache";
 import { initOpt } from "./init";
+import { state } from "./state";
 
 export const inputs = ["input"];
 export const submits = ["submit", "change"];
@@ -17,6 +18,10 @@ export const eleSetListen = (ele: HTMLInputElement) => {
     }
     (ele as any)["tat-" + e] = 1;
     ele.addEventListener(e, async function (event: Event) {
+      const ui = await state.ui.findOne();
+      if (ui.replaying) {
+        return;
+      }
       // event.stopPropagation();
       if (
         (ele as any)._tatIgnoreOnce &&

@@ -43,6 +43,7 @@ module.exports = {
         ignoreReadBeforeAssign: true,
       },
     ],
+    "@typescript-eslint/no-inferrable-types": 0,
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-empty-function": 0,
     "@typescript-eslint/no-non-null-assertion": 0,

@@ -1,6 +1,7 @@
 import aoife from "aoife";
 import css from "template-css";
 import { changeCellData } from "../model/changeCellData";
+import { changeFormat } from "../model/changeFormat";
 import { findCellDate } from "../model/findCellDate";
 
 export default ({ id }: { id: string }) => {
@@ -13,6 +14,15 @@ export default ({ id }: { id: string }) => {
       aoife(
         "div",
         { class: "button-plan" },
+        aoife(
+          "button",
+          {
+            onclick: async (e: any) => {
+              e.value = await changeFormat(e.value);
+            },
+          },
+          "Format"
+        ),
         aoife(
           "button",
           {
