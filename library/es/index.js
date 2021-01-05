@@ -1024,7 +1024,7 @@ function emitInput(el, item, eventKey) {
 }
 function done(e) {
     var _a;
-    Message.info("[TouchAndTouch] Listened: " + e.detail, {
+    Message.error("[TouchAndTouch] Listened: " + e.detail, {
         outTime: 1500,
         position: "bottom",
     });
