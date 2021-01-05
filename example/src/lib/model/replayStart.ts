@@ -66,6 +66,7 @@ async function emitInput(
   item: RecordItem,
   eventKey: string
 ) {
+  item = {...item};
   if (el.closest("[tat-ignore]")) {
     return;
   }
@@ -79,8 +80,9 @@ async function emitInput(
     el.focus();
   }
 
-  if (item.mock) {
-    const fn = new Function("mock", "set", "get", "return " + item.mock);
+  if (item.value && /!!$/.test(item.value)) {
+    const value = item.value.replace(/!!$/, '');
+    const fn = new Function("mock", "set", "get", "return " + value);
     item.value = await Promise.resolve(fn(mockjs.Random, cache.set, cache.get));
   }
 

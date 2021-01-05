@@ -819,7 +819,7 @@ var eleSetListen = function (ele) {
         ele["tat-" + e] = 1;
         ele.addEventListener(e, function (event) {
             return __awaiter(this, void 0, void 0, function () {
-                var value, mock, reg, fn, key, inputEvent, err_1, key;
+                var value, mock, reg, baseValue, fn, key, inputEvent, err_1, key;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -841,8 +841,9 @@ var eleSetListen = function (ele) {
                         case 1:
                             value = getEventVal(event);
                             mock = "";
-                            reg = /!!/;
+                            reg = /!!$/;
                             if (!reg.test(value)) return [3 /*break*/, 5];
+                            baseValue = value;
                             mock = value.replace(reg, "");
                             _a.label = 2;
                         case 2:
@@ -852,7 +853,7 @@ var eleSetListen = function (ele) {
                         case 3:
                             value = _a.sent();
                             key = ele.getAttribute("tat-key");
-                            recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: "change", value: value }), (mock && { mock: mock })));
+                            recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: "change", value: baseValue }));
                             inputEvent = new InputEvent("change", {
                                 data: value,
                                 view: window,
@@ -870,7 +871,7 @@ var eleSetListen = function (ele) {
                             // 若 无useRecordInput，忽略 input 事件
                             if (initOpt.useRecordInput || e !== "input") {
                                 key = ele.getAttribute("tat-key");
-                                recordItemAdd(__assign(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }), (mock && { mock: mock })));
+                                recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }));
                             }
                             _a.label = 6;
                         case 6: return [2 /*return*/];
@@ -1007,7 +1008,7 @@ function emitClick(el) {
 }
 function emitInput(el, item, eventKey) {
     return __awaiter(this, void 0, void 0, function () {
-        var nodeName, fn, _a, inputEvent;
+        var nodeName, value, fn, _a, inputEvent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -1024,8 +1025,9 @@ function emitInput(el, item, eventKey) {
                     el.focus();
                     _b.label = 2;
                 case 2:
-                    if (!item.mock) return [3 /*break*/, 4];
-                    fn = new Function("mock", "set", "get", "return " + item.mock);
+                    if (!(item.value && /!!$/.test(item.value))) return [3 /*break*/, 4];
+                    value = item.value.replace(/!!$/, '');
+                    fn = new Function("mock", "set", "get", "return " + value);
                     _a = item;
                     return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
                 case 3:

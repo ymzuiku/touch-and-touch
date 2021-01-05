@@ -7,7 +7,6 @@ export interface RecordItem {
   key?: string;
   type: string;
   value?: string;
-  mock?: string;
   href?: string;
   clientX?: number;
   clientY?: number;

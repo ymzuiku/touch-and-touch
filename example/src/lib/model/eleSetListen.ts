@@ -3,6 +3,7 @@ import { recordItemAdd } from "./recordItemAdd";
 import mockjs from "mockjs";
 import { cache } from "./cache";
 import { initOpt } from "./init";
+import { state } from "./state";
 
 export const inputs = ["input"];
 export const submits = ["submit", "change"];
@@ -17,6 +18,10 @@ export const eleSetListen = (ele: HTMLInputElement) => {
     }
     (ele as any)["tat-" + e] = 1;
     ele.addEventListener(e, async function (event: Event) {
+      const ui = await state.ui.findOne();
+      if (ui.replaying) {
+        return;
+      }
       // event.stopPropagation();
       if (
         (ele as any)._tatIgnoreOnce &&
@@ -36,22 +41,22 @@ export const eleSetListen = (ele: HTMLInputElement) => {
       } else {
         let value = getEventVal(event) as string;
         let mock = "";
-        const reg = /!!/;
+        const reg = /!!$/;
         if (reg.test(value)) {
+          const baseValue = value;
           mock = value.replace(reg, "");
           try {
             const fn = new Function("mock", "set", "get", "return " + mock);
             value = await Promise.resolve(
               fn(mockjs.Random, cache.set, cache.get)
             );
-
+            
             const key = ele.getAttribute("tat-key");
             recordItemAdd({
               ...(ele.id && { id: ele.id }),
               ...(key && { key }),
               type: "change",
-              value,
-              ...(mock && { mock }),
+              value: baseValue,
             });
 
             const inputEvent = new InputEvent("change", {
@@ -76,7 +81,6 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             ...(key && { key }),
             type: e,
             value,
-            ...(mock && { mock }),
           });
         }
       }

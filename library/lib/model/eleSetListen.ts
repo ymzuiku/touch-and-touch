@@ -36,22 +36,22 @@ export const eleSetListen = (ele: HTMLInputElement) => {
       } else {
         let value = getEventVal(event) as string;
         let mock = "";
-        const reg = /!!/;
+        const reg = /!!$/;
         if (reg.test(value)) {
+          const baseValue = value;
           mock = value.replace(reg, "");
           try {
             const fn = new Function("mock", "set", "get", "return " + mock);
             value = await Promise.resolve(
               fn(mockjs.Random, cache.set, cache.get)
             );
-
+            
             const key = ele.getAttribute("tat-key");
             recordItemAdd({
               ...(ele.id && { id: ele.id }),
               ...(key && { key }),
               type: "change",
-              value,
-              ...(mock && { mock }),
+              value: baseValue,
             });
 
             const inputEvent = new InputEvent("change", {
@@ -76,7 +76,6 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             ...(key && { key }),
             type: e,
             value,
-            ...(mock && { mock }),
           });
         }
       }
