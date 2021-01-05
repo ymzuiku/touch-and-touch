@@ -41,7 +41,7 @@ window.addEventListener("keyup", (e) => {
 
 export const init = async (opt: InitOptions = {}) => {
   Object.assign(initOpt, opt);
-  const ui = await state.ui.findOne();
+  const ui = state.ui.get();
   if (initOpt.initData && !ui.replaying && !ui.recording) {
     const list = await initOpt.initData();
     await state.recordList.deleteMany();
@@ -67,14 +67,14 @@ export const init = async (opt: InitOptions = {}) => {
 
   aoife.next(".tat-update");
 
-  await state.ui.updateOne(
-    {},
-    { speed: opt.speed || 1, waitTimeout: opt.waitTimeout || 5000 }
-  );
+  state.ui.merge({
+    speed: opt.speed || 1,
+    waitTimeout: opt.waitTimeout || 5000,
+  });
 
   recordDom();
   setTimeout(async () => {
-    const ui = await state.ui.findOne();
+    const ui = state.ui.get();
     if (ui.replaying) {
       if (ui.replayingAll) {
         replayAllFilter();
@@ -92,7 +92,7 @@ export const init = async (opt: InitOptions = {}) => {
       });
       if (cell) {
         await changeSelectItem(cell._id);
-        await state.ui.updateOne({}, { step: 0 });
+        state.ui.merge({ step: 0 });
         replayStart();
       }
     }

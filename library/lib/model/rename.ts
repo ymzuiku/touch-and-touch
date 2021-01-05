@@ -1,12 +1,9 @@
 import { state } from "./state";
 
 export const rename = async (id: string, title: string) => {
-  state.ui.updateOne(
-    {},
-    {
-      showInputId: "",
-    }
-  );
+  state.ui.merge({
+    showInputId: "",
+  });
   const now = await state.nowCell.findOne();
   if (now._id === id) {
     await state.nowCell.updateOne({}, { title });

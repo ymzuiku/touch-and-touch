@@ -29,7 +29,7 @@ const mouse = aoife(
   "div",
   {
     hidden: async () => {
-      const ui = await state.ui.findOne();
+      const ui = state.ui.get();
       return !ui.showMouse;
     },
     class: "tat-mouse",
@@ -55,7 +55,7 @@ function mouseMove(item: RecordItem) {
 }
 
 async function mouseClick(item: RecordItem) {
-  const ui = await state.ui.findOne();
+  const ui = state.ui.get();
   if (
     ui.lastFocus &&
     ui.lastFocus.nodeName &&
@@ -63,7 +63,7 @@ async function mouseClick(item: RecordItem) {
     ui.lastFocus.focus
   ) {
     ui.lastFocus.blur();
-    await state.ui.updateOne({}, { lastFocus: void 0 });
+    state.ui.merge({ lastFocus: void 0 });
   }
 
   mouse.style.top = item.clientY + "px";

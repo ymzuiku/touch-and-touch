@@ -18,7 +18,7 @@ export const eleSetListen = (ele: HTMLInputElement) => {
     }
     (ele as any)["tat-" + e] = 1;
     ele.addEventListener(e, async function (event: Event) {
-      const ui = await state.ui.findOne();
+      const ui = state.ui.get();
       if (ui.replaying) {
         return;
       }
@@ -50,7 +50,7 @@ export const eleSetListen = (ele: HTMLInputElement) => {
             value = await Promise.resolve(
               fn(mockjs.Random, cache.set, cache.get)
             );
-            
+
             const key = ele.getAttribute("tat-key");
             recordItemAdd({
               ...(ele.id && { id: ele.id }),

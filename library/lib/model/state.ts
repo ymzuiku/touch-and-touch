@@ -1,5 +1,5 @@
 import { createMicoDb } from "mico-db";
-const micoDb = createMicoDb("tat" + window.location.host);
+const db = createMicoDb("tat" + window.location.host);
 
 export interface RecordItem {
   index?: number;
@@ -34,29 +34,26 @@ export const proxy = {} as TATProxy;
 
 export const state = {
   onAlt: false,
-  ui: micoDb.collection("ui", {
-    type: "sessionStorage",
-    init: {
-      speed: 1,
-      showMouse: 0,
-      lastFocus: null as any,
-      showList: 1,
-      showInputId: "",
-      recording: 0,
-      replaying: 0,
-      replayingAll: 0,
-      autoRecordId: false,
-      step: 0,
-      filter: [] as string[],
-      waitTimeout: 5000,
-    },
+  ui: db.sessionItem("ui", {
+    speed: 1,
+    showMouse: 0,
+    lastFocus: null as any,
+    showList: 1,
+    showInputId: "",
+    recording: 0,
+    replaying: 0,
+    replayingAll: 0,
+    autoRecordId: false,
+    step: 0,
+    filter: [] as string[],
+    waitTimeout: 5000,
   }),
-  nowCell: micoDb.collection<RecordCell>("nowCell"),
-  recordList: micoDb.collection<RecordCell>("record-list", {
+  nowCell: db.collection<RecordCell>("nowCell"),
+  recordList: db.collection<RecordCell>("record-list", {
     sort: { updateAt: -1 },
   }),
-  recordItems: micoDb.collection<RecordItem>("record-item"),
-  customEvent: micoDb.collection<any>("custom-event", {
+  recordItems: db.collection<RecordItem>("record-item"),
+  customEvent: db.collection<any>("custom-event", {
     type: "sessionStorage",
   }),
 };

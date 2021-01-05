@@ -3757,12 +3757,10 @@ merge2@^1.3.0:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mico-db@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.3.1.tgz#bf6df968d27fa8b77ee1c4513517e7d4bfcfac23"
-  integrity sha512-NzhLY66ZnPtPgX43LD8RMGngkPKPF4ikoaGps98xrW0UGCDJGGC3eOBplFj9AmioQuC3/w2wqZRnsYlwtV2meA==
-  dependencies:
-    nanoid "^3.1.20"
+mico-db@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.4.3.tgz#04c43e8e91c97871332f9b44a7547734ffc7ed64"
+  integrity sha512-JwSk7GWSaQbu7LL6dpGQXeuERa+hoxqMli/bC2yQ1TmiifkeHf9yJzMYeuXoo1NauM6qYgrn9sUvCty+XlC8nQ==
 
 micromatch@^3.1.4:
   version "3.1.10"
@@ -3859,11 +3857,6 @@ mustache@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/mustache/-/mustache-4.1.0.tgz#8c1b042238a982d2eb2d30efc6c14296ae3f699d"
   integrity sha512-0FsgP/WVq4mKyjolIyX+Z9Bd+3WS8GOwoUTyKXT5cTYMGeauNTi2HPCwERqseC1IHAy0Z7MDZnJBfjabd4O8GQ==
-
-nanoid@^3.1.20:
-  version "3.1.20"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.20.tgz#badc263c6b1dcf14b71efaa85f6ab4c1d6cfc788"
-  integrity sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
 
 nanomatch@^1.2.9:
   version "1.2.13"

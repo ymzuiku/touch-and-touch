@@ -3,12 +3,9 @@ import { state } from "./state";
 
 export const recordStop = async () => {
   recordRemoveCustemEvent();
-  await state.ui.updateOne(
-    {},
-    {
-      recording: 0,
-    }
-  );
+  state.ui.merge({
+    recording: 0,
+  });
 
   const cell = await state.nowCell.findOne();
   const items = await state.recordItems.find();

@@ -11,6 +11,6 @@ export const replayAllFilter = async () => {
       items = items.concat(...cell.items);
     }
   }
-  await state.ui.updateOne({}, { replayingAll: 1 });
+  state.ui.merge({ replayingAll: 1 });
   replayStart(items);
 };

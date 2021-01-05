@@ -1,7 +1,7 @@
 import { RecordItem, state } from "./state";
 
 export const recordItemAdd = async (event: RecordItem) => {
-  const ui = await state.ui.findOne();
+  const ui = state.ui.get();
   // 播放和录制过程，不再重新记录
   if (ui.recording && !ui.replaying) {
     await state.recordItems.insertOne(event);

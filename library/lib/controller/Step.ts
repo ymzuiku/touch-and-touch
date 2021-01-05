@@ -6,13 +6,9 @@ export const Step = () => {
     "div",
     {
       class: "tat-step",
-      // hidden: async () => {
-      //   const ui = await state.ui.findOne();
-      //   return !ui.showList;
-      // },
     },
     async () => {
-      const ui = await state.ui.findOne();
+      const ui = state.ui.get();
       const cell = await state.nowCell.findOne();
       let label = "";
       if (ui.step) {

@@ -2,7 +2,7 @@ import Pop from 'aoife-pop';
 import css from 'template-css';
 import aoife$1 from 'aoife';
 import Message from 'vanilla-message';
-import micoDb$1, { createMicoDb } from 'mico-db';
+import micoDb, { createMicoDb } from 'mico-db';
 import mockjs from 'mockjs';
 import dayjs from 'dayjs';
 import aoifeSvg from 'aoife-svg';
@@ -189,32 +189,29 @@ var Drag = function (_a) {
         } }, rest), children);
 };
 
-var micoDb = createMicoDb("tat" + window.location.host);
+var db = createMicoDb("tat" + window.location.host);
 var state = {
     onAlt: false,
-    ui: micoDb.collection("ui", {
-        type: "sessionStorage",
-        init: {
-            speed: 1,
-            showMouse: 0,
-            lastFocus: null,
-            showList: 1,
-            showInputId: "",
-            recording: 0,
-            replaying: 0,
-            replayingAll: 0,
-            autoRecordId: false,
-            step: 0,
-            filter: [],
-            waitTimeout: 5000,
-        },
+    ui: db.sessionItem("ui", {
+        speed: 1,
+        showMouse: 0,
+        lastFocus: null,
+        showList: 1,
+        showInputId: "",
+        recording: 0,
+        replaying: 0,
+        replayingAll: 0,
+        autoRecordId: false,
+        step: 0,
+        filter: [],
+        waitTimeout: 5000,
     }),
-    nowCell: micoDb.collection("nowCell"),
-    recordList: micoDb.collection("record-list", {
+    nowCell: db.collection("nowCell"),
+    recordList: db.collection("record-list", {
         sort: { updateAt: -1 },
     }),
-    recordItems: micoDb.collection("record-item"),
-    customEvent: micoDb.collection("custom-event", {
+    recordItems: db.collection("record-item"),
+    customEvent: db.collection("custom-event", {
         type: "sessionStorage",
     }),
 };
@@ -248,15 +245,14 @@ var recordContinue = function () { return __awaiter(void 0, void 0, void 0, func
     var items, isHaveHref, i;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.updateOne({}, {
+            case 0:
+                state.ui.merge({
                     recording: 1,
                     replaying: 0,
-                })];
-            case 1:
-                _a.sent();
+                });
                 aoife$1.next(".tat-update");
                 return [4 /*yield*/, state.recordItems.find()];
-            case 2:
+            case 1:
                 items = _a.sent();
                 isHaveHref = false;
                 for (i = 0; i < items.length; i++) {
@@ -284,19 +280,17 @@ var recordStop = function () { return __awaiter(void 0, void 0, void 0, function
         switch (_a.label) {
             case 0:
                 recordRemoveCustemEvent();
-                return [4 /*yield*/, state.ui.updateOne({}, {
-                        recording: 0,
-                    })];
-            case 1:
-                _a.sent();
+                state.ui.merge({
+                    recording: 0,
+                });
                 return [4 /*yield*/, state.nowCell.findOne()];
-            case 2:
+            case 1:
                 cell = _a.sent();
                 return [4 /*yield*/, state.recordItems.find()];
-            case 3:
+            case 2:
                 items = _a.sent();
                 return [4 /*yield*/, state.recordList.updateOne({ _id: cell._id }, __assign(__assign({}, cell), { items: items }))];
-            case 4:
+            case 3:
                 _a.sent();
                 aoife.next(".tat-update");
                 return [2 /*return*/];
@@ -328,12 +322,8 @@ var mouse = aoife("div", {
     hidden: function () { return __awaiter(void 0, void 0, void 0, function () {
         var ui;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, state.ui.findOne()];
-                case 1:
-                    ui = _a.sent();
-                    return [2 /*return*/, !ui.showMouse];
-            }
+            ui = state.ui.get();
+            return [2 /*return*/, !ui.showMouse];
         });
     }); },
     class: "tat-mouse",
@@ -356,30 +346,23 @@ function mouseClick(item) {
     return __awaiter(this, void 0, void 0, function () {
         var ui;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, state.ui.findOne()];
-                case 1:
-                    ui = _a.sent();
-                    if (!(ui.lastFocus &&
-                        ui.lastFocus.nodeName &&
-                        document.contains(ui.lastFocus) &&
-                        ui.lastFocus.focus)) return [3 /*break*/, 3];
-                    ui.lastFocus.blur();
-                    return [4 /*yield*/, state.ui.updateOne({}, { lastFocus: void 0 })];
-                case 2:
-                    _a.sent();
-                    _a.label = 3;
-                case 3:
-                    mouse.style.top = item.clientY + "px";
-                    mouse.style.left = item.clientX + "px";
-                    setTimeout(function () {
-                        round.style.transform = baseRoundTransform + "scale(0.5, 0.5)";
-                        setTimeout(function () {
-                            round.style.transform = baseRoundTransform + "scale(1, 1)";
-                        }, 80);
-                    }, 80);
-                    return [2 /*return*/];
+            ui = state.ui.get();
+            if (ui.lastFocus &&
+                ui.lastFocus.nodeName &&
+                document.contains(ui.lastFocus) &&
+                ui.lastFocus.focus) {
+                ui.lastFocus.blur();
+                state.ui.merge({ lastFocus: void 0 });
             }
+            mouse.style.top = item.clientY + "px";
+            mouse.style.left = item.clientX + "px";
+            setTimeout(function () {
+                round.style.transform = baseRoundTransform + "scale(0.5, 0.5)";
+                setTimeout(function () {
+                    round.style.transform = baseRoundTransform + "scale(1, 1)";
+                }, 80);
+            }, 80);
+            return [2 /*return*/];
         });
     });
 }
@@ -400,25 +383,24 @@ var recordItemAdd = function (event) { return __awaiter(void 0, void 0, void 0, 
     var ui, step;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.findOne()];
-            case 1:
-                ui = _a.sent();
-                if (!(ui.recording && !ui.replaying)) return [3 /*break*/, 4];
+            case 0:
+                ui = state.ui.get();
+                if (!(ui.recording && !ui.replaying)) return [3 /*break*/, 3];
                 return [4 /*yield*/, state.recordItems.insertOne(event)];
-            case 2:
+            case 1:
                 _a.sent();
                 return [4 /*yield*/, state.recordItems.count()];
-            case 3:
+            case 2:
                 step = _a.sent();
                 state.nowCell.updateOne({}, { step: step });
                 aoife.next(".tat-step, .tat-step");
-                _a.label = 4;
-            case 4: return [2 /*return*/];
+                _a.label = 3;
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 
-var _cache = micoDb$1.collection("tat-cache", { init: {} });
+var _cache = micoDb.collection("tat-cache", { init: {} });
 var cache = {
     get: function (key) { return __awaiter(void 0, void 0, void 0, function () {
         var data;
@@ -638,26 +620,22 @@ function recordDom() {
 var fixFilterCell = function (cell) { return __awaiter(void 0, void 0, void 0, function () {
     var ui, filter, title, isShow;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.findOne()];
-            case 1:
-                ui = _a.sent();
-                filter = ui.filter;
-                if (!filter || !filter.length) {
-                    return [2 /*return*/, true];
-                }
-                if (!cell) {
-                    return [2 /*return*/, false];
-                }
-                title = getTitle(cell);
-                isShow = false;
-                filter.forEach(function (f) {
-                    if (f && new RegExp(f).test(title)) {
-                        isShow = true;
-                    }
-                });
-                return [2 /*return*/, isShow];
+        ui = state.ui.get();
+        filter = ui.filter;
+        if (!filter || !filter.length) {
+            return [2 /*return*/, true];
         }
+        if (!cell) {
+            return [2 /*return*/, false];
+        }
+        title = getTitle(cell);
+        isShow = false;
+        filter.forEach(function (f) {
+            if (f && new RegExp(f).test(title)) {
+                isShow = true;
+            }
+        });
+        return [2 /*return*/, isShow];
     });
 }); };
 
@@ -684,9 +662,8 @@ var replayAllFilter = function () { return __awaiter(void 0, void 0, void 0, fun
             case 4:
                 _i++;
                 return [3 /*break*/, 2];
-            case 5: return [4 /*yield*/, state.ui.updateOne({}, { replayingAll: 1 })];
-            case 6:
-                _a.sent();
+            case 5:
+                state.ui.merge({ replayingAll: 1 });
                 replayStart(items);
                 return [2 /*return*/];
         }
@@ -712,75 +689,73 @@ var init = function (opt) {
             switch (_a.label) {
                 case 0:
                     Object.assign(initOpt, opt);
-                    return [4 /*yield*/, state.ui.findOne()];
-                case 1:
-                    ui = _a.sent();
-                    if (!(initOpt.initData && !ui.replaying && !ui.recording)) return [3 /*break*/, 5];
+                    ui = state.ui.get();
+                    if (!(initOpt.initData && !ui.replaying && !ui.recording)) return [3 /*break*/, 4];
                     return [4 /*yield*/, initOpt.initData()];
-                case 2:
+                case 1:
                     list_1 = _a.sent();
                     return [4 /*yield*/, state.recordList.deleteMany()];
-                case 3:
+                case 2:
                     _a.sent();
                     return [4 /*yield*/, state.recordList.insertMany(list_1)];
-                case 4:
+                case 3:
                     _a.sent();
-                    _a.label = 5;
-                case 5:
+                    _a.label = 4;
+                case 4:
                     state.recordList.proxy.onChange = initOpt.onChangeData;
                     return [4 /*yield*/, state.recordList.find()];
-                case 6:
+                case 5:
                     list = _a.sent();
-                    if (!(list.length === 0)) return [3 /*break*/, 9];
+                    if (!(list.length === 0)) return [3 /*break*/, 8];
                     return [4 /*yield*/, recordCellAdd()];
-                case 7:
+                case 6:
                     _a.sent();
                     return [4 /*yield*/, state.recordList.find()];
-                case 8:
+                case 7:
                     list = _a.sent();
-                    _a.label = 9;
-                case 9: return [4 /*yield*/, state.nowCell.findOne()];
-                case 10:
+                    _a.label = 8;
+                case 8: return [4 /*yield*/, state.nowCell.findOne()];
+                case 9:
                     old = _a.sent();
-                    if (!!old._id) return [3 /*break*/, 13];
-                    if (!(list && list[list.length - 1])) return [3 /*break*/, 12];
+                    if (!!old._id) return [3 /*break*/, 12];
+                    if (!(list && list[list.length - 1])) return [3 /*break*/, 11];
                     return [4 /*yield*/, changeSelectItem(list[list.length - 1]._id)];
-                case 11:
+                case 10:
                     _a.sent();
-                    _a.label = 12;
-                case 12: return [3 /*break*/, 16];
-                case 13: return [4 /*yield*/, state.nowCell.findOne()];
-                case 14:
+                    _a.label = 11;
+                case 11: return [3 /*break*/, 15];
+                case 12: return [4 /*yield*/, state.nowCell.findOne()];
+                case 13:
                     next = _a.sent();
                     return [4 /*yield*/, changeSelectItem(next._id)];
+                case 14:
+                    _a.sent();
+                    _a.label = 15;
                 case 15:
-                    _a.sent();
-                    _a.label = 16;
-                case 16:
                     aoife$1.next(".tat-update");
-                    return [4 /*yield*/, state.ui.updateOne({}, { speed: opt.speed || 1, waitTimeout: opt.waitTimeout || 5000 })];
-                case 17:
-                    _a.sent();
+                    state.ui.merge({
+                        speed: opt.speed || 1,
+                        waitTimeout: opt.waitTimeout || 5000,
+                    });
                     recordDom();
                     setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
                         var ui, list_2, cell;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0: return [4 /*yield*/, state.ui.findOne()];
-                                case 1:
-                                    ui = _a.sent();
-                                    if (!ui.replaying) return [3 /*break*/, 2];
+                                case 0:
+                                    ui = state.ui.get();
+                                    if (!ui.replaying) return [3 /*break*/, 1];
                                     if (ui.replayingAll) {
                                         replayAllFilter();
                                     }
                                     else {
                                         replayStart();
                                     }
-                                    return [3 /*break*/, 6];
-                                case 2:
-                                    if (!initOpt.autoPlayItem) return [3 /*break*/, 6];
+                                    return [3 /*break*/, 4];
+                                case 1:
+                                    if (!initOpt.autoPlayItem) return [3 /*break*/, 4];
                                     return [4 /*yield*/, state.recordList.find()];
-                                case 3:
+                                case 2:
                                     list_2 = _a.sent();
                                     cell = list_2.find(function (v) {
                                         var title = getTitle(v);
@@ -788,16 +763,14 @@ var init = function (opt) {
                                             return true;
                                         }
                                     });
-                                    if (!cell) return [3 /*break*/, 6];
+                                    if (!cell) return [3 /*break*/, 4];
                                     return [4 /*yield*/, changeSelectItem(cell._id)];
-                                case 4:
+                                case 3:
                                     _a.sent();
-                                    return [4 /*yield*/, state.ui.updateOne({}, { step: 0 })];
-                                case 5:
-                                    _a.sent();
+                                    state.ui.merge({ step: 0 });
                                     replayStart();
-                                    _a.label = 6;
-                                case 6: return [2 /*return*/];
+                                    _a.label = 4;
+                                case 4: return [2 /*return*/];
                             }
                         });
                     }); });
@@ -823,9 +796,8 @@ var eleSetListen = function (ele) {
                 var ui, value, mock, reg, baseValue, fn, key, inputEvent, err_1, key;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, state.ui.findOne()];
-                        case 1:
-                            ui = _a.sent();
+                        case 0:
+                            ui = state.ui.get();
                             if (ui.replaying) {
                                 return [2 /*return*/];
                             }
@@ -834,7 +806,7 @@ var eleSetListen = function (ele) {
                                 ele._tatIgnoreOnce === getEventVal(event)) {
                                 return [2 /*return*/];
                             }
-                            if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 2];
+                            if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 1];
                             setTimeout(function () {
                                 recordItemAdd({
                                     id: ele.id || "",
@@ -843,20 +815,20 @@ var eleSetListen = function (ele) {
                                     value: getEventVal(event),
                                 });
                             }, 20);
-                            return [3 /*break*/, 7];
-                        case 2:
+                            return [3 /*break*/, 6];
+                        case 1:
                             value = getEventVal(event);
                             mock = "";
                             reg = /!!$/;
-                            if (!reg.test(value)) return [3 /*break*/, 6];
+                            if (!reg.test(value)) return [3 /*break*/, 5];
                             baseValue = value;
                             mock = value.replace(reg, "");
-                            _a.label = 3;
-                        case 3:
-                            _a.trys.push([3, 5, , 6]);
+                            _a.label = 2;
+                        case 2:
+                            _a.trys.push([2, 4, , 5]);
                             fn = new Function("mock", "set", "get", "return " + mock);
                             return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
-                        case 4:
+                        case 3:
                             value = _a.sent();
                             key = ele.getAttribute("tat-key");
                             recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: "change", value: baseValue }));
@@ -869,18 +841,18 @@ var eleSetListen = function (ele) {
                             ele._tatIgnoreOnce = value;
                             ele.value = value;
                             return [2 /*return*/, ele.dispatchEvent(inputEvent)];
-                        case 5:
+                        case 4:
                             err_1 = _a.sent();
                             console.error(err_1);
-                            return [3 /*break*/, 6];
-                        case 6:
+                            return [3 /*break*/, 5];
+                        case 5:
                             // 若 无useRecordInput，忽略 input 事件
                             if (initOpt.useRecordInput || e !== "input") {
                                 key = ele.getAttribute("tat-key");
                                 recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }));
                             }
-                            _a.label = 7;
-                        case 7: return [2 /*return*/];
+                            _a.label = 6;
+                        case 6: return [2 /*return*/];
                     }
                 });
             });
@@ -898,23 +870,21 @@ var replayStop = function (success) { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, state.customEvent.insertOne({})];
             case 2:
                 _a.sent();
-                return [4 /*yield*/, state.ui.updateOne({}, {
-                        recording: 0,
-                        replaying: 0,
-                        replayingAll: 0,
-                        showMouse: 0,
-                        step: 0,
-                    })];
-            case 3:
-                _a.sent();
+                state.ui.merge({
+                    recording: 0,
+                    replaying: 0,
+                    replayingAll: 0,
+                    showMouse: 0,
+                    step: 0,
+                });
                 aoife.next(".tat-update, .tat-mouse");
-                if (!(success && initOpt.onSuccess)) return [3 /*break*/, 5];
+                if (!(success && initOpt.onSuccess)) return [3 /*break*/, 4];
                 return [4 /*yield*/, state.nowCell.findOne()];
-            case 4:
+            case 3:
                 cell = _a.sent();
                 initOpt.onSuccess(cell);
-                _a.label = 5;
-            case 5: return [2 /*return*/];
+                _a.label = 4;
+            case 4: return [2 /*return*/];
         }
     });
 }); };
@@ -956,42 +926,39 @@ var replayStart = function (items) { return __awaiter(void 0, void 0, void 0, fu
                     return [2 /*return*/];
                 }
                 // 开始设置播放的样式
-                return [4 /*yield*/, state.ui.updateOne({}, {
-                        recording: 0,
-                        replaying: 1,
-                    })];
-            case 3:
-                // 开始设置播放的样式
-                _a.sent();
+                state.ui.merge({
+                    recording: 0,
+                    replaying: 1,
+                });
                 return [4 /*yield*/, state.customEvent.deleteMany({})];
-            case 4:
+            case 3:
                 _a.sent();
                 return [4 /*yield*/, state.customEvent.insertOne({})];
-            case 5:
+            case 4:
                 _a.sent();
                 aoife.next(".tat-update, .tat-mouse");
-                if (!initOpt.onReplay) return [3 /*break*/, 7];
+                if (!initOpt.onReplay) return [3 /*break*/, 6];
                 return [4 /*yield*/, state.nowCell.findOne()];
-            case 6:
+            case 5:
                 cell = _a.sent();
                 initOpt.onReplay(cell);
-                _a.label = 7;
-            case 7:
-                _a.trys.push([7, 9, , 11]);
+                _a.label = 6;
+            case 6:
+                _a.trys.push([6, 8, , 10]);
                 return [4 /*yield*/, startReplay(items)];
-            case 8:
+            case 7:
                 _a.sent();
-                return [3 /*break*/, 11];
-            case 9:
+                return [3 /*break*/, 10];
+            case 8:
                 err_1 = _a.sent();
                 return [4 /*yield*/, replayFail(err_1)];
-            case 10:
+            case 9:
                 _a.sent();
-                return [3 /*break*/, 11];
-            case 11: 
+                return [3 /*break*/, 10];
+            case 10: 
             // 还原播放的样式
             return [4 /*yield*/, replayStop(true)];
-            case 12:
+            case 11:
                 // 还原播放的样式
                 _a.sent();
                 return [2 /*return*/];
@@ -1023,24 +990,21 @@ function emitInput(el, item, eventKey) {
                         return [2 /*return*/];
                     }
                     nodeName = el.nodeName.toLocaleLowerCase();
-                    if (!(nodeName === "input" ||
+                    if (nodeName === "input" ||
                         nodeName === "textarea" ||
-                        nodeName === "button")) return [3 /*break*/, 2];
-                    return [4 /*yield*/, state.ui.updateOne({}, { lastFocus: el })];
-                case 1:
-                    _b.sent();
-                    el.focus();
-                    _b.label = 2;
-                case 2:
-                    if (!(item.value && /!!$/.test(item.value))) return [3 /*break*/, 4];
-                    value = item.value.replace(/!!$/, '');
+                        nodeName === "button") {
+                        state.ui.merge({ lastFocus: el });
+                        el.focus();
+                    }
+                    if (!(item.value && /!!$/.test(item.value))) return [3 /*break*/, 2];
+                    value = item.value.replace(/!!$/, "");
                     fn = new Function("mock", "set", "get", "return " + value);
                     _a = item;
                     return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
-                case 3:
+                case 1:
                     _a.value = _b.sent();
-                    _b.label = 4;
-                case 4:
+                    _b.label = 2;
+                case 2:
                     inputEvent = new InputEvent(item.type, {
                         // inputType: "insertText",
                         data: item.value,
@@ -1074,9 +1038,7 @@ function waitGetCustomEvent(detail) {
                 case 0: return [4 /*yield*/, state.customEvent.findOne()];
                 case 1:
                     custom = _a.sent();
-                    return [4 /*yield*/, state.ui.findOne()];
-                case 2:
-                    ui = _a.sent();
+                    ui = state.ui.get();
                     getEvent = function () {
                         if (!custom[detail]) {
                             if (Date.now() - t < ui.waitTimeout) {
@@ -1108,35 +1070,31 @@ function waitGetElement(id, key) {
                     getEl = function () { return __awaiter(_this, void 0, void 0, function () {
                         var ui, e;
                         return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, state.ui.findOne()];
-                                case 1:
-                                    ui = _a.sent();
-                                    if (!ui.replaying) {
-                                        return [2 /*return*/, res(document.createElement("span"))];
-                                    }
-                                    if (ui.autoRecordId) {
-                                        e = document.querySelector("[tat-key=\"" + key + "\"]");
-                                    }
-                                    else {
-                                        e = document.getElementById(id);
-                                    }
-                                    if (!e ||
-                                        e.hidden ||
-                                        e.style.display === "none" ||
-                                        e.style.visibility === "hidden") {
-                                        if (Date.now() - t < ui.waitTimeout) {
-                                            requestAnimationFrame(getEl);
-                                        }
-                                        else {
-                                            rej("[TouchAndTouch Error] Find next element timeout");
-                                        }
-                                    }
-                                    else {
-                                        res(e);
-                                    }
-                                    return [2 /*return*/];
+                            ui = state.ui.get();
+                            if (!ui.replaying) {
+                                return [2 /*return*/, res(document.createElement("span"))];
                             }
+                            if (ui.autoRecordId) {
+                                e = document.querySelector("[tat-key=\"" + key + "\"]");
+                            }
+                            else {
+                                e = document.getElementById(id);
+                            }
+                            if (!e ||
+                                e.hidden ||
+                                e.style.display === "none" ||
+                                e.style.visibility === "hidden") {
+                                if (Date.now() - t < ui.waitTimeout) {
+                                    requestAnimationFrame(getEl);
+                                }
+                                else {
+                                    rej("[TouchAndTouch Error] Find next element timeout");
+                                }
+                            }
+                            else {
+                                res(e);
+                            }
+                            return [2 /*return*/];
                         });
                     }); };
                     return [4 /*yield*/, getEl()];
@@ -1160,13 +1118,9 @@ function sleep(t) {
     return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
         var ui;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, state.ui.findOne()];
-                case 1:
-                    ui = _a.sent();
-                    setTimeout(res, t * ui.speed);
-                    return [2 /*return*/];
-            }
+            ui = state.ui.get();
+            setTimeout(res, t * ui.speed);
+            return [2 /*return*/];
         });
     }); });
 }
@@ -1178,29 +1132,23 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
         switch (_a.label) {
             case 0:
                 i = 0;
-                return [4 /*yield*/, state.ui.updateOne({}, {
-                        showMouse: 1,
-                    })];
-            case 1:
-                _a.sent();
+                state.ui.merge({
+                    showMouse: 1,
+                });
                 _i = 0, items_1 = items;
-                _a.label = 2;
-            case 2:
-                if (!(_i < items_1.length)) return [3 /*break*/, 20];
+                _a.label = 1;
+            case 1:
+                if (!(_i < items_1.length)) return [3 /*break*/, 16];
                 item = items_1[_i];
-                return [4 /*yield*/, state.ui.findOne()];
-            case 3:
-                ui = _a.sent();
+                ui = state.ui.get();
                 i++;
                 if (!ui.replaying) {
-                    return [3 /*break*/, 20];
+                    return [3 /*break*/, 16];
                 }
                 if (i < ui.step) {
-                    return [3 /*break*/, 19];
+                    return [3 /*break*/, 15];
                 }
-                return [4 /*yield*/, state.ui.updateOne({}, { step: i })];
-            case 4:
-                _a.sent();
+                state.ui.merge({ step: i });
                 aoife.next(".tat-step");
                 if (item.href) {
                     if (item.href.indexOf("#/") > -1 &&
@@ -1221,61 +1169,60 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                         window.location.href = item.href;
                     }
                 }
-                if (!(item.type === "mclick")) return [3 /*break*/, 6];
+                if (!(item.type === "mclick")) return [3 /*break*/, 3];
                 return [4 /*yield*/, sleep(120)];
-            case 5:
+            case 2:
                 _a.sent();
                 mouseClick(item);
-                return [3 /*break*/, 19];
-            case 6:
-                if (!(item.type === "customEvent" && item.value)) return [3 /*break*/, 8];
+                return [3 /*break*/, 15];
+            case 3:
+                if (!(item.type === "customEvent" && item.value)) return [3 /*break*/, 5];
                 return [4 /*yield*/, waitGetCustomEvent(item.value)];
-            case 7:
+            case 4:
                 _a.sent();
-                return [3 /*break*/, 19];
-            case 8:
-                if (!item.key) return [3 /*break*/, 19];
+                return [3 /*break*/, 15];
+            case 5:
+                if (!item.key) return [3 /*break*/, 15];
                 return [4 /*yield*/, waitGetElement(item.id, item.key)];
-            case 9:
+            case 6:
                 el = _a.sent();
-                if (!(el.nodeName !== "FORM" && el.nodeName !== "DIV")) return [3 /*break*/, 11];
+                if (!(el.nodeName !== "FORM" && el.nodeName !== "DIV")) return [3 /*break*/, 8];
                 scrollIntoView(el);
                 return [4 /*yield*/, sleep(16)];
-            case 10:
+            case 7:
                 _a.sent();
-                _a.label = 11;
-            case 11:
-                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 14];
-                if (!(el.nodeName !== "DIV")) return [3 /*break*/, 13];
+                _a.label = 8;
+            case 8:
+                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 11];
+                if (!(el.nodeName !== "DIV")) return [3 /*break*/, 10];
                 getEleCenter(el, item);
                 mouseClick(item);
                 return [4 /*yield*/, sleep(80)];
+            case 9:
+                _a.sent();
+                _a.label = 10;
+            case 10:
+                emitClick(el);
+                return [3 /*break*/, 15];
+            case 11:
+                if (!(state.ui.get().lastFocus !== el)) return [3 /*break*/, 13];
+                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 13];
+                getEleCenter(el, item);
+                mouseMove(item);
+                return [4 /*yield*/, sleep(16)];
             case 12:
                 _a.sent();
                 _a.label = 13;
             case 13:
-                emitClick(el);
-                return [3 /*break*/, 19];
-            case 14: return [4 /*yield*/, state.ui.findOne()];
-            case 15:
-                if (!((_a.sent()).lastFocus !== el)) return [3 /*break*/, 17];
-                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 17];
-                getEleCenter(el, item);
-                mouseMove(item);
-                return [4 /*yield*/, sleep(16)];
-            case 16:
-                _a.sent();
-                _a.label = 17;
-            case 17:
                 emitInput(el, item, item.type);
                 return [4 /*yield*/, sleep(16)];
-            case 18:
+            case 14:
                 _a.sent();
-                _a.label = 19;
-            case 19:
+                _a.label = 15;
+            case 15:
                 _i++;
-                return [3 /*break*/, 2];
-            case 20: return [2 /*return*/];
+                return [3 /*break*/, 1];
+            case 16: return [2 /*return*/];
         }
     });
 }); };
@@ -1287,11 +1234,10 @@ var Step = function () {
         var ui, cell, label;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, state.ui.findOne()];
-                case 1:
-                    ui = _a.sent();
+                case 0:
+                    ui = state.ui.get();
                     return [4 /*yield*/, state.nowCell.findOne()];
-                case 2:
+                case 1:
                     cell = _a.sent();
                     label = "";
                     if (ui.step) {
@@ -1407,36 +1353,24 @@ var recordAgain = function () { return __awaiter(void 0, void 0, void 0, functio
 var showList = function () { return __awaiter(void 0, void 0, void 0, function () {
     var ui;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.findOne()];
-            case 1:
-                ui = _a.sent();
-                return [4 /*yield*/, state.ui.updateOne({}, {
-                        showList: ui.showList ? 0 : 1,
-                    })];
-            case 2:
-                _a.sent();
-                aoife$1.next(".tat-update");
-                return [2 /*return*/];
-        }
+        ui = state.ui.get();
+        state.ui.merge({
+            showList: ui.showList ? 0 : 1,
+        });
+        aoife$1.next(".tat-update");
+        return [2 /*return*/];
     });
 }); };
 
 var changeAutoRecordId = function () { return __awaiter(void 0, void 0, void 0, function () {
     var ui;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.findOne()];
-            case 1:
-                ui = _a.sent();
-                return [4 /*yield*/, state.ui.updateOne({}, {
-                        autoRecordId: !ui.autoRecordId,
-                    })];
-            case 2:
-                _a.sent();
-                aoife.next(".tat-update");
-                return [2 /*return*/];
-        }
+        ui = state.ui.get();
+        state.ui.merge({
+            autoRecordId: !ui.autoRecordId,
+        });
+        aoife.next(".tat-update");
+        return [2 /*return*/];
     });
 }); };
 
@@ -1453,104 +1387,91 @@ var Ctrl = function () {
     return aoife$1("div", { class: "tat-update tat-ctrl" }, function () { return __awaiter(void 0, void 0, void 0, function () {
         var ui;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, state.ui.findOne()];
-                case 1:
-                    ui = _a.sent();
-                    if (ui.recording) {
-                        return [2 /*return*/, aoife$1("span", { class: "tat-row" }, RecordStopSvg({ class: "tat-btn", onclick: recordStop }), Step())];
-                    }
-                    if (ui.replaying) {
-                        return [2 /*return*/, aoife$1("span", { class: "tat-row" }, ReplayStopSvg({ class: "tat-btn", onclick: function () { return replayStop(); } }), Step())];
-                    }
-                    return [2 /*return*/, aoife$1("span", { class: "tat-row" }, ThePop({
-                            children: [
-                                NewFileSvg({ class: "tat-btn", onclick: function () { return recordCellAdd(); } }),
-                                "New item",
-                            ],
-                        }), ThePop({
-                            children: [
-                                PlaySvg({ class: "tat-btn", onclick: function () { return replayStart(); } }),
-                                "Play selected record",
-                            ],
-                        }), ThePop({
-                            children: [
-                                ReplayAllSvg({
-                                    class: "tat-btn",
-                                    onclick: function () { return replayAllFilter(); },
-                                }),
-                                "Play all filter record",
-                            ],
-                        }), ThePop({
-                            children: [
-                                RecordContinueSvg({
-                                    class: "tat-btn",
-                                    onclick: function () { return recordContinue(); },
-                                }),
-                                "Record continue",
-                            ],
-                        }), ThePop({
-                            children: [
-                                RecordAgainSvg({ class: "tat-btn", onclick: function () { return recordAgain(); } }),
-                                "Record again",
-                            ],
-                        }), aoife$1("span", { style: "flex:1" }), ThePop({
-                            children: [
-                                AutoIdSvg({
-                                    class: "tat-btn",
-                                    style: function () { return __awaiter(void 0, void 0, void 0, function () {
-                                        var ui;
-                                        return __generator(this, function (_a) {
-                                            switch (_a.label) {
-                                                case 0:
-                                                    if (!initOpt.useAutoId) {
-                                                        return [2 /*return*/, { display: "none" }];
-                                                    }
-                                                    return [4 /*yield*/, state.ui.findOne()];
-                                                case 1:
-                                                    ui = _a.sent();
-                                                    return [2 /*return*/, { opacity: ui.autoRecordId ? 1 : 0.4 }];
-                                            }
-                                        });
-                                    }); },
-                                    onclick: function () { return changeAutoRecordId(); },
-                                }),
-                                "Use auto Record Id (Not recommended)",
-                            ],
-                        }), ThePop({
-                            children: [
-                                ShowSvg({
-                                    class: "tat-btn",
-                                    style: function () { return __awaiter(void 0, void 0, void 0, function () {
-                                        var ui;
-                                        return __generator(this, function (_a) {
-                                            switch (_a.label) {
-                                                case 0: return [4 /*yield*/, state.ui.findOne()];
-                                                case 1:
-                                                    ui = _a.sent();
-                                                    return [2 /*return*/, { opacity: ui.showList ? 1 : 0.4 }];
-                                            }
-                                        });
-                                    }); },
-                                    onclick: function () { return showList(); },
-                                }),
-                                "List show/hidden",
-                            ],
-                        }), ThePop({
-                            children: [
-                                DownloadSvg({
-                                    class: "tat-btn",
-                                    onclick: exportRecord,
-                                }),
-                                "Download records",
-                            ],
-                        }), ThePop({
-                            children: [
-                                LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
-                                "Load records from file",
-                            ],
-                        }))];
+            ui = state.ui.get();
+            if (ui.recording) {
+                return [2 /*return*/, aoife$1("span", { class: "tat-row" }, RecordStopSvg({ class: "tat-btn", onclick: recordStop }), Step())];
             }
+            if (ui.replaying) {
+                return [2 /*return*/, aoife$1("span", { class: "tat-row" }, ReplayStopSvg({ class: "tat-btn", onclick: function () { return replayStop(); } }), Step())];
+            }
+            return [2 /*return*/, aoife$1("span", { class: "tat-row" }, ThePop({
+                    children: [
+                        NewFileSvg({ class: "tat-btn", onclick: function () { return recordCellAdd(); } }),
+                        "New item",
+                    ],
+                }), ThePop({
+                    children: [
+                        PlaySvg({ class: "tat-btn", onclick: function () { return replayStart(); } }),
+                        "Play selected record",
+                    ],
+                }), ThePop({
+                    children: [
+                        ReplayAllSvg({
+                            class: "tat-btn",
+                            onclick: function () { return replayAllFilter(); },
+                        }),
+                        "Play all filter record",
+                    ],
+                }), ThePop({
+                    children: [
+                        RecordContinueSvg({
+                            class: "tat-btn",
+                            onclick: function () { return recordContinue(); },
+                        }),
+                        "Record continue",
+                    ],
+                }), ThePop({
+                    children: [
+                        RecordAgainSvg({ class: "tat-btn", onclick: function () { return recordAgain(); } }),
+                        "Record again",
+                    ],
+                }), aoife$1("span", { style: "flex:1" }), ThePop({
+                    children: [
+                        AutoIdSvg({
+                            class: "tat-btn",
+                            style: function () { return __awaiter(void 0, void 0, void 0, function () {
+                                var ui;
+                                return __generator(this, function (_a) {
+                                    if (!initOpt.useAutoId) {
+                                        return [2 /*return*/, { display: "none" }];
+                                    }
+                                    ui = state.ui.get();
+                                    return [2 /*return*/, { opacity: ui.autoRecordId ? 1 : 0.4 }];
+                                });
+                            }); },
+                            onclick: function () { return changeAutoRecordId(); },
+                        }),
+                        "Use auto Record Id (Not recommended)",
+                    ],
+                }), ThePop({
+                    children: [
+                        ShowSvg({
+                            class: "tat-btn",
+                            style: function () { return __awaiter(void 0, void 0, void 0, function () {
+                                var ui;
+                                return __generator(this, function (_a) {
+                                    ui = state.ui.get();
+                                    return [2 /*return*/, { opacity: ui.showList ? 1 : 0.4 }];
+                                });
+                            }); },
+                            onclick: function () { return showList(); },
+                        }),
+                        "List show/hidden",
+                    ],
+                }), ThePop({
+                    children: [
+                        DownloadSvg({
+                            class: "tat-btn",
+                            onclick: exportRecord,
+                        }),
+                        "Download records",
+                    ],
+                }), ThePop({
+                    children: [
+                        LoaclFileSvg({ class: "tat-btn", onclick: importRecord }),
+                        "Load records from file",
+                    ],
+                }))];
         });
     }); });
 };
@@ -1559,13 +1480,9 @@ var templateObject_1$1;
 
 var changeInput = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.updateOne({}, { showInputId: id })];
-            case 1:
-                _a.sent();
-                aoife.next(".tat-play-list .cell");
-                return [2 /*return*/];
-        }
+        state.ui.merge({ showInputId: id });
+        aoife.next(".tat-play-list .cell");
+        return [2 /*return*/];
     });
 }); };
 
@@ -1574,7 +1491,7 @@ var rename = function (id, title) { return __awaiter(void 0, void 0, void 0, fun
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                state.ui.updateOne({}, {
+                state.ui.merge({
                     showInputId: "",
                 });
                 return [4 /*yield*/, state.nowCell.findOne()];
@@ -1622,18 +1539,14 @@ var remove = function (id) { return __awaiter(void 0, void 0, void 0, function (
 
 var changeFilter = function (filter) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, state.ui.updateOne({}, {
-                    filter: filter
-                        .split(",")
-                        .map(function (v) { return v.trim(); })
-                        .filter(Boolean),
-                })];
-            case 1:
-                _a.sent();
-                aoife.next(".tat-play-list .cell");
-                return [2 /*return*/];
-        }
+        state.ui.merge({
+            filter: filter
+                .split(",")
+                .map(function (v) { return v.trim(); })
+                .filter(Boolean),
+        });
+        aoife.next(".tat-play-list .cell");
+        return [2 /*return*/];
     });
 }); };
 
@@ -1862,34 +1775,20 @@ var templateObject_1$2;
 var PlayList = function () {
     return aoife("div", {
         class: "tat-update, tat-play-list",
-        hidden: function () { return __awaiter(void 0, void 0, void 0, function () {
-            var ui;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, state.ui.findOne()];
-                    case 1:
-                        ui = _a.sent();
-                        return [2 /*return*/, !ui.showList || ui.recording || ui.replaying];
-                }
-            });
-        }); },
+        hidden: function () {
+            var ui = state.ui.get();
+            return !ui.showList || ui.recording || ui.replaying;
+        },
     }, aoife("input", {
         class: "filter",
         placeholder: "FilterA, FilterB...",
-        defaultValue: function () { return __awaiter(void 0, void 0, void 0, function () {
-            var ui;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, state.ui.findOne()];
-                    case 1:
-                        ui = _a.sent();
-                        if (!ui.filter) {
-                            return [2 /*return*/, ""];
-                        }
-                        return [2 /*return*/, ui.filter.join(", ")];
-                }
-            });
-        }); },
+        defaultValue: function () {
+            var ui = state.ui.get();
+            if (!ui.filter) {
+                return "";
+            }
+            return ui.filter.join(", ");
+        },
         oninput: function (e) { return changeFilter(e.target.value); },
     }), aoife("div", { class: "cells" }, function () { return __awaiter(void 0, void 0, void 0, function () {
         var list;
@@ -1936,20 +1835,16 @@ var PlayList = function () {
                                 hidden: function (el) { return __awaiter(void 0, void 0, void 0, function () {
                                     var ui, hidden;
                                     return __generator(this, function (_a) {
-                                        switch (_a.label) {
-                                            case 0: return [4 /*yield*/, state.ui.findOne()];
-                                            case 1:
-                                                ui = _a.sent();
-                                                hidden = ui.showInputId !== item._id;
-                                                if (!hidden) {
-                                                    requestAnimationFrame(function () {
-                                                        if (document.contains(el)) {
-                                                            el.focus();
-                                                        }
-                                                    });
+                                        ui = state.ui.get();
+                                        hidden = ui.showInputId !== item._id;
+                                        if (!hidden) {
+                                            requestAnimationFrame(function () {
+                                                if (document.contains(el)) {
+                                                    el.focus();
                                                 }
-                                                return [2 /*return*/, hidden];
+                                            });
                                         }
+                                        return [2 /*return*/, hidden];
                                     });
                                 }); },
                                 onblur: function () { return changeInput(""); },
@@ -1971,17 +1866,10 @@ var PlayList = function () {
                                 placeholder: "请输入title",
                             }), aoife("div", {
                                 class: "label",
-                                hidden: function () { return __awaiter(void 0, void 0, void 0, function () {
-                                    var ui;
-                                    return __generator(this, function (_a) {
-                                        switch (_a.label) {
-                                            case 0: return [4 /*yield*/, state.ui.findOne()];
-                                            case 1:
-                                                ui = _a.sent();
-                                                return [2 /*return*/, ui.showInputId === item._id];
-                                        }
-                                    });
-                                }); },
+                                hidden: function () {
+                                    var ui = state.ui.get();
+                                    return ui.showInputId === item._id;
+                                },
                             }, function () { return __awaiter(void 0, void 0, void 0, function () {
                                 var v;
                                 return __generator(this, function (_a) {

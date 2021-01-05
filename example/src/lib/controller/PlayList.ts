@@ -17,16 +17,16 @@ export const PlayList = () => {
     "div",
     {
       class: "tat-update, tat-play-list",
-      hidden: async () => {
-        const ui = await state.ui.findOne();
+      hidden: () => {
+        const ui = state.ui.get();
         return !ui.showList || ui.recording || ui.replaying;
       },
     },
     aoife("input", {
       class: "filter",
       placeholder: "FilterA, FilterB...",
-      defaultValue: async () => {
-        const ui = await state.ui.findOne();
+      defaultValue: () => {
+        const ui = state.ui.get();
         if (!ui.filter) {
           return "";
         }
@@ -59,7 +59,7 @@ export const PlayList = () => {
             class: "input",
             onclick: (e) => e.stopPropagation(),
             hidden: async (el) => {
-              const ui = await state.ui.findOne();
+              const ui = state.ui.get();
               const hidden = ui.showInputId !== item._id;
               if (!hidden) {
                 requestAnimationFrame(() => {
@@ -85,8 +85,8 @@ export const PlayList = () => {
             "div",
             {
               class: "label",
-              hidden: async () => {
-                const ui = await state.ui.findOne();
+              hidden: () => {
+                const ui = state.ui.get();
                 return ui.showInputId === item._id;
               },
             },

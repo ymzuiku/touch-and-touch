@@ -41,7 +41,7 @@ function ThePop({ children }: any) {
 
 export const Ctrl = () => {
   return aoife("div", { class: "tat-update tat-ctrl" }, async () => {
-    const ui = await state.ui.findOne();
+    const ui = state.ui.get();
 
     if (ui.recording) {
       return aoife(
@@ -107,7 +107,7 @@ export const Ctrl = () => {
               if (!initOpt.useAutoId) {
                 return { display: "none" };
               }
-              const ui = await state.ui.findOne();
+              const ui = state.ui.get();
 
               return { opacity: ui.autoRecordId ? 1 : 0.4 };
             },
@@ -121,7 +121,7 @@ export const Ctrl = () => {
           ShowSvg({
             class: "tat-btn",
             style: async () => {
-              const ui = await state.ui.findOne();
+              const ui = state.ui.get();
               return { opacity: ui.showList ? 1 : 0.4 };
             },
             onclick: () => showList(),

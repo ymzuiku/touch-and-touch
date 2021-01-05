@@ -4,13 +4,10 @@ import { getHref } from "./getHref";
 import { state } from "./state";
 
 export const recordContinue = async () => {
-  await state.ui.updateOne(
-    {},
-    {
-      recording: 1,
-      replaying: 0,
-    }
-  );
+  state.ui.merge({
+    recording: 1,
+    replaying: 0,
+  });
   aoife.next(".tat-update");
   // 记录首次页面的url
   const items = await state.recordItems.find();

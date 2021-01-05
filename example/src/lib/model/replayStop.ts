@@ -4,16 +4,13 @@ import { state } from "./state";
 export const replayStop = async (success?: boolean) => {
   await state.customEvent.deleteMany({});
   await state.customEvent.insertOne({});
-  await state.ui.updateOne(
-    {},
-    {
-      recording: 0,
-      replaying: 0,
-      replayingAll: 0,
-      showMouse: 0,
-      step: 0,
-    }
-  );
+  state.ui.merge({
+    recording: 0,
+    replaying: 0,
+    replayingAll: 0,
+    showMouse: 0,
+    step: 0,
+  });
   aoife.next(".tat-update, .tat-mouse");
   if (success && initOpt.onSuccess) {
     const cell = await state.nowCell.findOne();

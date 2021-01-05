@@ -17,13 +17,10 @@ export const replayStart = async (items?: RecordItem[]) => {
     return;
   }
   // 开始设置播放的样式
-  await state.ui.updateOne(
-    {},
-    {
-      recording: 0,
-      replaying: 1,
-    }
-  );
+  state.ui.merge({
+    recording: 0,
+    replaying: 1,
+  });
   await state.customEvent.deleteMany({});
   await state.customEvent.insertOne({});
   aoife.next(".tat-update, .tat-mouse");
@@ -66,7 +63,7 @@ async function emitInput(
   item: RecordItem,
   eventKey: string
 ) {
-  item = {...item};
+  item = { ...item };
   if (el.closest("[tat-ignore]")) {
     return;
   }
@@ -76,12 +73,12 @@ async function emitInput(
     nodeName === "textarea" ||
     nodeName === "button"
   ) {
-    await state.ui.updateOne({}, { lastFocus: el });
+    state.ui.merge({ lastFocus: el });
     el.focus();
   }
 
   if (item.value && /!!$/.test(item.value)) {
-    const value = item.value.replace(/!!$/, '');
+    const value = item.value.replace(/!!$/, "");
     const fn = new Function("mock", "set", "get", "return " + value);
     item.value = await Promise.resolve(fn(mockjs.Random, cache.set, cache.get));
   }
@@ -111,7 +108,7 @@ function waitGetCustomEvent(detail: string) {
   const t = Date.now();
   return new Promise(async (res, rej) => {
     const custom = await state.customEvent.findOne();
-    const ui = await state.ui.findOne();
+    const ui = state.ui.get();
     const getEvent = () => {
       if (!custom[detail]) {
         if (Date.now() - t < ui.waitTimeout) {
@@ -131,7 +128,7 @@ function waitGetElement(id: string, key: string): Promise<HTMLElement> {
   const t = Date.now();
   return new Promise(async (res, rej) => {
     const getEl = async () => {
-      const ui = await state.ui.findOne();
+      const ui = state.ui.get();
       let e: HTMLElement;
       if (!ui.replaying) {
         return res(document.createElement("span"));
@@ -171,7 +168,7 @@ const getEleCenter = (el: HTMLElement, item: RecordItem) => {
 
 function sleep(t: number) {
   return new Promise(async (res) => {
-    const ui = await state.ui.findOne();
+    const ui = state.ui.get();
     setTimeout(res, t * ui.speed);
   });
 }
@@ -181,14 +178,11 @@ let reloadNum = 0;
 
 const startReplay = async (items: RecordItem[]) => {
   let i = 0;
-  await state.ui.updateOne(
-    {},
-    {
-      showMouse: 1,
-    }
-  );
+  state.ui.merge({
+    showMouse: 1,
+  });
   for (const item of items) {
-    const ui = await state.ui.findOne();
+    const ui = state.ui.get();
     i++;
     if (!ui.replaying) {
       break;
@@ -196,7 +190,7 @@ const startReplay = async (items: RecordItem[]) => {
     if (i < ui.step) {
       continue;
     }
-    await state.ui.updateOne({}, { step: i });
+    state.ui.merge({ step: i });
     aoife.next(".tat-step");
     if (item.href) {
       if (
@@ -238,7 +232,7 @@ const startReplay = async (items: RecordItem[]) => {
         }
         emitClick(el as any);
       } else {
-        if ((await state.ui.findOne()).lastFocus !== el) {
+        if (state.ui.get().lastFocus !== el) {
           if (el.nodeName !== "FORM") {
             getEleCenter(el, item);
             mouseMove(item);
