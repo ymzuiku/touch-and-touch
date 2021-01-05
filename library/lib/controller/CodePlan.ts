@@ -88,7 +88,7 @@ export default ({ id }: { id: string }) => {
         autocorrect: "off",
         id: "tat-code-plan-textarea",
         spellcheck: false,
-        class: "",
+        class: "tat-textarea",
         value: () => findCellDate(id),
       })
     )
@@ -98,6 +98,10 @@ export default ({ id }: { id: string }) => {
 };
 
 css`
+  .tat-textarea {
+    font-family: Menlo, Monaco, "Courier New", monospace;
+    font-size: 13px;
+  }
   .tat-code-plan {
     position: fixed;
     top: 0px;
