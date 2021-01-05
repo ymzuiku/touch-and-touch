@@ -13,6 +13,7 @@ export const remove = async (id: string) => {
       !(await Message.info(`Is delete: [${data.step}]${getTitle(data)} ?`, {
         ok: "Ok",
         cancel: "Cancel",
+        style: { zIndex: 16000 },
       }))
     ) {
       return;

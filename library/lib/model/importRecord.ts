@@ -17,6 +17,7 @@ export async function importRecord() {
       await Message.info("Is merge record data?", {
         ok: "Ok",
         cancel: "Cancel",
+        style: { zIndex: 16000 },
       })
     ) {
       await state.recordList.insertMany(data);

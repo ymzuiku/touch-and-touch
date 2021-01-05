@@ -221,7 +221,10 @@ var state = {
 
 function customEvent(e) {
     if (e.detail) {
-        Message.info("[TouchAndTouch] Listened: " + e.detail, { outTime: 1500, position: 'bottom' });
+        Message.info("[TouchAndTouch] Listened: " + e.detail, {
+            outTime: 1500,
+            position: "bottom",
+        });
         state.recordItems.insertOne({
             key: "",
             type: "customEvent",
@@ -1315,6 +1318,7 @@ function importRecord() {
                     return [4 /*yield*/, Message.info("Is merge record data?", {
                             ok: "Ok",
                             cancel: "Cancel",
+                            style: { zIndex: 16000 },
                         })];
                 case 3:
                     if (!_a.sent()) return [3 /*break*/, 5];
@@ -1522,6 +1526,7 @@ var remove = function (id) { return __awaiter(void 0, void 0, void 0, function (
                 return [4 /*yield*/, Message.info("Is delete: [" + data.step + "]" + getTitle(data) + " ?", {
                         ok: "Ok",
                         cancel: "Cancel",
+                        style: { zIndex: 16000 },
                     })];
             case 2:
                 if (!(_a.sent())) {

@@ -3,7 +3,10 @@ import { state } from "./state";
 
 function customEvent(e: any) {
   if (e.detail) {
-    Message.info(`[TouchAndTouch] Listened: ${e.detail}`, { outTime: 1500, position:'bottom' });
+    Message.info(`[TouchAndTouch] Listened: ${e.detail}`, {
+      outTime: 1500,
+      position: "bottom",
+    });
     state.recordItems.insertOne({
       key: "",
       type: "customEvent",

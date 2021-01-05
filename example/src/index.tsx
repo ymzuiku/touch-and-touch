@@ -13,10 +13,10 @@ function App() {
       <TouchAndTouch speed={3} />
       <h1>TAT Client</h1>
       {/* <div innerHTML={html}></div> */}
-      <div role="tab" onclick={() => Message.info("role-tab")}>
+      <div role="tab" onclick={() => Message.error("role-tab")}>
         role
       </div>
-      <div role="tab" onclick={() => Message.info("role-tab2")}>
+      <div role="tab" onclick={() => Message.error("role-tab2")}>
         role2
       </div>
       <input id="aa" type="aa" />

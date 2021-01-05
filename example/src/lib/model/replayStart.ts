@@ -96,7 +96,7 @@ async function emitInput(
 }
 
 function done(e: any) {
-  Message.info(`[TouchAndTouch] Listened: ${e.detail}`, {
+  Message.error(`[TouchAndTouch] Listened: ${e.detail}`, {
     outTime: 1500,
     position: "bottom",
   });

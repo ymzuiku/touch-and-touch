@@ -14,6 +14,7 @@ export const recordClear = async (id: string) => {
         {
           ok: "Ok",
           cancel: "Cancel",
+          style: { zIndex: 16000 },
         }
       ))
     ) {
