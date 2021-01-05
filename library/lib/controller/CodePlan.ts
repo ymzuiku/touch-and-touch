@@ -122,6 +122,7 @@ css`
   }
   .tat-code-plan button {
     ${css.clear()}
+    cursor: pointer;
     margin: 6px;
     background: #77f;
     color: #fff;
