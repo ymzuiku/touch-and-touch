@@ -3757,10 +3757,10 @@ merge2@^1.3.0:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mico-db@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.3.0.tgz#ef7fddc52d60031dd906c72c72179d3be534a836"
-  integrity sha512-kCbIL6Kk/WV6YbmQ5+eF8qQcCX79WhtGD+q8MdThO3/AChBjZq4N8tlkbmRjEp9DfyIJz4yCsQoEgrs01sqb6A==
+mico-db@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.3.1.tgz#bf6df968d27fa8b77ee1c4513517e7d4bfcfac23"
+  integrity sha512-NzhLY66ZnPtPgX43LD8RMGngkPKPF4ikoaGps98xrW0UGCDJGGC3eOBplFj9AmioQuC3/w2wqZRnsYlwtV2meA==
   dependencies:
     nanoid "^3.1.20"
 

@@ -1,6 +1,6 @@
 import micoDb from "mico-db";
 
-const _cache = micoDb.collection("tat-cache", { firstItem: {} });
+const _cache = micoDb.collection("tat-cache", { init: {} });
 
 export const cache = {
   get: async (key: string) => {

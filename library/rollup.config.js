@@ -36,6 +36,7 @@ const watchOptions = [
   {
     external: [
       "mico-db",
+      "wait-value",
       "dayjs",
       "aoife-svg",
       "aoife-pop",

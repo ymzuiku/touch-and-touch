@@ -194,7 +194,7 @@ var state = {
     onAlt: false,
     ui: micoDb.collection("ui", {
         type: "sessionStorage",
-        firstItem: {
+        init: {
             speed: 1,
             showMouse: 0,
             lastFocus: null,
@@ -418,7 +418,7 @@ var recordItemAdd = function (event) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 
-var _cache = micoDb$1.collection("tat-cache", { firstItem: {} });
+var _cache = micoDb$1.collection("tat-cache", { init: {} });
 var cache = {
     get: function (key) { return __awaiter(void 0, void 0, void 0, function () {
         var data;

@@ -36,7 +36,7 @@ export const state = {
   onAlt: false,
   ui: micoDb.collection("ui", {
     type: "sessionStorage",
-    firstItem: {
+    init: {
       speed: 1,
       showMouse: 0,
       lastFocus: null as any,
