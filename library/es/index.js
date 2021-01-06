@@ -117,8 +117,8 @@ var Drag = function (_a) {
     var update = function () {
         var Ele = document.querySelector(query);
         if (Ele) {
-            Ele.style.left = state.x + "px";
-            Ele.style.top = state.y + "px";
+            Ele.style.left = state.x - 4 + "px";
+            Ele.style.top = state.y - 20 + "px";
         }
     };
     var onMove = function (e) {

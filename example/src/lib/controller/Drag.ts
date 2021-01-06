@@ -33,8 +33,8 @@ export const Drag = ({
   const update = () => {
     const Ele = document.querySelector(query) as HTMLElement;
     if (Ele) {
-      Ele.style.left = state.x + "px";
-      Ele.style.top = state.y + "px";
+      Ele.style.left = state.x - 4 + "px";
+      Ele.style.top = state.y - 20 + "px";
     }
   };
   const onMove = (e: any) => {

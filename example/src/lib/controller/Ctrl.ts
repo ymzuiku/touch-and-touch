@@ -14,7 +14,6 @@ import {
   ReplayAllSvg,
   DownloadSvg,
   LoaclFileSvg,
-  MoreSvg,
   RecordAgainSvg,
   ShowSvg,
   AutoIdSvg,
