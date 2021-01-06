@@ -1383,6 +1383,7 @@ function ThePop(_a) {
     return Pop({
         animation: void 0,
         placement: "top",
+        zIndex: 15100,
         followCursor: "horizontal",
         children: [children[0], aoife$1("div", { class: "tat-fm" }, children[1])],
     });

@@ -34,6 +34,7 @@ function ThePop({ children }: any) {
   return Pop({
     animation: void 0,
     placement: "top",
+    zIndex: 15100,
     followCursor: "horizontal",
     children: [children[0], aoife("div", { class: "tat-fm" }, children[1])],
   });
