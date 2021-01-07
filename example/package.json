@@ -15,7 +15,7 @@
     "aoife-svg": "^1.0.6",
     "dayjs": "^1.9.7",
     "localfile": "^1.0.0",
-    "mico-db": "^1.4.9",
+    "mico-db": "^1.4.10",
     "mockjs": "^1.1.0",
     "template-css": "^1.3.0",
     "vanilla-message": "^1.1.2",
