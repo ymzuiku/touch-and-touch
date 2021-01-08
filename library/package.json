@@ -1,6 +1,6 @@
 {
   "name": "touch-and-touch",
-  "version": "0.4.13",
+  "version": "0.4.14",
   "main": "es/index.js",
   "types": "es/index.d.ts",
   "description": "无负担的 UI 自动化测试工具",

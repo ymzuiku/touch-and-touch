@@ -17,7 +17,7 @@
     "localfile": "^1.0.0",
     "mico-db": "^1.4.10",
     "mockjs": "^1.1.0",
-    "template-css": "^1.4.1",
+    "template-css": "^1.4.2",
     "vanilla-message": "^1.1.2",
     "wait-value": "^0.2.0"
   },
