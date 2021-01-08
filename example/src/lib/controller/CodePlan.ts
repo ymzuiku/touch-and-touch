@@ -5,7 +5,7 @@ import { changeFormat } from "../model/changeFormat";
 import { findCellDate } from "../model/findCellDate";
 
 const tabKeyDown = function (this: any, e: any) {
-  if (e.keyCode == 9) {
+  if (e.keyCode === 9) {
     e.preventDefault();
     const indent = "  ";
     const start = this.selectionStart;
@@ -53,7 +53,7 @@ export default ({ id }: { id: string }) => {
         aoife(
           "button",
           {
-            onclick: async (e: any) => {
+            onclick: async () => {
               const isRight = await formatText();
               if (!isRight) {
                 return;

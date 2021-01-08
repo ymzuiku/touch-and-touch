@@ -1697,7 +1697,7 @@ var findCellDate = function (id) { return __awaiter(void 0, void 0, void 0, func
 }); };
 
 var tabKeyDown = function (e) {
-    if (e.keyCode == 9) {
+    if (e.keyCode === 9) {
         e.preventDefault();
         var indent = "  ";
         var start = this.selectionStart;
@@ -1736,7 +1736,7 @@ var CodePlan = (function (_a) {
     var ele = aoife$1("div", { id: "tat-code-plan", class: "tat-code-plan", "tat-ignore": true }, aoife$1("div", { class: "plan" }, aoife$1("div", { class: "button-plan" }, aoife$1("button", {
         onclick: formatText,
     }, "Format"), aoife$1("button", {
-        onclick: function (e) { return __awaiter(void 0, void 0, void 0, function () {
+        onclick: function () { return __awaiter(void 0, void 0, void 0, function () {
             var isRight, textarea, done;
             return __generator(this, function (_a) {
                 switch (_a.label) {
