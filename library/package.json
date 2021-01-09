@@ -1,6 +1,6 @@
 {
   "name": "touch-and-touch",
-  "version": "0.4.15",
+  "version": "0.5.1",
   "main": "es/index.js",
   "types": "es/index.d.ts",
   "description": "无负担的 UI 自动化测试工具",
@@ -36,15 +36,15 @@
   },
   "homepage": "git+https://github.com/ymzuiku/touch-and-touch.git",
   "dependencies": {
-    "aoife": "^1.5.1",
-    "aoife-pop": "^1.0.3",
-    "aoife-svg": "^1.0.6",
+    "aoife": "^1.6.0",
     "dayjs": "^1.9.7",
     "localfile": "^1.0.0",
     "mico-db": "^1.4.10",
     "mockjs": "^1.1.0",
     "template-css": "^1.4.2",
     "vanilla-message": "^1.1.2",
+    "vanilla-pop": "^1.0.1",
+    "vanilla-svg": "^1.0.0",
     "wait-value": "^0.2.0"
   }
 }

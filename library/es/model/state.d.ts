@@ -28,7 +28,20 @@ interface TATProxy {
 export declare const proxy: TATProxy;
 export declare const state: {
     onAlt: boolean;
-    ui: import("mico-db/umd/item").Item<any>;
+    ui: import("mico-db/umd/item").Item<{
+        speed: number;
+        showMouse: number;
+        lastFocus: any;
+        showList: number;
+        showInputId: string;
+        recording: number;
+        replaying: number;
+        replayingAll: number;
+        autoRecordId: boolean;
+        step: number;
+        filter: string[];
+        waitTimeout: number;
+    }>;
     nowCell: {
         proxy: import("mico-db/umd/collection").ProxyCollection<RecordCell>;
         index: (index: number, sort?: {

@@ -1,4 +1,4 @@
-import Pop from "aoife-pop";
+import Pop from "vanilla-pop";
 import css from "template-css";
 import { recordContinue } from "../model/recordContinue";
 import { recordStop } from "../model/recordStop";

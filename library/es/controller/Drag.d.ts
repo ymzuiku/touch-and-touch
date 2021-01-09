@@ -1,3 +1,4 @@
+/// <reference types="aoife" />
 interface DragProps extends IProps {
     dragPadding?: number;
     localStorageKey?: string;

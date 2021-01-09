@@ -1460,29 +1460,10 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-aoife-pop@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/aoife-pop/-/aoife-pop-1.0.3.tgz#f9e394a2f30c599bc4045446a2c7b472afb9eea8"
-  integrity sha512-OjiQ4tEX9rfv8uM4kMvoapis2gXkYaD3zrZ0gnFB31wGT12Dufu029E9CS8ekLksixEB8FyZayynJHIIq15Eag==
-  dependencies:
-    tippy.js "^6.2.7"
-
-aoife-svg@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/aoife-svg/-/aoife-svg-1.0.6.tgz#098bc96820925e8311241b0336c9d1edd8ead0b0"
-  integrity sha512-QugpLIbYVMDobSefHf2bjzUrLeic7Sx3EbNkzqJXWH4Sf/g0D7Cyt+t06PptyUCETj/mPnNvcI2rKMJlmIdbWA==
-  dependencies:
-    aoife "^1.3.5"
-
-aoife@^1.3.5:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.4.7.tgz#1b609362d1cb5a9484ecaa89c7984ef99cbc728d"
-  integrity sha512-lhaXKUQh7cK+Vn7u0jcgDDRRQuCdJHNn5RuNg5oT0YXIF72h3J5gjgD1KEdfMKTxsZwVHHWCSKhHdOz86CF32A==
-
-aoife@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.5.1.tgz#bcb526cdd31d63bc873da3f84557ec36d6df8f78"
-  integrity sha512-8L0qM3RjYT7+NlWAwfRrzVYiQl3LXe3PMZ8/pnyUVReYexuuuzaFzjGeQeGj04y9jZuJHKn1PnDhgXABLM7GEg==
+aoife@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.6.0.tgz#4214a7a70d1e0880bcd4fba8e78c64133b044edc"
+  integrity sha512-UmFpZUXoGuFtFDOkEbhPApILHxOr60Cy2ER4maZtaC1lu6/49aqykanD3xqkkSf+cEMmwRPeYiVM56/ritptOg==
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -5197,6 +5178,18 @@ vanilla-message@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vanilla-message/-/vanilla-message-1.1.2.tgz#c9544284dcb79c32a5a2643917fc343f74f9a83d"
   integrity sha512-Eer+3DZnyd3mWeXpuff0CbiqiCvDWM9GiiieyZ2r57RTOVxNreOm+Ar14RXjBdKJQy8sTHsjn4aGQlBmXyO/oA==
+
+vanilla-pop@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vanilla-pop/-/vanilla-pop-1.0.1.tgz#3409426b5d19cd6da7b766bdab7c5e7d9dc99d7a"
+  integrity sha512-+ZF8uIA6/3QgiEOnkCse0fm8pBYpv/CHONiVd4hsJB+JbIryDFLIGaXVUA8dnn5jLfAG92NTGQf5Ua2IWd5cOQ==
+  dependencies:
+    tippy.js "^6.2.7"
+
+vanilla-svg@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vanilla-svg/-/vanilla-svg-1.0.0.tgz#6ac7ab4be9499c52c5383a6cb9ceda9b5c18e296"
+  integrity sha512-FKPwHRdJY9uip6baLpx+TfjfCtqctOsdDbFrNEE2uw06Bie7QXuJ9bEcfyyqdxNubGNQtRnlJ0bmV31/0TYkhQ==
 
 verror@1.10.0:
   version "1.10.0"

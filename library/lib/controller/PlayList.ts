@@ -9,7 +9,7 @@ import { changeFilter } from "../model/changeFilter";
 import { getTitle } from "../model/getTitle";
 import { recordCellCopy } from "../model/recordCellCopy";
 import { fixFilterCell } from "../model/fixFilterCell";
-import Pop from "aoife-pop";
+import Pop from "vanilla-pop";
 import CodePlan from "./CodePlan";
 
 export const PlayList = () => {
@@ -107,7 +107,7 @@ export const PlayList = () => {
                 { class: "tat-row" },
                 EditorSvg({
                   class: "tat-btn edit",
-                  onclick: (e) => {
+                  onclick: (e: any) => {
                     e.stopPropagation();
                     e.preventDefault();
                     changeInput(item._id);
@@ -115,7 +115,7 @@ export const PlayList = () => {
                 }),
                 CodeSvg({
                   class: "tat-btn edit",
-                  onclick: (e) => {
+                  onclick: (e: any) => {
                     e.stopPropagation();
                     e.preventDefault();
                     document.body.append(CodePlan({ id: item._id }));
@@ -124,7 +124,7 @@ export const PlayList = () => {
                 }),
                 CopySvg({
                   class: "tat-btn edit",
-                  onclick: (e) => {
+                  onclick: (e: any) => {
                     e.stopPropagation();
                     e.preventDefault();
                     recordCellCopy(item._id);
@@ -132,7 +132,7 @@ export const PlayList = () => {
                 }),
                 DeleteSvg({
                   class: "tat-btn edit",
-                  onclick: (e) => {
+                  onclick: (e: any) => {
                     e.stopPropagation();
                     e.preventDefault();
                     remove(item._id);
