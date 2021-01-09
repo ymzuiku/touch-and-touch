@@ -10835,10 +10835,10 @@ vanilla-pop@^1.0.1:
   dependencies:
     tippy.js "^6.2.7"
 
-vanilla-svg@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vanilla-svg/-/vanilla-svg-1.0.0.tgz#6ac7ab4be9499c52c5383a6cb9ceda9b5c18e296"
-  integrity sha512-FKPwHRdJY9uip6baLpx+TfjfCtqctOsdDbFrNEE2uw06Bie7QXuJ9bEcfyyqdxNubGNQtRnlJ0bmV31/0TYkhQ==
+vanilla-svg@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vanilla-svg/-/vanilla-svg-1.0.2.tgz#144a4817acd71aa12bc65788ba1d89113b7b39fc"
+  integrity sha512-0MVsFHsT6fk5XgocXSlgTOLIXHa05nA2sPrWxDFK08bm3MRWI+ataTkfEOWYImIY9IafcuXltc+lODRvUOrfDQ==
 
 vary@~1.1.2:
   version "1.1.2"
