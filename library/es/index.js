@@ -705,7 +705,11 @@ var init = function (opt) {
                     _a.sent();
                     _a.label = 4;
                 case 4:
-                    state.recordList.proxy.onChange = initOpt.onChangeData;
+                    state.recordList.proxy.deleteOne = function (a, b) {
+                        if (initOpt.onChangeData) {
+                            initOpt.onChangeData(b);
+                        }
+                    };
                     return [4 /*yield*/, state.recordList.find()];
                 case 5:
                     list = _a.sent();

@@ -47,7 +47,11 @@ export const init = async (opt: InitOptions = {}) => {
     await state.recordList.deleteMany();
     await state.recordList.insertMany(list);
   }
-  state.recordList.proxy.onChange = initOpt.onChangeData;
+  state.recordList.proxy.deleteOne = (a, b) => {
+    if (initOpt.onChangeData) {
+      initOpt.onChangeData(b as any);
+    }
+  };
   let list = await state.recordList.find();
   // 若列表为空，初始化一个内容
   if (list.length === 0) {
