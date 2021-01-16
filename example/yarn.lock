@@ -7085,10 +7085,10 @@ methods@~1.1.2:
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   integrity sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
 
-mico-db@^1.4.16:
-  version "1.4.16"
-  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.4.16.tgz#fdc850cae6239d0aeb66fe749fd5de2dd866eb1c"
-  integrity sha512-35wWB1skYwto7ntwSEYOn7JCJUyWmY/ZFO4iexWvfT1Fxiebm+WaJTiZPEyDVpE9vxeRUZ387LwtZ4o3ib7weA==
+mico-db@^1.4.18:
+  version "1.4.18"
+  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.4.18.tgz#95a890e2400eb0e718d4d4f2b4738b855f0fddb1"
+  integrity sha512-Mt57rKo2tJfdxyl6Gg2v1SqWLLw1sSmDxnxuWkyg/H+bc3j+P5zrZ/elUydnctJlS9KMNoeacJtRQlBArNI/Dw==
 
 microevent.ts@~0.1.1:
   version "0.1.1"

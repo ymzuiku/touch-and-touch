@@ -2,7 +2,7 @@ import Pop from 'vanilla-pop';
 import css from 'template-css';
 import aoife$1 from 'aoife';
 import Message from 'vanilla-message';
-import micoDb, { createMicoDb } from 'mico-db';
+import MicoDb from 'mico-db';
 import mockjs from 'mockjs';
 import dayjs from 'dayjs';
 import Svg from 'vanilla-svg';
@@ -201,9 +201,9 @@ var Drag = function (_a) {
         } }, rest), children);
 };
 
-var db = micoDb;
+var db = MicoDb("mico-db");
 var initState = function (name) {
-    db = createMicoDb(name);
+    db = MicoDb(name);
     state.ui = db.sessionItem("ui", baseUI);
     state.recordList = db.collection("record-list", {
         sort: { updateAt: -1 },
@@ -425,7 +425,7 @@ var recordItemAdd = function (event) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 
-var _cache = micoDb.collection("tat-cache", { init: {} });
+var _cache = MicoDb("tat-db").collection("tat-cache", { init: {} });
 var cache = {
     get: function (key) { return __awaiter(void 0, void 0, void 0, function () {
         var data;
@@ -484,7 +484,7 @@ var recordCellAdd = function () { return __awaiter(void 0, void 0, void 0, funct
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = micoDb.nanoid();
+                id = MicoDb.nanoid();
                 return [4 /*yield*/, state.recordList.insertOne({
                         title: dayjs(Date.now()).format("MM/DD HH:mm"),
                         _id: id,

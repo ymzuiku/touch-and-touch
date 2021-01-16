@@ -45,7 +45,7 @@ export declare const state: {
         waitTimeout: number;
     }>;
     recordList: {
-        proxy: import("mico-db/umd/collection").ProxyCollection<RecordCell>;
+        onChange: void | ((dataList: RecordCell[]) => any);
         index: (index: number, sort?: {
             [key: string]: number;
         } | undefined) => Promise<RecordCell>;
@@ -61,10 +61,10 @@ export declare const state: {
         insertOne: (data: Partial<RecordCell>) => Promise<RecordCell[]>;
         insertMany: (dataList: Partial<RecordCell>[]) => Promise<RecordCell[]>;
         removeDuplicatie: (key: string) => Promise<RecordCell[]>;
-        set: (dataList: Partial<RecordCell>[]) => Promise<void>;
+        setAll: (dataList: Partial<RecordCell>[]) => Promise<void>;
     };
     recordItems: {
-        proxy: import("mico-db/umd/collection").ProxyCollection<RecordItem>;
+        onChange: void | ((dataList: RecordItem[]) => any);
         index: (index: number, sort?: {
             [key: string]: number;
         } | undefined) => Promise<RecordItem>;
@@ -80,10 +80,10 @@ export declare const state: {
         insertOne: (data: Partial<RecordItem>) => Promise<RecordItem[]>;
         insertMany: (dataList: Partial<RecordItem>[]) => Promise<RecordItem[]>;
         removeDuplicatie: (key: string) => Promise<RecordItem[]>;
-        set: (dataList: Partial<RecordItem>[]) => Promise<void>;
+        setAll: (dataList: Partial<RecordItem>[]) => Promise<void>;
     };
     customEvent: {
-        proxy: import("mico-db/umd/collection").ProxyCollection<any>;
+        onChange: void | ((dataList: any[]) => any);
         index: (index: number, sort?: {
             [key: string]: number;
         } | undefined) => Promise<any>;
@@ -99,7 +99,7 @@ export declare const state: {
         insertOne: (data: Partial<any>) => Promise<any[]>;
         insertMany: (dataList: Partial<any>[]) => Promise<any[]>;
         removeDuplicatie: (key: string) => Promise<any[]>;
-        set: (dataList: Partial<any>[]) => Promise<void>;
+        setAll: (dataList: Partial<any>[]) => Promise<void>;
     };
 };
 export {};

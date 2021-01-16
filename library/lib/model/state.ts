@@ -1,4 +1,4 @@
-import micoDb, { createMicoDb } from "mico-db";
+import MicoDb from "mico-db";
 
 export interface RecordItem {
   index?: number;
@@ -31,10 +31,10 @@ interface TATProxy {
 
 export const proxy = {} as TATProxy;
 
-let db = micoDb;
+let db = MicoDb("mico-db");
 
 export const initState = (name: string) => {
-  db = createMicoDb(name);
+  db = MicoDb(name);
   state.ui = db.sessionItem("ui", baseUI);
   state.recordList = db.collection<RecordCell>("record-list", {
     sort: { updateAt: -1 },
