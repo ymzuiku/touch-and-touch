@@ -158,10 +158,10 @@ css`
   .tat-play-list .filter {
     height: 20px;
     font-size: 12px;
-    margin: 4px;
+    margin: 2px;
     margin-bottom: 8px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: calc(100% - 8px);
+    width: calc(100% - 3px);
     outline: none;
   }
   .tat-play-list .edit {
