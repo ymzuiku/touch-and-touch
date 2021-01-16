@@ -52,7 +52,7 @@ css`
   .tat-fm {
     font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC",
       "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
   }
   .tat {
     font-size: 14px;

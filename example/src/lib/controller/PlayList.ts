@@ -152,7 +152,7 @@ export const PlayList = () => {
 
 css`
   .tat-play-list {
-    font-size: 16px;
+    font-size: 14px;
     width: 100%;
   }
   .tat-play-list .filter {
