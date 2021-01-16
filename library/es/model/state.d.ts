@@ -38,30 +38,12 @@ export declare const state: {
         recording: number;
         replaying: number;
         replayingAll: number;
+        nowCellId: string;
         autoRecordId: boolean;
         step: number;
         filter: string[];
         waitTimeout: number;
     }>;
-    nowCell: {
-        proxy: import("mico-db/umd/collection").ProxyCollection<RecordCell>;
-        index: (index: number, sort?: {
-            [key: string]: number;
-        } | undefined) => Promise<RecordCell>;
-        count: () => Promise<number>;
-        find: (filter?: Partial<RecordCell> | ((val: RecordCell) => any) | undefined, sort?: {
-            [key: string]: number;
-        } | undefined) => Promise<RecordCell[]>;
-        findOne: (filter?: Partial<RecordCell> | ((val: RecordCell) => any) | undefined) => Promise<RecordCell>;
-        deleteMany: (filter?: Partial<RecordCell> | undefined) => Promise<RecordCell[]>;
-        deleteOne: (filter?: Partial<RecordCell> | undefined) => Promise<RecordCell | undefined>;
-        updateOne: (filter: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>, data: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>) => Promise<(RecordCell & import("mico-db/umd/collection").BaseColl) | undefined>;
-        updateMany: (filter: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>, data: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>) => Promise<RecordCell[]>;
-        insertOne: (data: Partial<RecordCell>) => Promise<RecordCell[]>;
-        insertMany: (dataList: Partial<RecordCell>[]) => Promise<RecordCell[]>;
-        removeDuplicatie: (key: string) => Promise<RecordCell[]>;
-        set: (dataList: Partial<RecordCell>[]) => Promise<void>;
-    };
     recordList: {
         proxy: import("mico-db/umd/collection").ProxyCollection<RecordCell>;
         index: (index: number, sort?: {
@@ -74,8 +56,8 @@ export declare const state: {
         findOne: (filter?: Partial<RecordCell> | ((val: RecordCell) => any) | undefined) => Promise<RecordCell>;
         deleteMany: (filter?: Partial<RecordCell> | undefined) => Promise<RecordCell[]>;
         deleteOne: (filter?: Partial<RecordCell> | undefined) => Promise<RecordCell | undefined>;
-        updateOne: (filter: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>, data: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>) => Promise<(RecordCell & import("mico-db/umd/collection").BaseColl) | undefined>;
-        updateMany: (filter: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>, data: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>) => Promise<RecordCell[]>;
+        updateOne: (filter: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>, { $set }: import("mico-db/umd/collection").CollectionUpdateOpt<RecordCell>) => Promise<(RecordCell & import("mico-db/umd/collection").BaseColl) | undefined>;
+        updateMany: (filter: Partial<RecordCell & import("mico-db/umd/collection").BaseColl>, { $set }: import("mico-db/umd/collection").CollectionUpdateOpt<RecordCell>) => Promise<RecordCell[]>;
         insertOne: (data: Partial<RecordCell>) => Promise<RecordCell[]>;
         insertMany: (dataList: Partial<RecordCell>[]) => Promise<RecordCell[]>;
         removeDuplicatie: (key: string) => Promise<RecordCell[]>;
@@ -93,8 +75,8 @@ export declare const state: {
         findOne: (filter?: Partial<RecordItem> | ((val: RecordItem) => any) | undefined) => Promise<RecordItem>;
         deleteMany: (filter?: Partial<RecordItem> | undefined) => Promise<RecordItem[]>;
         deleteOne: (filter?: Partial<RecordItem> | undefined) => Promise<RecordItem | undefined>;
-        updateOne: (filter: Partial<RecordItem & import("mico-db/umd/collection").BaseColl>, data: Partial<RecordItem & import("mico-db/umd/collection").BaseColl>) => Promise<(RecordItem & import("mico-db/umd/collection").BaseColl) | undefined>;
-        updateMany: (filter: Partial<RecordItem & import("mico-db/umd/collection").BaseColl>, data: Partial<RecordItem & import("mico-db/umd/collection").BaseColl>) => Promise<RecordItem[]>;
+        updateOne: (filter: Partial<RecordItem & import("mico-db/umd/collection").BaseColl>, { $set }: import("mico-db/umd/collection").CollectionUpdateOpt<RecordItem>) => Promise<(RecordItem & import("mico-db/umd/collection").BaseColl) | undefined>;
+        updateMany: (filter: Partial<RecordItem & import("mico-db/umd/collection").BaseColl>, { $set }: import("mico-db/umd/collection").CollectionUpdateOpt<RecordItem>) => Promise<RecordItem[]>;
         insertOne: (data: Partial<RecordItem>) => Promise<RecordItem[]>;
         insertMany: (dataList: Partial<RecordItem>[]) => Promise<RecordItem[]>;
         removeDuplicatie: (key: string) => Promise<RecordItem[]>;
@@ -112,8 +94,8 @@ export declare const state: {
         findOne: (filter?: Partial<any> | ((val: any) => any) | undefined) => Promise<any>;
         deleteMany: (filter?: Partial<any> | undefined) => Promise<any[]>;
         deleteOne: (filter?: Partial<any> | undefined) => Promise<any>;
-        updateOne: (filter: Partial<any>, data: Partial<any>) => Promise<any>;
-        updateMany: (filter: Partial<any>, data: Partial<any>) => Promise<any[]>;
+        updateOne: (filter: Partial<any>, { $set }: import("mico-db/umd/collection").CollectionUpdateOpt<any>) => Promise<any>;
+        updateMany: (filter: Partial<any>, { $set }: import("mico-db/umd/collection").CollectionUpdateOpt<any>) => Promise<any[]>;
         insertOne: (data: Partial<any>) => Promise<any[]>;
         insertMany: (dataList: Partial<any>[]) => Promise<any[]>;
         removeDuplicatie: (key: string) => Promise<any[]>;

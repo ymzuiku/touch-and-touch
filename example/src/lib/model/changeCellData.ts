@@ -12,7 +12,7 @@ export const changeCellData = async (id: string, code: string) => {
     Message.error(err.toString(), { style: { zIndex: 16000 } });
     return false;
   }
-  await state.recordList.updateOne({ _id: id }, { items });
+  await state.recordList.updateOne({ _id: id }, { $set: { items } });
 
   return true;
 };

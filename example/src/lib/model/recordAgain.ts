@@ -17,7 +17,7 @@ export const recordAgain = async () => {
   if (right) {
     await state.recordList.updateOne(
       { _id: state.ui().nowCellId },
-      { step: 0, items: [] }
+      { $set: { step: 0, items: [] } }
     );
     await state.recordItems.deleteMany();
     recordContinue();

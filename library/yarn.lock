@@ -3738,10 +3738,10 @@ merge2@^1.3.0:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mico-db@^1.4.13:
-  version "1.4.13"
-  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.4.13.tgz#43049f48c3391cda497e979525cae6c3155a9596"
-  integrity sha512-6hyppgqqXIiC4YE4DwCirc5YHuH/VwgWqAJSUDiyXZJXM9GCLzKmYNaMk5i43PGOpTMRwIrEuPr/7p45Y4Yq1w==
+mico-db@^1.4.15:
+  version "1.4.15"
+  resolved "https://registry.yarnpkg.com/mico-db/-/mico-db-1.4.15.tgz#5ae20adaf9e22c09181d8757d80b873fd79a27ee"
+  integrity sha512-7LpX6ZFfcx10BXlj8w1yYQK1OzWdn4V89J/TblhoX66DsujlAytgUwVt3TZLtAtVdvph99h7rSqZilZ6HOyKdA==
 
 micromatch@^3.1.4:
   version "3.1.10"

@@ -13,7 +13,7 @@ export const replayStop = async (success?: boolean) => {
   });
   aoife.next(".tat-update, .tat-mouse");
   if (success && initOpt.onSuccess) {
-    const cell = await state.nowCell.findOne();
+    const cell = await state.recordList.findOne({ _id: state.ui().nowCellId });
     initOpt.onSuccess(cell);
   }
 };

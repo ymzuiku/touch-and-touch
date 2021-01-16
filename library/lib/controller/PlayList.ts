@@ -42,10 +42,10 @@ export const PlayList = () => {
           {
             id: item._id,
             classPick: async () => {
-              const cell = await state.nowCell.findOne();
+              const id = state.ui().nowCellId;
               return {
                 cell: 1,
-                "cell-selected": item._id === cell._id,
+                "cell-selected": item._id === id,
               };
             },
             hidden: async () => {

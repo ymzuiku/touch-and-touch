@@ -205,7 +205,6 @@ var db = micoDb;
 var initState = function (name) {
     db = createMicoDb(name);
     state.ui = db.sessionItem("ui", baseUI);
-    state.nowCell = db.collection("nowCell");
     state.recordList = db.collection("record-list", {
         sort: { updateAt: -1 },
     });
@@ -223,6 +222,7 @@ var baseUI = {
     recording: 0,
     replaying: 0,
     replayingAll: 0,
+    nowCellId: "",
     autoRecordId: false,
     step: 0,
     filter: [],
@@ -231,7 +231,6 @@ var baseUI = {
 var state = {
     onAlt: false,
     ui: db && db.sessionItem("ui", baseUI),
-    nowCell: db.collection("nowCell"),
     recordList: db.collection("record-list", {
         sort: { updateAt: -1 },
     }),
@@ -300,7 +299,7 @@ var recordContinue = function () { return __awaiter(void 0, void 0, void 0, func
 }); };
 
 var recordStop = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cell, items;
+    var items;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -308,14 +307,13 @@ var recordStop = function () { return __awaiter(void 0, void 0, void 0, function
                 state.ui.merge({
                     recording: 0,
                 });
-                return [4 /*yield*/, state.nowCell.findOne()];
-            case 1:
-                cell = _a.sent();
                 return [4 /*yield*/, state.recordItems.find()];
-            case 2:
+            case 1:
                 items = _a.sent();
-                return [4 /*yield*/, state.recordList.updateOne({ _id: cell._id }, __assign(__assign({}, cell), { items: items }))];
-            case 3:
+                return [4 /*yield*/, state.recordList.updateOne({ _id: state.ui().nowCellId }, {
+                        $set: { updateAt: Date.now(), items: items },
+                    })];
+            case 2:
                 _a.sent();
                 aoife.next(".tat-update");
                 return [2 /*return*/];
@@ -410,17 +408,19 @@ var recordItemAdd = function (event) { return __awaiter(void 0, void 0, void 0, 
         switch (_a.label) {
             case 0:
                 ui = state.ui.get();
-                if (!(ui.recording && !ui.replaying)) return [3 /*break*/, 3];
+                if (!(ui.recording && !ui.replaying)) return [3 /*break*/, 4];
                 return [4 /*yield*/, state.recordItems.insertOne(event)];
             case 1:
                 _a.sent();
                 return [4 /*yield*/, state.recordItems.count()];
             case 2:
                 step = _a.sent();
-                state.nowCell.updateOne({}, { step: step });
+                return [4 /*yield*/, state.recordList.updateOne({ _id: ui.nowCellId }, { $set: { step: step } })];
+            case 3:
+                _a.sent();
                 aoife.next(".tat-step, .tat-step");
-                _a.label = 3;
-            case 3: return [2 /*return*/];
+                _a.label = 4;
+            case 4: return [2 /*return*/];
         }
     });
 }); };
@@ -442,7 +442,7 @@ var cache = {
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, _cache.updateOne({}, (_a = {}, _a[key] = value, _a))];
+                case 0: return [4 /*yield*/, _cache.updateOne({}, { $set: (_a = {}, _a[key] = value, _a) })];
                 case 1:
                     _b.sent();
                     return [2 /*return*/, value];
@@ -462,7 +462,7 @@ var changeSelectItem = function (id) { return __awaiter(void 0, void 0, void 0, 
                     return [2 /*return*/];
                 }
                 items = cell.items;
-                return [4 /*yield*/, state.nowCell.updateOne({}, cell)];
+                return [4 /*yield*/, state.ui({ nowCellId: cell._id })];
             case 2:
                 _a.sent();
                 return [4 /*yield*/, state.recordItems.set(items)];
@@ -697,7 +697,7 @@ var replayAllFilter = function () { return __awaiter(void 0, void 0, void 0, fun
 
 var initOpt = { name: "tatdb", lockCtrlKey: "l" };
 var init = function (opt) { return __awaiter(void 0, void 0, void 0, function () {
-    var ui, list_1, list, old, next;
+    var ui, list_1, list, old;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -729,24 +729,21 @@ var init = function (opt) { return __awaiter(void 0, void 0, void 0, function ()
             case 7:
                 list = _a.sent();
                 _a.label = 8;
-            case 8: return [4 /*yield*/, state.nowCell.findOne()];
+            case 8: return [4 /*yield*/, state.recordList.findOne({ _id: ui.nowCellId })];
             case 9:
                 old = _a.sent();
-                if (!!old._id) return [3 /*break*/, 12];
+                if (!!old) return [3 /*break*/, 12];
                 if (!(list && list[list.length - 1])) return [3 /*break*/, 11];
                 return [4 /*yield*/, changeSelectItem(list[list.length - 1]._id)];
             case 10:
                 _a.sent();
                 _a.label = 11;
-            case 11: return [3 /*break*/, 15];
-            case 12: return [4 /*yield*/, state.nowCell.findOne()];
+            case 11: return [3 /*break*/, 14];
+            case 12: return [4 /*yield*/, changeSelectItem(list[0]._id)];
             case 13:
-                next = _a.sent();
-                return [4 /*yield*/, changeSelectItem(next._id)];
-            case 14:
                 _a.sent();
-                _a.label = 15;
-            case 15:
+                _a.label = 14;
+            case 14:
                 aoife$1.next(".tat-update");
                 state.ui.merge({
                     speed: opt.speed || 1,
@@ -913,7 +910,7 @@ var replayStop = function (success) { return __awaiter(void 0, void 0, void 0, f
                 });
                 aoife.next(".tat-update, .tat-mouse");
                 if (!(success && initOpt.onSuccess)) return [3 /*break*/, 4];
-                return [4 /*yield*/, state.nowCell.findOne()];
+                return [4 /*yield*/, state.recordList.findOne({ _id: state.ui().nowCellId })];
             case 3:
                 cell = _a.sent();
                 initOpt.onSuccess(cell);
@@ -929,7 +926,7 @@ var replayFail = function (msg) { return __awaiter(void 0, void 0, void 0, funct
         switch (_a.label) {
             case 0:
                 if (!initOpt.onFail) return [3 /*break*/, 2];
-                return [4 /*yield*/, state.nowCell.findOne()];
+                return [4 /*yield*/, state.recordList.findOne({ _id: state.ui().nowCellId })];
             case 1:
                 cell = _a.sent();
                 initOpt.onFail(cell, msg);
@@ -972,7 +969,7 @@ var replayStart = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 _a.sent();
                 aoife.next(".tat-update, .tat-mouse");
                 if (!initOpt.onReplay) return [3 /*break*/, 6];
-                return [4 /*yield*/, state.nowCell.findOne()];
+                return [4 /*yield*/, state.recordList.findOne({ _id: state.ui().nowCellId })];
             case 5:
                 cell = _a.sent();
                 initOpt.onReplay(cell);
@@ -1059,7 +1056,7 @@ function done(e) {
         outTime: 1500,
         position: "bottom",
     });
-    state.customEvent.updateOne({}, (_a = {}, _a[e.detail] = 1, _a));
+    state.customEvent.updateOne({}, { $set: (_a = {}, _a[e.detail] = 1, _a) });
 }
 window.addEventListener("tat", done);
 function waitGetCustomEvent(detail) {
@@ -1270,7 +1267,7 @@ var Step = function () {
             switch (_a.label) {
                 case 0:
                     ui = state.ui.get();
-                    return [4 /*yield*/, state.nowCell.findOne()];
+                    return [4 /*yield*/, state.recordList.findOne({ _id: ui.nowCellId })];
                 case 1:
                     cell = _a.sent();
                     label = "";
@@ -1294,8 +1291,8 @@ var templateObject_1;
 var CodeSvg = Svg("\n<svg t=\"1609439023623\" class=\"icon\" viewBox=\"0 0 1097 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"3732\" width=\"200\" height=\"200\"><path d=\"M352.585143 799.414857l-28.562286 28.562286a18.285714 18.285714 0 0 1-26.294857 0L31.451429 561.700571a18.285714 18.285714 0 0 1 0-26.294857l266.276571-266.276571a18.285714 18.285714 0 0 1 26.294857 0l28.562286 28.562286a18.285714 18.285714 0 0 1 0 26.294857L128 548.571429l224.585143 224.585142a18.285714 18.285714 0 0 1 0 26.294858z m337.700571-609.718857l-213.138285 737.718857a18.139429 18.139429 0 0 1-22.272 12.580572l-35.437715-9.728a18.505143 18.505143 0 0 1-12.580571-22.857143L619.995429 169.691429a18.139429 18.139429 0 0 1 22.272-12.580572l35.437714 9.728a18.505143 18.505143 0 0 1 12.580571 22.857143z m375.442286 372.004571L799.451429 827.977143a18.285714 18.285714 0 0 1-26.294858 0l-28.562285-28.562286a18.285714 18.285714 0 0 1 0-26.294857l224.585143-224.585143-224.585143-224.585143a18.285714 18.285714 0 0 1 0-26.294857l28.562285-28.562286a18.285714 18.285714 0 0 1 26.294858 0l266.276571 266.276572a18.285714 18.285714 0 0 1 0 26.294857z\" fill=\"\" p-id=\"3733\"></path></svg>\n");
 var DragSvg = Svg("\n<svg t=\"1608724287002\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2814\" width=\"200\" height=\"200\"><path d=\"M362.666667 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2815\"></path><path d=\"M661.333333 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2816\"></path><path d=\"M362.666667 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2817\"></path><path d=\"M661.333333 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2818\"></path><path d=\"M362.666667 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2819\"></path><path d=\"M661.333333 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2820\"></path></svg>\n");
 var EditorSvg = Svg("\n<svg t=\"1608542607404\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1140\" width=\"1em\" height=\"1em\"><path d=\"M896 801.216V864H128v-62.784h768z m-204.288-678.4l155.36 155.36-463.136 463.136-156.864 1.504 1.504-156.864L691.712 122.816z m-0.864 89.632L291.712 611.584l-0.64 67.232 67.2-0.64L757.44 279.04l-66.56-66.56z\" fill=\"#f00\" p-id=\"1141\"></path></svg>\n");
-var RecordAgainSvg = Svg("<svg t=\"1609231838403\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"12509\" width=\"200\" height=\"200\"><path d=\"M511.953038 76.651228C271.156005 76.651228 75.945597 271.860432 75.945597 512.658669c0 240.794625 195.209204 436.002625 436.007441 436.002625 240.794625 0 436.002625-195.208 436.002625-436.002625C948.00985 271.860432 752.801849 76.651228 511.953038 76.651228L511.953038 76.651228zM708.138806 649.912243c16.287302 16.286098 16.287302 42.649708 0 58.93099-16.281281 16.287302-42.644892 16.287302-58.93099 0L511.732679 571.423486 374.258746 708.843233c-16.28369 16.287302-42.644892 16.287302-58.932194 0-16.282486-16.281281-16.282486-42.644892 0-58.93099l137.52812-137.473933L315.380739 375.017359c-16.282486-16.28369-16.282486-42.646096 0-58.932194 16.286098-16.282486 42.648504-16.282486 58.932194 0l137.419747 137.473933 137.473933-137.473933c16.286098-16.282486 42.649708-16.282486 58.93099 0 16.287302 16.286098 16.287302 42.648504 0 58.932194L570.71906 512.43831 708.138806 649.912243 708.138806 649.912243zM708.138806 649.912243\" p-id=\"12510\"></path></svg>", "1.1em", "1.1em");
-var RecordContinueSvg = Svg("<svg t=\"1608542641961\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1886\" width=\"200px\" height=\"200px\"><path d=\"M512 1024c282.833455 0 512-229.166545 512-512S794.833455 0 512 0 0 229.166545 0 512s229.166545 512 512 512z\" fill=\"#f00\"  p-id=\"1887\"></path></svg>", "1em", "1em");
+var RecordAgainSvg = Svg("<svg t=\"1608542641961\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1886\" width=\"200px\" height=\"200px\"><path d=\"M512 1024c282.833455 0 512-229.166545 512-512S794.833455 0 512 0 0 229.166545 0 512s229.166545 512 512 512z\" fill=\"#f00\"  p-id=\"1887\"></path></svg>");
+var RecordContinueSvg = Svg("<svg t=\"1610822202969\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"19676\" width=\"200\" height=\"200\"><path d=\"M512 85.333333c235.637333 0 426.666667 191.029333 426.666667 426.666667S747.637333 938.666667 512 938.666667 85.333333 747.637333 85.333333 512 276.362667 85.333333 512 85.333333z m0 234.666667a32 32 0 0 0-32 32v128H352a32 32 0 0 0 0 64h128v128a32 32 0 0 0 64 0V544h128a32 32 0 0 0 0-64H544V352a32 32 0 0 0-32-32z\" p-id=\"19677\"></path></svg>", "1.21em", "1.21em");
 var RecordStopSvg = Svg("<svg t=\"1608738155473\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1785\" width=\"200\" height=\"200\"><path d=\"M512 0c-282.784 0-512 229.216-512 512s229.216 512 512 512 512-229.216 512-512-229.216-512-512-512zM512 928c-229.76 0-416-186.24-416-416s186.24-416 416-416 416 186.24 416 416-186.24 416-416 416zM320 320l384 0 0 384-384 0z\" p-id=\"1786\"></path></svg>");
 var ReplayStopSvg = Svg("<svg t=\"1608544642733\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1144\" width=\"200\" height=\"200\"><path d=\"M32 32m160 0l640 0q160 0 160 160l0 640q0 160-160 160l-640 0q-160 0-160-160l0-640q0-160 160-160Z\" fill=\"#364F6B\" p-id=\"1145\"></path></svg>");
 var ReplayAllSvg = Svg("<svg t=\"1609043479737\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"5003\" width=\"200\" height=\"200\"><path d=\"M465.5 844.3V581.5L113.6 844.3V179.7l351.9 262.8V179.7l445 332.3-445 332.3z\" fill=\"\" p-id=\"5004\"></path></svg>", "1.2em", "1.2em");
@@ -1371,16 +1368,34 @@ function importRecord() {
 }
 
 var recordAgain = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var nowCell, right;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, state.nowCell.updateOne({}, { step: 0, items: [] })];
+            case 0: return [4 /*yield*/, state.recordList.findOne({ _id: state.ui().nowCellId })];
             case 1:
+                nowCell = _a.sent();
+                right = true;
+                console.log(nowCell);
+                if (!(nowCell && nowCell.items && nowCell.items.length > 1)) return [3 /*break*/, 3];
+                return [4 /*yield*/, Message.error("Clear now item, and record again?", {
+                        ok: "Ok",
+                        cancel: "Cancel",
+                        style: { zIndex: 16100 },
+                    })];
+            case 2:
+                right = _a.sent();
+                _a.label = 3;
+            case 3:
+                if (!right) return [3 /*break*/, 6];
+                return [4 /*yield*/, state.recordList.updateOne({ _id: state.ui().nowCellId }, { $set: { step: 0, items: [] } })];
+            case 4:
                 _a.sent();
                 return [4 /*yield*/, state.recordItems.deleteMany()];
-            case 2:
+            case 5:
                 _a.sent();
                 recordContinue();
-                return [2 /*return*/];
+                _a.label = 6;
+            case 6: return [2 /*return*/];
         }
     });
 }); };
@@ -1416,7 +1431,7 @@ var Ctrl = function () {
         return __generator(this, function (_a) {
             ui = state.ui.get();
             if (ui.recording) {
-                return [2 /*return*/, aoife$1("span", { class: "tat-row" }, RecordStopSvg({ class: "tat-btn", onclick: recordStop }), Step())];
+                return [2 /*return*/, aoife$1("span", { class: "tat-row" }, RecordStopSvg({ class: "tat-btn", onclick: function () { return recordStop(); } }), Step())];
             }
             if (ui.replaying) {
                 return [2 /*return*/, aoife$1("span", { class: "tat-row" }, ReplayStopSvg({ class: "tat-btn", onclick: function () { return replayStop(); } }), Step())];
@@ -1497,7 +1512,7 @@ var Ctrl = function () {
         });
     }); });
 };
-css(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .tat-row {\n    width: 100%;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    height: 23px;\n    width: 23px;\n    padding: 1px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"], ["\n  .tat-row {\n    width: 100%;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    height: 23px;\n    width: 23px;\n    padding: 1px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"])), css.flex("row-center-center"));
+css(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .tat-row {\n    width: 100%;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    height: 20px;\n    width: 20px;\n    padding: 1px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"], ["\n  .tat-row {\n    width: 100%;\n    ", "\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    height: 20px;\n    width: 20px;\n    padding: 1px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"])), css.flex("row-center-center"));
 var templateObject_1$1;
 
 var changeInput = function (id) { return __awaiter(void 0, void 0, void 0, function () {
@@ -1509,23 +1524,14 @@ var changeInput = function (id) { return __awaiter(void 0, void 0, void 0, funct
 }); };
 
 var rename = function (id, title) { return __awaiter(void 0, void 0, void 0, function () {
-    var now;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 state.ui.merge({
                     showInputId: "",
                 });
-                return [4 /*yield*/, state.nowCell.findOne()];
+                return [4 /*yield*/, state.recordList.updateOne({ _id: id }, { $set: { title: title } })];
             case 1:
-                now = _a.sent();
-                if (!(now._id === id)) return [3 /*break*/, 3];
-                return [4 /*yield*/, state.nowCell.updateOne({}, { title: title })];
-            case 2:
-                _a.sent();
-                _a.label = 3;
-            case 3: return [4 /*yield*/, state.recordList.updateOne({ _id: id }, { title: title })];
-            case 4:
                 _a.sent();
                 aoife.next("#" + id);
                 return [2 /*return*/];
@@ -1608,7 +1614,7 @@ var changeCellData = function (id, code) { return __awaiter(void 0, void 0, void
                     Message.error(err.toString(), { style: { zIndex: 16000 } });
                     return [2 /*return*/, false];
                 }
-                return [4 /*yield*/, state.recordList.updateOne({ _id: id }, { items: items })];
+                return [4 /*yield*/, state.recordList.updateOne({ _id: id }, { $set: { items: items } })];
             case 1:
                 _a.sent();
                 return [2 /*return*/, true];
@@ -1824,17 +1830,13 @@ var PlayList = function () {
                             return aoife("div", {
                                 id: item._id,
                                 classPick: function () { return __awaiter(void 0, void 0, void 0, function () {
-                                    var cell;
+                                    var id;
                                     return __generator(this, function (_a) {
-                                        switch (_a.label) {
-                                            case 0: return [4 /*yield*/, state.nowCell.findOne()];
-                                            case 1:
-                                                cell = _a.sent();
-                                                return [2 /*return*/, {
-                                                        cell: 1,
-                                                        "cell-selected": item._id === cell._id,
-                                                    }];
-                                        }
+                                        id = state.ui().nowCellId;
+                                        return [2 /*return*/, {
+                                                cell: 1,
+                                                "cell-selected": item._id === id,
+                                            }];
                                     });
                                 }); },
                                 hidden: function () { return __awaiter(void 0, void 0, void 0, function () {

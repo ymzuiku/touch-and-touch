@@ -8,7 +8,7 @@ export const cache = {
     return data[key];
   },
   set: async (key: string, value: any) => {
-    await _cache.updateOne({}, { [key]: value });
+    await _cache.updateOne({}, { $set: { [key]: value } });
     return value;
   },
 };

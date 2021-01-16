@@ -36,7 +36,6 @@ let db = micoDb;
 export const initState = (name: string) => {
   db = createMicoDb(name);
   state.ui = db.sessionItem("ui", baseUI);
-  state.nowCell = db.collection<RecordCell>("nowCell");
   state.recordList = db.collection<RecordCell>("record-list", {
     sort: { updateAt: -1 },
   });
@@ -55,6 +54,7 @@ const baseUI = {
   recording: 0,
   replaying: 0,
   replayingAll: 0,
+  nowCellId: "",
   autoRecordId: false,
   step: 0,
   filter: [] as string[],
@@ -64,7 +64,6 @@ const baseUI = {
 export const state = {
   onAlt: false,
   ui: db && db.sessionItem("ui", baseUI),
-  nowCell: db.collection<RecordCell>("nowCell"),
   recordList: db.collection<RecordCell>("record-list", {
     sort: { updateAt: -1 },
   }),

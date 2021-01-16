@@ -1,6 +1,6 @@
 {
   "name": "touch-and-touch",
-  "version": "0.5.19",
+  "version": "0.5.20",
   "main": "es/index.js",
   "types": "es/index.d.ts",
   "description": "无负担的 UI 自动化测试工具",
@@ -39,7 +39,7 @@
     "aoife": "^1.6.7",
     "dayjs": "^1.9.7",
     "localfile": "^1.0.0",
-    "mico-db": "^1.4.13",
+    "mico-db": "^1.4.15",
     "mockjs": "^1.1.0",
     "template-css": "^1.4.2",
     "vanilla-message": "^1.1.3",

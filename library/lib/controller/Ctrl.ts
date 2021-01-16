@@ -54,7 +54,7 @@ export const Ctrl = () => {
       return aoife(
         "span",
         { class: "tat-row" },
-        RecordStopSvg({ class: "tat-btn", onclick: recordStop }),
+        RecordStopSvg({ class: "tat-btn", onclick: () => recordStop() }),
         Step()
       );
     }
@@ -184,8 +184,8 @@ css`
     width: 100%;
   }
   .tat-btn {
-    height: 23px;
-    width: 23px;
+    height: 20px;
+    width: 20px;
     padding: 1px;
     border-radius: 2px;
     cursor: pointer;

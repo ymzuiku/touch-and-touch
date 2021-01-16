@@ -96,7 +96,7 @@ function done(e: any) {
     outTime: 1500,
     position: "bottom",
   });
-  state.customEvent.updateOne({}, { [e.detail]: 1 });
+  state.customEvent.updateOne({}, { $set: { [e.detail]: 1 } });
 }
 window.addEventListener("tat", done);
 

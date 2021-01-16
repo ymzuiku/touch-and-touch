@@ -21,6 +21,9 @@ export const recordClear = async (id: string) => {
       return;
     }
   }
-  await state.recordList.updateOne({ _id: id }, { items: [], step: 0 });
+  await state.recordList.updateOne(
+    { _id: id },
+    { $set: { items: [], step: 0 } }
+  );
   aoife.next(".tat-update");
 };

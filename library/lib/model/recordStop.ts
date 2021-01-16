@@ -7,13 +7,11 @@ export const recordStop = async () => {
     recording: 0,
   });
 
-  const cell = await state.nowCell.findOne();
   const items = await state.recordItems.find();
   await state.recordList.updateOne(
-    { _id: cell._id },
+    { _id: state.ui().nowCellId },
     {
-      ...cell,
-      items,
+      $set: { updateAt: Date.now(), items },
     }
   );
   aoife.next(".tat-update");

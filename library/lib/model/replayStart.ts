@@ -26,7 +26,7 @@ export const replayStart = async (items?: RecordItem[]) => {
   aoife.next(".tat-update, .tat-mouse");
 
   if (initOpt.onReplay) {
-    const cell = await state.nowCell.findOne();
+    const cell = await state.recordList.findOne({ _id: state.ui().nowCellId });
     initOpt.onReplay(cell);
   }
 
@@ -96,7 +96,7 @@ function done(e: any) {
     outTime: 1500,
     position: "bottom",
   });
-  state.customEvent.updateOne({}, { [e.detail]: 1 });
+  state.customEvent.updateOne({}, { $set: { [e.detail]: 1 } });
 }
 window.addEventListener("tat", done);
 

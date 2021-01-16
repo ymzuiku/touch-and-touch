@@ -7,7 +7,6 @@ export const changeSelectItem = async (id: string) => {
     return;
   }
   const items = cell.items;
-  // await state.nowCell.updateOne({}, cell);
   await state.ui({ nowCellId: cell._id });
   await state.recordItems.set(items);
   if (initOpt.onChangeSelected) {

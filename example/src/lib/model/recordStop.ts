@@ -11,8 +11,7 @@ export const recordStop = async () => {
   await state.recordList.updateOne(
     { _id: state.ui().nowCellId },
     {
-      updateAt: Date.now(),
-      items,
+      $set: { updateAt: Date.now(), items },
     }
   );
   aoife.next(".tat-update");
