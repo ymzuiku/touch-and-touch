@@ -97,7 +97,7 @@ function __makeTemplateObject(cooked, raw) {
 }
 
 function fixPosition(out, state) {
-    if (out === void 0) { out = 30; }
+    if (out === void 0) { out = 100; }
     if (state.x < 0) {
         state.x = 0;
     }
@@ -113,12 +113,30 @@ function fixPosition(out, state) {
 }
 var Drag = function (_a) {
     var children = _a.children, clientX = _a.clientX, clientY = _a.clientY, _b = _a.query, query = _b === void 0 ? "[tat-base-drag]" : _b, localStorageKey = _a.localStorageKey, dragPadding = _a.dragPadding, style = _a.style, rest = __rest(_a, ["children", "clientX", "clientY", "query", "localStorageKey", "dragPadding", "style"]);
+    var state = {
+        onDrag: false,
+        x: clientX || 0,
+        y: clientY || 0,
+        startX: 0,
+        startY: 0,
+        iw: window.innerWidth,
+        ih: window.innerHeight,
+    };
     var saveTime;
     var update = function () {
         var Ele = document.querySelector(query);
         if (Ele) {
             Ele.style.left = state.x - 4 + "px";
             Ele.style.top = state.y - 20 + "px";
+        }
+        if (localStorageKey) {
+            if (saveTime) {
+                clearTimeout(saveTime);
+                saveTime = null;
+            }
+            saveTime = setTimeout(function () {
+                localStorage.setItem(localStorageKey, JSON.stringify(state));
+            }, 500);
         }
     };
     var onMove = function (e) {
@@ -131,33 +149,27 @@ var Drag = function (_a) {
             fixPosition(dragPadding, state);
             // next("[tat-drag]");
             update();
-            if (localStorageKey) {
-                if (saveTime) {
-                    clearTimeout(saveTime);
-                    saveTime = null;
-                }
-                saveTime = setTimeout(function () {
-                    localStorage.setItem(localStorageKey, JSON.stringify(state));
-                }, 500);
-            }
         }
     };
     var onMoveEnd = function () {
         state.onDrag = false;
     };
+    window.addEventListener("resize", function () {
+        requestAnimationFrame(function () {
+            state.x -= state.iw - window.innerWidth;
+            state.y -= state.ih - window.innerHeight;
+            state.iw = window.innerWidth;
+            state.ih = window.innerHeight;
+            fixPosition(dragPadding, state);
+            update();
+        });
+    });
     window.addEventListener("mousemove", onMove);
     window.addEventListener("touchmove", function (e) {
         onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
     });
     window.addEventListener("mouseup", onMoveEnd);
     window.addEventListener("touchend", onMoveEnd);
-    var state = {
-        onDrag: false,
-        x: clientX || 0,
-        y: clientY || 0,
-        startX: 0,
-        startY: 0,
-    };
     if (localStorageKey) {
         var old = localStorage.getItem(localStorageKey);
         if (old) {

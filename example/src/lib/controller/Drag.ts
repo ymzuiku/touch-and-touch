@@ -6,7 +6,7 @@ interface DragProps extends IProps {
   query?: string;
 }
 
-function fixPosition(out = 30, state: { x: number; y: number }) {
+function fixPosition(out = 100, state: { x: number; y: number }) {
   if (state.x < 0) {
     state.x = 0;
   } else if (state.x > window.innerWidth - out) {
@@ -29,12 +29,30 @@ export const Drag = ({
   style,
   ...rest
 }: DragProps) => {
+  const state = {
+    onDrag: false,
+    x: clientX || 0,
+    y: clientY || 0,
+    startX: 0,
+    startY: 0,
+    iw: window.innerWidth,
+    ih: window.innerHeight,
+  };
   let saveTime: any;
   const update = () => {
     const Ele = document.querySelector(query) as HTMLElement;
     if (Ele) {
       Ele.style.left = state.x - 4 + "px";
       Ele.style.top = state.y - 20 + "px";
+    }
+    if (localStorageKey) {
+      if (saveTime) {
+        clearTimeout(saveTime);
+        saveTime = null;
+      }
+      saveTime = setTimeout(() => {
+        localStorage.setItem(localStorageKey, JSON.stringify(state));
+      }, 500);
     }
   };
   const onMove = (e: any) => {
@@ -47,33 +65,28 @@ export const Drag = ({
       fixPosition(dragPadding, state);
       // next("[tat-drag]");
       update();
-      if (localStorageKey) {
-        if (saveTime) {
-          clearTimeout(saveTime);
-          saveTime = null;
-        }
-        saveTime = setTimeout(() => {
-          localStorage.setItem(localStorageKey, JSON.stringify(state));
-        }, 500);
-      }
     }
   };
   const onMoveEnd = () => {
     state.onDrag = false;
   };
+
+  window.addEventListener("resize", () => {
+    requestAnimationFrame(() => {
+      state.x -= state.iw - window.innerWidth;
+      state.y -= state.ih - window.innerHeight;
+      state.iw = window.innerWidth;
+      state.ih = window.innerHeight;
+      fixPosition(dragPadding, state);
+      update();
+    });
+  });
   window.addEventListener("mousemove", onMove);
   window.addEventListener("touchmove", (e) => {
     onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
   });
   window.addEventListener("mouseup", onMoveEnd);
   window.addEventListener("touchend", onMoveEnd);
-  const state = {
-    onDrag: false,
-    x: clientX || 0,
-    y: clientY || 0,
-    startX: 0,
-    startY: 0,
-  };
   if (localStorageKey) {
     const old = localStorage.getItem(localStorageKey);
     if (old) {
