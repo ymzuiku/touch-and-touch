@@ -1,5 +1,6 @@
 import { RecordCell } from "./state";
 export interface InitOptions {
+    name: string;
     speed?: number;
     waitTimeout?: number;
     useAutoId?: boolean;
@@ -18,4 +19,4 @@ export interface InitOptions {
     };
 }
 export declare const initOpt: InitOptions;
-export declare const init: (opt?: InitOptions) => Promise<void>;
+export declare const init: (opt: InitOptions) => Promise<void>;

@@ -1,5 +1,4 @@
-import { createMicoDb } from "mico-db";
-const db = createMicoDb("tat" + window.location.host);
+import micoDb, { createMicoDb } from "mico-db";
 
 export interface RecordItem {
   index?: number;
@@ -32,22 +31,39 @@ interface TATProxy {
 
 export const proxy = {} as TATProxy;
 
+let db = micoDb;
+
+export const initState = (name: string) => {
+  db = createMicoDb(name);
+  state.ui = db.sessionItem("ui", baseUI);
+  state.nowCell = db.collection<RecordCell>("nowCell");
+  state.recordList = db.collection<RecordCell>("record-list", {
+    sort: { updateAt: -1 },
+  });
+  state.recordItems = db.collection<RecordItem>("record-item");
+  state.customEvent = db.collection<any>("custom-event", {
+    type: "sessionStorage",
+  });
+};
+
+const baseUI = {
+  speed: 1,
+  showMouse: 0,
+  lastFocus: null as any,
+  showList: 1,
+  showInputId: "",
+  recording: 0,
+  replaying: 0,
+  replayingAll: 0,
+  autoRecordId: false,
+  step: 0,
+  filter: [] as string[],
+  waitTimeout: 5000,
+};
+
 export const state = {
   onAlt: false,
-  ui: db.sessionItem("ui", {
-    speed: 1,
-    showMouse: 0,
-    lastFocus: null as any,
-    showList: 1,
-    showInputId: "",
-    recording: 0,
-    replaying: 0,
-    replayingAll: 0,
-    autoRecordId: false,
-    step: 0,
-    filter: [] as string[],
-    waitTimeout: 5000,
-  }),
+  ui: db && db.sessionItem("ui", baseUI),
   nowCell: db.collection<RecordCell>("nowCell"),
   recordList: db.collection<RecordCell>("record-list", {
     sort: { updateAt: -1 },
@@ -57,7 +73,3 @@ export const state = {
     type: "sessionStorage",
   }),
 };
-
-// 初始化数据
-// state.recordItems.get();
-// state.recordList.get();

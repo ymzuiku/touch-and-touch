@@ -189,23 +189,36 @@ var Drag = function (_a) {
         } }, rest), children);
 };
 
-var db = createMicoDb("tat" + window.location.host);
+var db = micoDb;
+var initState = function (name) {
+    db = createMicoDb(name);
+    state.ui = db.sessionItem("ui", baseUI);
+    state.nowCell = db.collection("nowCell");
+    state.recordList = db.collection("record-list", {
+        sort: { updateAt: -1 },
+    });
+    state.recordItems = db.collection("record-item");
+    state.customEvent = db.collection("custom-event", {
+        type: "sessionStorage",
+    });
+};
+var baseUI = {
+    speed: 1,
+    showMouse: 0,
+    lastFocus: null,
+    showList: 1,
+    showInputId: "",
+    recording: 0,
+    replaying: 0,
+    replayingAll: 0,
+    autoRecordId: false,
+    step: 0,
+    filter: [],
+    waitTimeout: 5000,
+};
 var state = {
     onAlt: false,
-    ui: db.sessionItem("ui", {
-        speed: 1,
-        showMouse: 0,
-        lastFocus: null,
-        showList: 1,
-        showInputId: "",
-        recording: 0,
-        replaying: 0,
-        replayingAll: 0,
-        autoRecordId: false,
-        step: 0,
-        filter: [],
-        waitTimeout: 5000,
-    }),
+    ui: db && db.sessionItem("ui", baseUI),
     nowCell: db.collection("nowCell"),
     recordList: db.collection("record-list", {
         sort: { updateAt: -1 },
@@ -215,9 +228,6 @@ var state = {
         type: "sessionStorage",
     }),
 };
-// 初始化数据
-// state.recordItems.get();
-// state.recordList.get();
 
 function customEvent(e) {
     if (e.detail) {
@@ -673,7 +683,7 @@ var replayAllFilter = function () { return __awaiter(void 0, void 0, void 0, fun
     });
 }); };
 
-var initOpt = {};
+var initOpt = { name: "tatdb" };
 window.addEventListener("keydown", function (e) {
     if (e.key === "Alt") {
         state.onAlt = true;
@@ -684,104 +694,102 @@ window.addEventListener("keyup", function (e) {
         state.onAlt = false;
     }
 });
-var init = function (opt) {
-    if (opt === void 0) { opt = {}; }
-    return __awaiter(void 0, void 0, void 0, function () {
-        var ui, list_1, list, old, next;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    Object.assign(initOpt, opt);
-                    ui = state.ui.get();
-                    if (!(initOpt.initData && !ui.replaying && !ui.recording)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, initOpt.initData()];
-                case 1:
-                    list_1 = _a.sent();
-                    return [4 /*yield*/, state.recordList.deleteMany()];
-                case 2:
-                    _a.sent();
-                    return [4 /*yield*/, state.recordList.insertMany(list_1)];
-                case 3:
-                    _a.sent();
-                    _a.label = 4;
-                case 4:
-                    state.recordList.proxy.onChange = initOpt.onChangeData;
-                    return [4 /*yield*/, state.recordList.find()];
-                case 5:
-                    list = _a.sent();
-                    if (!(list.length === 0)) return [3 /*break*/, 8];
-                    return [4 /*yield*/, recordCellAdd()];
-                case 6:
-                    _a.sent();
-                    return [4 /*yield*/, state.recordList.find()];
-                case 7:
-                    list = _a.sent();
-                    _a.label = 8;
-                case 8: return [4 /*yield*/, state.nowCell.findOne()];
-                case 9:
-                    old = _a.sent();
-                    if (!!old._id) return [3 /*break*/, 12];
-                    if (!(list && list[list.length - 1])) return [3 /*break*/, 11];
-                    return [4 /*yield*/, changeSelectItem(list[list.length - 1]._id)];
-                case 10:
-                    _a.sent();
-                    _a.label = 11;
-                case 11: return [3 /*break*/, 15];
-                case 12: return [4 /*yield*/, state.nowCell.findOne()];
-                case 13:
-                    next = _a.sent();
-                    return [4 /*yield*/, changeSelectItem(next._id)];
-                case 14:
-                    _a.sent();
-                    _a.label = 15;
-                case 15:
-                    aoife$1.next(".tat-update");
-                    state.ui.merge({
-                        speed: opt.speed || 1,
-                        waitTimeout: opt.waitTimeout || 5000,
-                    });
-                    recordDom();
-                    setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
-                        var ui, list_2, cell;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    ui = state.ui.get();
-                                    if (!ui.replaying) return [3 /*break*/, 1];
-                                    if (ui.replayingAll) {
-                                        replayAllFilter();
-                                    }
-                                    else {
-                                        replayStart();
-                                    }
-                                    return [3 /*break*/, 4];
-                                case 1:
-                                    if (!initOpt.autoPlayItem) return [3 /*break*/, 4];
-                                    return [4 /*yield*/, state.recordList.find()];
-                                case 2:
-                                    list_2 = _a.sent();
-                                    cell = list_2.find(function (v) {
-                                        var title = getTitle(v);
-                                        if (title.indexOf(initOpt.autoPlayItem) > -1) {
-                                            return true;
-                                        }
-                                    });
-                                    if (!cell) return [3 /*break*/, 4];
-                                    return [4 /*yield*/, changeSelectItem(cell._id)];
-                                case 3:
-                                    _a.sent();
-                                    state.ui.merge({ step: 0 });
+var init = function (opt) { return __awaiter(void 0, void 0, void 0, function () {
+    var ui, list_1, list, old, next;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                Object.assign(initOpt, opt);
+                initState(opt.name);
+                ui = state.ui.get();
+                if (!(initOpt.initData && !ui.replaying && !ui.recording)) return [3 /*break*/, 4];
+                return [4 /*yield*/, initOpt.initData()];
+            case 1:
+                list_1 = _a.sent();
+                return [4 /*yield*/, state.recordList.deleteMany()];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, state.recordList.insertMany(list_1)];
+            case 3:
+                _a.sent();
+                _a.label = 4;
+            case 4:
+                state.recordList.proxy.onChange = initOpt.onChangeData;
+                return [4 /*yield*/, state.recordList.find()];
+            case 5:
+                list = _a.sent();
+                if (!(list.length === 0)) return [3 /*break*/, 8];
+                return [4 /*yield*/, recordCellAdd()];
+            case 6:
+                _a.sent();
+                return [4 /*yield*/, state.recordList.find()];
+            case 7:
+                list = _a.sent();
+                _a.label = 8;
+            case 8: return [4 /*yield*/, state.nowCell.findOne()];
+            case 9:
+                old = _a.sent();
+                if (!!old._id) return [3 /*break*/, 12];
+                if (!(list && list[list.length - 1])) return [3 /*break*/, 11];
+                return [4 /*yield*/, changeSelectItem(list[list.length - 1]._id)];
+            case 10:
+                _a.sent();
+                _a.label = 11;
+            case 11: return [3 /*break*/, 15];
+            case 12: return [4 /*yield*/, state.nowCell.findOne()];
+            case 13:
+                next = _a.sent();
+                return [4 /*yield*/, changeSelectItem(next._id)];
+            case 14:
+                _a.sent();
+                _a.label = 15;
+            case 15:
+                aoife$1.next(".tat-update");
+                state.ui.merge({
+                    speed: opt.speed || 1,
+                    waitTimeout: opt.waitTimeout || 5000,
+                });
+                recordDom();
+                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var ui, list_2, cell;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                ui = state.ui.get();
+                                if (!ui.replaying) return [3 /*break*/, 1];
+                                if (ui.replayingAll) {
+                                    replayAllFilter();
+                                }
+                                else {
                                     replayStart();
-                                    _a.label = 4;
-                                case 4: return [2 /*return*/];
-                            }
-                        });
-                    }); });
-                    return [2 /*return*/];
-            }
-        });
+                                }
+                                return [3 /*break*/, 4];
+                            case 1:
+                                if (!initOpt.autoPlayItem) return [3 /*break*/, 4];
+                                return [4 /*yield*/, state.recordList.find()];
+                            case 2:
+                                list_2 = _a.sent();
+                                cell = list_2.find(function (v) {
+                                    var title = getTitle(v);
+                                    if (title.indexOf(initOpt.autoPlayItem) > -1) {
+                                        return true;
+                                    }
+                                });
+                                if (!cell) return [3 /*break*/, 4];
+                                return [4 /*yield*/, changeSelectItem(cell._id)];
+                            case 3:
+                                _a.sent();
+                                state.ui.merge({ step: 0 });
+                                replayStart();
+                                _a.label = 4;
+                            case 4: return [2 /*return*/];
+                        }
+                    });
+                }); });
+                return [2 /*return*/];
+        }
     });
-};
+}); };
 
 var inputs = ["input"];
 var submits = ["submit", "change"];
@@ -1369,8 +1377,8 @@ var showList = function () { return __awaiter(void 0, void 0, void 0, function (
 var changeAutoRecordId = function () { return __awaiter(void 0, void 0, void 0, function () {
     var ui;
     return __generator(this, function (_a) {
-        ui = state.ui.get();
-        state.ui.merge({
+        ui = state.ui();
+        state.ui({
             autoRecordId: !ui.autoRecordId,
         });
         aoife.next(".tat-update");
@@ -1430,20 +1438,25 @@ var Ctrl = function () {
                         RecordAgainSvg({ class: "tat-btn", onclick: function () { return recordAgain(); } }),
                         "Record again",
                     ],
-                }), aoife$1("span", { style: "flex:1" }), ThePop({
+                }), aoife$1("span", { style: "flex:1" }), aoife$1(AutoIdSvg, {
+                    class: "tat-btn",
+                    style: function () {
+                        if (!initOpt.useAutoId) {
+                            return { display: "none" };
+                        }
+                        return { opacity: state.ui.get().autoRecordId ? 1 : 0.4 };
+                    },
+                    onclick: function () { return changeAutoRecordId(); },
+                }), ThePop({
                     children: [
-                        AutoIdSvg({
+                        aoife$1(AutoIdSvg, {
                             class: "tat-btn",
-                            style: function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var ui;
-                                return __generator(this, function (_a) {
-                                    if (!initOpt.useAutoId) {
-                                        return [2 /*return*/, { display: "none" }];
-                                    }
-                                    ui = state.ui.get();
-                                    return [2 /*return*/, { opacity: ui.autoRecordId ? 1 : 0.4 }];
-                                });
-                            }); },
+                            style: function () {
+                                if (!initOpt.useAutoId) {
+                                    return { display: "none" };
+                                }
+                                return { opacity: state.ui.get().autoRecordId ? 1 : 0.4 };
+                            },
                             onclick: function () { return changeAutoRecordId(); },
                         }),
                         "Use auto Record Id (Not recommended)",
@@ -1872,6 +1885,9 @@ var PlayList = function () {
                                 placeholder: "请输入title",
                             }), aoife("div", {
                                 class: "label",
+                                ondblclick: function () {
+                                    changeInput(item._id);
+                                },
                                 hidden: function () {
                                     var ui = state.ui.get();
                                     return ui.showInputId === item._id;
@@ -1923,16 +1939,7 @@ var PlayList = function () {
                                             e.preventDefault();
                                             remove(item._id);
                                         },
-                                    })
-                                    // CancelSvg({
-                                    //   class: "tat-list-pop",
-                                    //   onclick: (e) => {
-                                    //     e.stopPropagation();
-                                    //     e.preventDefault();
-                                    //     recordClear(item._id);
-                                    //   },
-                                    // })
-                                    ),
+                                    })),
                                 ],
                             }));
                         })];

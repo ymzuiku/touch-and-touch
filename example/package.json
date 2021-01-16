@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/mockjs": "^1.0.3",
-    "aoife": "^1.6.0",
+    "aoife": "^1.6.7",
     "dayjs": "^1.9.7",
     "localfile": "^1.0.0",
     "mico-db": "^1.4.13",

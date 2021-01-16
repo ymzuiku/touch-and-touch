@@ -1460,10 +1460,10 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-aoife@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.6.0.tgz#4214a7a70d1e0880bcd4fba8e78c64133b044edc"
-  integrity sha512-UmFpZUXoGuFtFDOkEbhPApILHxOr60Cy2ER4maZtaC1lu6/49aqykanD3xqkkSf+cEMmwRPeYiVM56/ritptOg==
+aoife@^1.6.7:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/aoife/-/aoife-1.6.7.tgz#750323239b8eb8652461688ed489cbdb7a54c859"
+  integrity sha512-IqZ3EQHi16BvqPnfF9rloJiJFlNXLTXKQjRq9EO/nZLxHG5/R/ebA6qEPIZLklGPLHYxIv9u3KhHEiWfvxPvHg==
 
 argparse@^1.0.7:
   version "1.0.10"

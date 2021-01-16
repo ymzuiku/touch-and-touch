@@ -99,17 +99,27 @@ export const Ctrl = () => {
         ],
       }),
       aoife("span", { style: "flex:1" }),
+      aoife(AutoIdSvg, {
+        class: "tat-btn",
+        style: () => {
+          if (!initOpt.useAutoId) {
+            return { display: "none" };
+          }
+
+          return { opacity: state.ui.get().autoRecordId ? 1 : 0.4 };
+        },
+        onclick: () => changeAutoRecordId(),
+      }),
       ThePop({
         children: [
-          AutoIdSvg({
+          aoife(AutoIdSvg, {
             class: "tat-btn",
-            style: async () => {
+            style: () => {
               if (!initOpt.useAutoId) {
                 return { display: "none" };
               }
-              const ui = state.ui.get();
 
-              return { opacity: ui.autoRecordId ? 1 : 0.4 };
+              return { opacity: state.ui.get().autoRecordId ? 1 : 0.4 };
             },
             onclick: () => changeAutoRecordId(),
           }),

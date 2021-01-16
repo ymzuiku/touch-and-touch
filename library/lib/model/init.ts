@@ -5,9 +5,10 @@ import { recordCellAdd } from "./recordCellAdd";
 import { recordDom } from "./recordDom";
 import { replayAllFilter } from "./replayAllFilter";
 import { replayStart } from "./replayStart";
-import { RecordCell, state } from "./state";
+import { RecordCell, state, initState } from "./state";
 
 export interface InitOptions {
+  name: string;
   speed?: number;
   waitTimeout?: number;
   useAutoId?: boolean;
@@ -26,7 +27,7 @@ export interface InitOptions {
   };
 }
 
-export const initOpt: InitOptions = {};
+export const initOpt: InitOptions = { name: "tatdb" };
 
 window.addEventListener("keydown", (e) => {
   if (e.key === "Alt") {
@@ -39,8 +40,9 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-export const init = async (opt: InitOptions = {}) => {
+export const init = async (opt: InitOptions) => {
   Object.assign(initOpt, opt);
+  initState(opt.name);
   const ui = state.ui.get();
   if (initOpt.initData && !ui.replaying && !ui.recording) {
     const list = await initOpt.initData();

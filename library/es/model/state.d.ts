@@ -26,6 +26,7 @@ interface TATProxy {
     update?: (id: string, cell: RecordCell, items: RecordItem[]) => Promise<void>;
 }
 export declare const proxy: TATProxy;
+export declare const initState: (name: string) => void;
 export declare const state: {
     onAlt: boolean;
     ui: import("mico-db/umd/item").Item<{

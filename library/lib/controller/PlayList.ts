@@ -85,6 +85,9 @@ export const PlayList = () => {
             "div",
             {
               class: "label",
+              ondblclick: () => {
+                changeInput(item._id);
+              },
               hidden: () => {
                 const ui = state.ui.get();
                 return ui.showInputId === item._id;
@@ -138,14 +141,6 @@ export const PlayList = () => {
                     remove(item._id);
                   },
                 })
-                // CancelSvg({
-                //   class: "tat-list-pop",
-                //   onclick: (e) => {
-                //     e.stopPropagation();
-                //     e.preventDefault();
-                //     recordClear(item._id);
-                //   },
-                // })
               ),
             ],
           })

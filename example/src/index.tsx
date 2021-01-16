@@ -10,7 +10,7 @@ function App() {
   };
   return (
     <div tat-id="form" class="app">
-      <TouchAndTouch speed={3} />
+      <TouchAndTouch name="tat-example" speed={3} />
       <h1>TAT Client</h1>
       {/* <div innerHTML={html}></div> */}
       <div role="tab" onclick={() => Message.error("role-tab")}>
