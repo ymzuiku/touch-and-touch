@@ -695,17 +695,7 @@ var replayAllFilter = function () { return __awaiter(void 0, void 0, void 0, fun
     });
 }); };
 
-var initOpt = { name: "tatdb" };
-window.addEventListener("keydown", function (e) {
-    if (e.key === "Alt") {
-        state.onAlt = true;
-    }
-});
-window.addEventListener("keyup", function (e) {
-    if (e.key === "Alt") {
-        state.onAlt = false;
-    }
-});
+var initOpt = { name: "tatdb", lockCtrlKey: "l" };
 var init = function (opt) { return __awaiter(void 0, void 0, void 0, function () {
     var ui, list_1, list, old, next;
     return __generator(this, function (_a) {
@@ -713,6 +703,9 @@ var init = function (opt) { return __awaiter(void 0, void 0, void 0, function ()
             case 0:
                 Object.assign(initOpt, opt);
                 initState(opt.name);
+                if (opt.lockCtrlKey) {
+                    opt.lockCtrlKey = opt.lockCtrlKey.toLocaleLowerCase();
+                }
                 ui = state.ui.get();
                 if (!(initOpt.initData && !ui.replaying && !ui.recording)) return [3 /*break*/, 4];
                 return [4 /*yield*/, initOpt.initData()];
@@ -801,6 +794,25 @@ var init = function (opt) { return __awaiter(void 0, void 0, void 0, function ()
         }
     });
 }); };
+var isHiddenRoot = false;
+window.addEventListener("keydown", function (e) {
+    if (e.key === "Alt") {
+        state.onAlt = true;
+    }
+    if (e.ctrlKey && initOpt.lockCtrlKey && e.key === initOpt.lockCtrlKey) {
+        var ele = document.querySelector(".tat-root");
+        if (ele) {
+            isHiddenRoot = !isHiddenRoot;
+            ele.style.opacity = isHiddenRoot ? "0.1" : "1";
+            ele.style.pointerEvents = isHiddenRoot ? "none" : "auto";
+        }
+    }
+});
+window.addEventListener("keyup", function (e) {
+    if (e.key === "Alt") {
+        state.onAlt = false;
+    }
+});
 
 var inputs = ["input"];
 var submits = ["submit", "change"];

@@ -11,6 +11,7 @@ export interface InitOptions {
   name: string;
   speed?: number;
   waitTimeout?: number;
+  lockCtrlKey?: string;
   useAutoId?: boolean;
   useRecordMouse?: boolean;
   useRecordInput?: boolean;
@@ -27,22 +28,14 @@ export interface InitOptions {
   };
 }
 
-export const initOpt: InitOptions = { name: "tatdb" };
-
-window.addEventListener("keydown", (e) => {
-  if (e.key === "Alt") {
-    state.onAlt = true;
-  }
-});
-window.addEventListener("keyup", (e) => {
-  if (e.key === "Alt") {
-    state.onAlt = false;
-  }
-});
+export const initOpt: InitOptions = { name: "tatdb", lockCtrlKey: "l" };
 
 export const init = async (opt: InitOptions) => {
   Object.assign(initOpt, opt);
   initState(opt.name);
+  if (opt.lockCtrlKey) {
+    opt.lockCtrlKey = opt.lockCtrlKey.toLocaleLowerCase();
+  }
   const ui = state.ui.get();
   if (initOpt.initData && !ui.replaying && !ui.recording) {
     const list = await initOpt.initData();
@@ -101,3 +94,23 @@ export const init = async (opt: InitOptions) => {
     }
   });
 };
+
+let isHiddenRoot = false;
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Alt") {
+    state.onAlt = true;
+  }
+  if (e.ctrlKey && initOpt.lockCtrlKey && e.key === initOpt.lockCtrlKey) {
+    const ele = document.querySelector(".tat-root") as HTMLElement;
+    if (ele) {
+      isHiddenRoot = !isHiddenRoot;
+      ele.style.opacity = isHiddenRoot ? "0.1" : "1";
+      ele.style.pointerEvents = isHiddenRoot ? "none" : "auto";
+    }
+  }
+});
+window.addEventListener("keyup", (e) => {
+  if (e.key === "Alt") {
+    state.onAlt = false;
+  }
+});

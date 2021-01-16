@@ -1,7 +1,7 @@
 import { Drag } from "./Drag";
 import { Ctrl } from "./Ctrl";
 import css from "template-css";
-import { init, InitOptions } from "../model/init";
+import { init, initOpt, InitOptions } from "../model/init";
 import { DragSvg } from "./svg";
 import { PlayList } from "./PlayList";
 import aoife from "aoife";

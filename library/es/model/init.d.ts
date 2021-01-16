@@ -3,6 +3,7 @@ export interface InitOptions {
     name: string;
     speed?: number;
     waitTimeout?: number;
+    lockCtrlKey?: string;
     useAutoId?: boolean;
     useRecordMouse?: boolean;
     useRecordInput?: boolean;
