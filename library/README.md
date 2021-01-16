@@ -13,7 +13,7 @@ npm i --save touch-and-touch
 ```js
 import TouchAndTouch from "touch-and-touch";
 
-document.body.append(TouchAndTouch());
+document.body.append(TouchAndTouch({ name: "example" }));
 ```
 
 ## 录制事件
@@ -142,6 +142,7 @@ window.tat();
 
 ```ts
 TouchAndTouch({
+  name:'example'
   initData:async ()=>{
     const data = fetch(...); // get list from cloud
     return data;
