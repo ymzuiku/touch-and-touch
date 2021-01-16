@@ -462,11 +462,9 @@ var changeSelectItem = function (id) { return __awaiter(void 0, void 0, void 0, 
                     return [2 /*return*/];
                 }
                 items = cell.items;
-                return [4 /*yield*/, state.ui({ nowCellId: cell._id })];
+                state.ui({ nowCellId: cell._id });
+                return [4 /*yield*/, state.recordItems.setAll(items)];
             case 2:
-                _a.sent();
-                return [4 /*yield*/, state.recordItems.set(items)];
-            case 3:
                 _a.sent();
                 if (initOpt.onChangeSelected) {
                     initOpt.onChangeSelected(cell);
@@ -486,7 +484,7 @@ var recordCellAdd = function () { return __awaiter(void 0, void 0, void 0, funct
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = "id" + Date.now();
+                id = micoDb.nanoid();
                 return [4 /*yield*/, state.recordList.insertOne({
                         title: dayjs(Date.now()).format("MM/DD HH:mm"),
                         _id: id,
@@ -739,7 +737,7 @@ var init = function (opt) { return __awaiter(void 0, void 0, void 0, function ()
                 _a.sent();
                 _a.label = 11;
             case 11: return [3 /*break*/, 14];
-            case 12: return [4 /*yield*/, changeSelectItem(list[0]._id)];
+            case 12: return [4 /*yield*/, changeSelectItem(old._id)];
             case 13:
                 _a.sent();
                 _a.label = 14;
@@ -750,7 +748,7 @@ var init = function (opt) { return __awaiter(void 0, void 0, void 0, function ()
                     waitTimeout: opt.waitTimeout || 5000,
                 });
                 recordDom();
-                state.recordList.proxy.onChange = initOpt.onChangeData;
+                state.recordList.onChange = initOpt.onChangeData;
                 setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
                     var ui, list_2, cell;
                     return __generator(this, function (_a) {
@@ -975,21 +973,24 @@ var replayStart = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 initOpt.onReplay(cell);
                 _a.label = 6;
             case 6:
-                _a.trys.push([6, 8, , 10]);
-                return [4 /*yield*/, startReplay(items)];
+                console.log(items);
+                _a.label = 7;
             case 7:
-                _a.sent();
-                return [3 /*break*/, 10];
+                _a.trys.push([7, 9, , 11]);
+                return [4 /*yield*/, startReplay(items)];
             case 8:
+                _a.sent();
+                return [3 /*break*/, 11];
+            case 9:
                 err_1 = _a.sent();
                 return [4 /*yield*/, replayFail(err_1)];
-            case 9:
+            case 10:
                 _a.sent();
-                return [3 /*break*/, 10];
-            case 10: 
+                return [3 /*break*/, 11];
+            case 11: 
             // 还原播放的样式
             return [4 /*yield*/, replayStop(true)];
-            case 11:
+            case 12:
                 // 还原播放的样式
                 _a.sent();
                 return [2 /*return*/];

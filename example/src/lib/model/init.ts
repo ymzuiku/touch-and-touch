@@ -55,7 +55,7 @@ export const init = async (opt: InitOptions) => {
       await changeSelectItem(list[list.length - 1]._id);
     }
   } else {
-    await changeSelectItem(list[0]._id);
+    await changeSelectItem(old._id);
   }
 
   aoife.next(".tat-update");
@@ -66,7 +66,7 @@ export const init = async (opt: InitOptions) => {
   });
 
   recordDom();
-  state.recordList.proxy.onChange = initOpt.onChangeData;
+  state.recordList.onChange = initOpt.onChangeData;
 
   setTimeout(async () => {
     const ui = state.ui.get();
