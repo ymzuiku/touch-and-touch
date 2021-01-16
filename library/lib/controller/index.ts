@@ -55,7 +55,7 @@ css`
     font-size: 16px;
   }
   .tat {
-    font-size: 16px;
+    font-size: 14px;
     backdrop-filter: blur(9px);
     background: rgba(255, 255, 255, 0.85);
     color: #000;
