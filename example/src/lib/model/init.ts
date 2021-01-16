@@ -49,14 +49,13 @@ export const init = async (opt: InitOptions) => {
     list = await state.recordList.find();
   }
 
-  const old = await state.nowCell.findOne();
-  if (!old._id) {
+  const old = await state.recordList.findOne({ _id: ui.nowCellId });
+  if (!old) {
     if (list && list[list.length - 1]) {
       await changeSelectItem(list[list.length - 1]._id);
     }
   } else {
-    const next = await state.nowCell.findOne();
-    await changeSelectItem(next._id);
+    await changeSelectItem(list[0]._id);
   }
 
   aoife.next(".tat-update");

@@ -5,7 +5,7 @@ import Message from "vanilla-message";
 
 export const replayFail = async (msg: any) => {
   if (initOpt.onFail) {
-    const cell = await state.nowCell.findOne();
+    const cell = await state.recordList.findOne({ _id: state.ui().nowCellId });
     initOpt.onFail(cell, msg);
   } else {
     Message.error(msg, { ok: "Ok", outTime: 999999 });

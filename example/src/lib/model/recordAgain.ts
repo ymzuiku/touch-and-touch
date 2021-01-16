@@ -3,7 +3,7 @@ import { recordContinue } from "./recordContinue";
 import { state } from "./state";
 
 export const recordAgain = async () => {
-  const nowCell = await state.nowCell.findOne();
+  const nowCell = await state.recordList.findOne({ _id: state.ui().nowCellId });
   let right = true;
   console.log(nowCell);
   if (nowCell && nowCell.items && nowCell.items.length > 1) {
@@ -15,7 +15,10 @@ export const recordAgain = async () => {
   }
 
   if (right) {
-    await state.nowCell.updateOne({}, { step: 0, items: [] });
+    await state.recordList.updateOne(
+      { _id: state.ui().nowCellId },
+      { step: 0, items: [] }
+    );
     await state.recordItems.deleteMany();
     recordContinue();
   }

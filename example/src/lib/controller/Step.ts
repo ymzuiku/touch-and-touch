@@ -9,7 +9,7 @@ export const Step = () => {
     },
     async () => {
       const ui = state.ui.get();
-      const cell = await state.nowCell.findOne();
+      const cell = await state.recordList.findOne({ _id: ui.nowCellId });
       let label = "";
       if (ui.step) {
         label = `Replaying: ${ui.step}/${cell.step}`;

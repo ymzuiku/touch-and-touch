@@ -6,7 +6,7 @@ export const recordItemAdd = async (event: RecordItem) => {
   if (ui.recording && !ui.replaying) {
     await state.recordItems.insertOne(event);
     const step = await state.recordItems.count();
-    state.nowCell.updateOne({}, { step });
+    await state.recordList.updateOne({ _id: ui.nowCellId }, { step });
     aoife.next(".tat-step, .tat-step");
   }
 };
