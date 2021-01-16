@@ -11,6 +11,7 @@ export interface InitOptions {
   name: string;
   speed?: number;
   waitTimeout?: number;
+  ignoreQuery?: string;
   useAutoId?: boolean;
   useRecordMouse?: boolean;
   useRecordInput?: boolean;
@@ -49,7 +50,6 @@ export const init = async (opt: InitOptions) => {
     await state.recordList.deleteMany();
     await state.recordList.insertMany(list);
   }
-  state.recordList.proxy.onChange = initOpt.onChangeData;
   let list = await state.recordList.find();
   // 若列表为空，初始化一个内容
   if (list.length === 0) {
@@ -75,6 +75,8 @@ export const init = async (opt: InitOptions) => {
   });
 
   recordDom();
+  state.recordList.proxy.onChange = initOpt.onChangeData;
+
   setTimeout(async () => {
     const ui = state.ui.get();
     if (ui.replaying) {

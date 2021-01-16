@@ -516,6 +516,9 @@ function getAttrAndCloseAttr(item, key) {
 }
 var attrKeys = {};
 function setAttrId(ele) {
+    if (initOpt.ignoreQuery && ele.closest(initOpt.ignoreQuery)) {
+        return;
+    }
     if (ele.closest("[tat-ignore]")) {
         return;
     }
@@ -713,9 +716,7 @@ var init = function (opt) { return __awaiter(void 0, void 0, void 0, function ()
             case 3:
                 _a.sent();
                 _a.label = 4;
-            case 4:
-                state.recordList.proxy.onChange = initOpt.onChangeData;
-                return [4 /*yield*/, state.recordList.find()];
+            case 4: return [4 /*yield*/, state.recordList.find()];
             case 5:
                 list = _a.sent();
                 if (!(list.length === 0)) return [3 /*break*/, 8];
@@ -750,6 +751,7 @@ var init = function (opt) { return __awaiter(void 0, void 0, void 0, function ()
                     waitTimeout: opt.waitTimeout || 5000,
                 });
                 recordDom();
+                state.recordList.proxy.onChange = initOpt.onChangeData;
                 setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
                     var ui, list_2, cell;
                     return __generator(this, function (_a) {
@@ -980,6 +982,9 @@ function scrollIntoView(el) {
     el.scrollIntoView({ block: "center", inline: "center" });
 }
 function emitClick(el) {
+    if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
+        return;
+    }
     if (el.closest("[tat-ignore]")) {
         return;
     }
@@ -990,13 +995,16 @@ function emitClick(el) {
     });
     el.dispatchEvent(event);
 }
-function emitInput(el, item, eventKey) {
+function emitInput(el, item) {
     return __awaiter(this, void 0, void 0, function () {
         var nodeName, value, fn, _a, inputEvent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     item = __assign({}, item);
+                    if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
+                        return [2 /*return*/];
+                    }
                     if (el.closest("[tat-ignore]")) {
                         return [2 /*return*/];
                     }
@@ -1225,7 +1233,7 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 _a.sent();
                 _a.label = 13;
             case 13:
-                emitInput(el, item, item.type);
+                emitInput(el, item);
                 return [4 /*yield*/, sleep(16)];
             case 14:
                 _a.sent();

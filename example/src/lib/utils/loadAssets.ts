@@ -97,4 +97,3 @@ export function loadAssets(...string: string[]) {
     ...js.map((s) => loadScript(s)),
   ]);
 }
-

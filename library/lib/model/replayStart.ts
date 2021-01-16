@@ -46,6 +46,9 @@ function scrollIntoView(el: HTMLElement) {
 }
 
 function emitClick(el: HTMLElement) {
+  if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
+    return;
+  }
   if (el.closest("[tat-ignore]")) {
     return;
   }
@@ -58,12 +61,11 @@ function emitClick(el: HTMLElement) {
   el.dispatchEvent(event);
 }
 
-async function emitInput(
-  el: HTMLInputElement,
-  item: RecordItem,
-  eventKey: string
-) {
+async function emitInput(el: HTMLInputElement, item: RecordItem) {
   item = { ...item };
+  if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
+    return;
+  }
   if (el.closest("[tat-ignore]")) {
     return;
   }
@@ -239,7 +241,7 @@ const startReplay = async (items: RecordItem[]) => {
             await sleep(16);
           }
         }
-        emitInput(el as any, item, item.type);
+        emitInput(el as any, item);
         await sleep(16);
       }
     }
