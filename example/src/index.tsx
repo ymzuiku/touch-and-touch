@@ -11,7 +11,6 @@ function App() {
   return (
     <div tat-id="form" class="app">
       <TouchAndTouch
-        initData={() => [] as any}
         onChangeData={(list) => {
           console.log(list);
         }}

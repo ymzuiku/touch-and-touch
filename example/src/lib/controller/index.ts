@@ -36,6 +36,7 @@ css`
   .tat *[hidden] {
     display: none !important;
   }
+
   .tat-head-row {
     ${css.flex("row-start-center")}
   }
@@ -57,11 +58,10 @@ css`
     font-size: 16px;
     backdrop-filter: blur(9px);
     background: rgba(255, 255, 255, 0.85);
-    color: #00;
+    color: #000;
     z-index: 15000;
-    padding: 6px;
+    padding: 5px;
     border: 1px solid rgba(0, 0, 0, 0.13);
-    // box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);
     border-radius: 4px;
   }
   .tat-title {

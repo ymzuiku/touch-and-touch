@@ -153,7 +153,7 @@ export const PlayList = () => {
 css`
   .tat-play-list {
     font-size: 16px;
-    width: 250px;
+    width: 100%;
   }
   .tat-play-list .filter {
     height: 20px;
@@ -176,12 +176,12 @@ css`
     height: 20px;
     font-size: 12px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: 200px;
+    flex: 1;
     outline: none;
   }
   .tat-play-list .cells {
     width: 100%;
-    height: 140px;
+    height: 80px;
     overflow-y: auto;
   }
   .tat-play-list .edit:hover {
@@ -193,12 +193,8 @@ css`
     flex: 1;
     ${css.wordBreak(1)}
   }
-  .tat-play-list .cell-selected {
-    border-left: 2px solid rgba(0, 0, 0, 0.5) !important;
-    border-radius: 0px 2px 2px 0px !important;
-  }
   .tat-play-list .cell {
-    border-left: 2px solid rgba(0, 0, 0, 0);
+    border-left: 1px solid rgba(0, 0, 0, 0);
     height: 20px;
     font-size: 12px;
     padding: 4px 0px 4px 4px;
@@ -207,10 +203,15 @@ css`
     user-select: none;
     ${css.flex("row-start-center")}
   }
+  .tat-play-list .cell-selected {
+    /* border-left: 1px solid rgba(0, 0, 0, 0.5) !important; */
+    border-radius: 0px 2px 2px 0px !important;
+    background: rgba(0, 0, 0, 0.08) !important;
+  }
   .tat-play-list .cell:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.04);
   }
   .tat-play-list .cell:active {
-    background: rgba(0, 0, 128, 0.2);
+    opacity: 0.7;
   }
 `;

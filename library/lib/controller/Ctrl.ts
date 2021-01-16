@@ -35,7 +35,14 @@ function ThePop({ children }: any) {
     placement: "top",
     zIndex: 15100,
     followCursor: "horizontal",
-    children: [children[0], aoife("div", { class: "tat-fm" }, children[1])],
+    children: [
+      children[0],
+      aoife(
+        "div",
+        { class: "tat-fm", style: { fontSize: "13px" } },
+        children[1]
+      ),
+    ],
   });
 }
 
@@ -99,17 +106,6 @@ export const Ctrl = () => {
         ],
       }),
       aoife("span", { style: "flex:1" }),
-      aoife(AutoIdSvg, {
-        class: "tat-btn",
-        style: () => {
-          if (!initOpt.useAutoId) {
-            return { display: "none" };
-          }
-
-          return { opacity: state.ui.get().autoRecordId ? 1 : 0.4 };
-        },
-        onclick: () => changeAutoRecordId(),
-      }),
       ThePop({
         children: [
           aoife(AutoIdSvg, {
@@ -189,6 +185,8 @@ css`
     width: 100%;
   }
   .tat-btn {
+    height: 23px;
+    width: 23px;
     padding: 4px 4px;
     border-radius: 2px;
     cursor: pointer;
@@ -204,11 +202,6 @@ css`
   .tat-btn:active {
     background: rgba(0, 0, 128, 0.2);
   }
-  .tat-icon {
-    width: 16px;
-    height: 16px;
-  }
-
   .tat-show-list-icon {
     display: block;
     transition: all 0.3s ease-out;
