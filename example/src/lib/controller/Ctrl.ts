@@ -124,7 +124,7 @@ export const Ctrl = () => {
       }),
       ThePop({
         children: [
-          ShowSvg({
+          aoife(ShowSvg, {
             class: "tat-btn",
             style: async () => {
               const ui = state.ui.get();

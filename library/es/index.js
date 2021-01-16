@@ -1468,7 +1468,7 @@ var Ctrl = function () {
                     ],
                 }), ThePop({
                     children: [
-                        ShowSvg({
+                        aoife$1(ShowSvg, {
                             class: "tat-btn",
                             style: function () { return __awaiter(void 0, void 0, void 0, function () {
                                 var ui;
