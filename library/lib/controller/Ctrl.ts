@@ -156,7 +156,6 @@ export const Ctrl = () => {
 
 css`
   .tat-row {
-    display: flex;
     width: 100%;
     ${css.flex("row-center-center")}
   }
@@ -187,7 +186,7 @@ css`
   .tat-btn {
     height: 23px;
     width: 23px;
-    padding: 4px 4px;
+    padding: 1px;
     border-radius: 2px;
     cursor: pointer;
     user-select: none;
