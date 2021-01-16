@@ -152,3 +152,7 @@ TouchAndTouch({
   }
 })
 ```
+
+## 锁定面板
+
+默认 Ctrl + L 锁定面板，可以自定义 `lockCtrlKey` 修改热键

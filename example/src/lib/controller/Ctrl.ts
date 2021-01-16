@@ -122,19 +122,19 @@ export const Ctrl = () => {
           "Use auto Record Id (Not recommended)",
         ],
       }),
-      ThePop({
-        children: [
-          aoife(ShowSvg, {
-            class: "tat-btn",
-            style: async () => {
-              const ui = state.ui.get();
-              return { opacity: ui.showList ? 1 : 0.4 };
-            },
-            onclick: () => showList(),
-          }),
-          "List show/hidden",
-        ],
-      }),
+      // ThePop({
+      //   children: [
+      //     aoife(ShowSvg, {
+      //       class: "tat-btn",
+      //       style: async () => {
+      //         const ui = state.ui.get();
+      //         return { opacity: ui.showList ? 1 : 0.4 };
+      //       },
+      //       onclick: () => showList(),
+      //     }),
+      //     "List show/hidden",
+      //   ],
+      // }),
       ThePop({
         children: [
           DownloadSvg({

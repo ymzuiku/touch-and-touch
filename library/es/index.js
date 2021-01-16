@@ -1385,18 +1385,6 @@ var recordAgain = function () { return __awaiter(void 0, void 0, void 0, functio
     });
 }); };
 
-var showList = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var ui;
-    return __generator(this, function (_a) {
-        ui = state.ui.get();
-        state.ui.merge({
-            showList: ui.showList ? 0 : 1,
-        });
-        aoife$1.next(".tat-update");
-        return [2 /*return*/];
-    });
-}); };
-
 var changeAutoRecordId = function () { return __awaiter(void 0, void 0, void 0, function () {
     var ui;
     return __generator(this, function (_a) {
@@ -1478,22 +1466,21 @@ var Ctrl = function () {
                         }),
                         "Use auto Record Id (Not recommended)",
                     ],
-                }), ThePop({
-                    children: [
-                        aoife$1(ShowSvg, {
-                            class: "tat-btn",
-                            style: function () { return __awaiter(void 0, void 0, void 0, function () {
-                                var ui;
-                                return __generator(this, function (_a) {
-                                    ui = state.ui.get();
-                                    return [2 /*return*/, { opacity: ui.showList ? 1 : 0.4 }];
-                                });
-                            }); },
-                            onclick: function () { return showList(); },
-                        }),
-                        "List show/hidden",
-                    ],
-                }), ThePop({
+                }), 
+                // ThePop({
+                //   children: [
+                //     aoife(ShowSvg, {
+                //       class: "tat-btn",
+                //       style: async () => {
+                //         const ui = state.ui.get();
+                //         return { opacity: ui.showList ? 1 : 0.4 };
+                //       },
+                //       onclick: () => showList(),
+                //     }),
+                //     "List show/hidden",
+                //   ],
+                // }),
+                ThePop({
                     children: [
                         DownloadSvg({
                             class: "tat-btn",
