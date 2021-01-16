@@ -46,9 +46,6 @@ function scrollIntoView(el: HTMLElement) {
 }
 
 function emitClick(el: HTMLElement) {
-  if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
-    return;
-  }
   if (el.closest("[tat-ignore]")) {
     return;
   }
@@ -63,9 +60,6 @@ function emitClick(el: HTMLElement) {
 
 async function emitInput(el: HTMLInputElement, item: RecordItem) {
   item = { ...item };
-  if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
-    return;
-  }
   if (el.closest("[tat-ignore]")) {
     return;
   }

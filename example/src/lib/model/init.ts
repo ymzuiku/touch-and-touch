@@ -11,7 +11,6 @@ export interface InitOptions {
   name: string;
   speed?: number;
   waitTimeout?: number;
-  ignoreQuery?: string;
   useAutoId?: boolean;
   useRecordMouse?: boolean;
   useRecordInput?: boolean;

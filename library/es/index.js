@@ -516,9 +516,6 @@ function getAttrAndCloseAttr(item, key) {
 }
 var attrKeys = {};
 function setAttrId(ele) {
-    if (initOpt.ignoreQuery && ele.closest(initOpt.ignoreQuery)) {
-        return;
-    }
     if (ele.closest("[tat-ignore]")) {
         return;
     }
@@ -982,9 +979,6 @@ function scrollIntoView(el) {
     el.scrollIntoView({ block: "center", inline: "center" });
 }
 function emitClick(el) {
-    if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
-        return;
-    }
     if (el.closest("[tat-ignore]")) {
         return;
     }
@@ -1002,9 +996,6 @@ function emitInput(el, item) {
             switch (_b.label) {
                 case 0:
                     item = __assign({}, item);
-                    if (initOpt.ignoreQuery && el.closest(initOpt.ignoreQuery)) {
-                        return [2 /*return*/];
-                    }
                     if (el.closest("[tat-ignore]")) {
                         return [2 /*return*/];
                     }

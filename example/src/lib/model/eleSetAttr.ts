@@ -31,9 +31,6 @@ export const loadPageKey = () =>
 const attrKeys = {} as any;
 
 function setAttrId(ele: HTMLInputElement) {
-  if (initOpt.ignoreQuery && ele.closest(initOpt.ignoreQuery)) {
-    return;
-  }
   if (ele.closest("[tat-ignore]")) {
     return;
   }
