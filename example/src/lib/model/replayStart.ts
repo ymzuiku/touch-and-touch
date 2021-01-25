@@ -30,7 +30,6 @@ export const replayStart = async (items?: RecordItem[]) => {
     initOpt.onReplay(cell);
   }
 
-  console.log(items);
   // 播放
   try {
     await startReplay(items);

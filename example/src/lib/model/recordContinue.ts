@@ -1,4 +1,3 @@
-import aoife from "aoife";
 import { recordListenCustemEvent } from "./recordListenCustomEvent";
 import { getHref } from "./getHref";
 import { state } from "./state";

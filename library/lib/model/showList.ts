@@ -1,4 +1,3 @@
-import aoife from "aoife";
 import { state } from "./state";
 
 export const showList = async () => {

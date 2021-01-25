@@ -170,7 +170,9 @@ css`
     padding: 2px 2px;
     margin-right: 2px;
     font-size: 12px;
-    ${css.flex("row-center-center")}
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .tat-play-list .input {
     height: 20px;
@@ -191,7 +193,10 @@ css`
     font-size: 12px;
     border: 1px solid rgba(0, 0, 0, 0);
     flex: 1;
-    ${css.wordBreak(1)}
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
   }
   .tat-play-list .cell {
     border-left: 1px solid rgba(0, 0, 0, 0);
@@ -201,7 +206,10 @@ css`
     border-radius: 2px;
     cursor: pointer;
     user-select: none;
-    ${css.flex("row-start-center")}
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
   }
   .tat-play-list .cell-selected {
     /* border-left: 1px solid rgba(0, 0, 0, 0.5) !important; */

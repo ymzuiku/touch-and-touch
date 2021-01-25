@@ -1,4 +1,3 @@
-import aoife from "aoife";
 import css from "template-css";
 import { changeCellData } from "../model/changeCellData";
 import { changeFormat } from "../model/changeFormat";
@@ -111,8 +110,11 @@ css`
     z-index: 15010;
   }
   .tat-code-plan .plan {
-    ${css.flex("col-start-start")}
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
   }
   .tat-code-plan .button-plan {
     position: fixed;
@@ -121,7 +123,7 @@ css`
     padding: 14px;
   }
   .tat-code-plan button {
-    ${css.clear()}
+    outline: none;
     cursor: pointer;
     margin: 6px;
     background: #77f;
@@ -137,7 +139,6 @@ css`
     background: #55f;
   }
   .tat-code-plan textarea {
-    ${css.clear()};
     box-sizing: border-box;
     width: 100%;
     font-size: 14px;

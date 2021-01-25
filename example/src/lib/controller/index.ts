@@ -4,7 +4,6 @@ import css from "template-css";
 import { init, initOpt, InitOptions } from "../model/init";
 import { DragSvg } from "./svg";
 import { PlayList } from "./PlayList";
-import aoife from "aoife";
 
 const plan = aoife(
   "div",
@@ -38,10 +37,16 @@ css`
   }
 
   .tat-head-row {
-    ${css.flex("row-start-center")}
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
   }
   .tat-head-center {
-    ${css.flex("row-center-center")}
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
   }
   .tat-drag-line {
     height: 1px;

@@ -15,7 +15,6 @@ import {
   DownloadSvg,
   LoaclFileSvg,
   RecordAgainSvg,
-  ShowSvg,
   AutoIdSvg,
   NewFileSvg,
 } from "./svg";
@@ -23,8 +22,6 @@ import { exportRecord } from "../model/exportRecord";
 import { importRecord } from "../model/importRecord";
 import { replayAllFilter } from "../model/replayAllFilter";
 import { recordAgain } from "../model/recordAgain";
-import { showList } from "../model/showList";
-import aoife from "aoife";
 import { changeAutoRecordId } from "../model/changeAutoRecordId";
 import { initOpt } from "../model/init";
 import { recordCellAdd } from "../model/recordCellAdd";
@@ -157,7 +154,10 @@ export const Ctrl = () => {
 css`
   .tat-row {
     width: 100%;
-    ${css.flex("row-center-center")}
+    display: flex;
+    justify-content: start;
+    flex-direction: row;
+    align-items: center;
   }
   .tat-more-item {
     cursor: pointer;

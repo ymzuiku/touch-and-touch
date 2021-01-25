@@ -10273,10 +10273,10 @@ temp-dir@^1.0.0:
   resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-1.0.0.tgz#0a7c0ea26d3a39afa7e0ebea9c1fc0bc4daa011d"
   integrity sha1-CnwOom06Oa+n4OvqnB/AvE2qAR0=
 
-template-css@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/template-css/-/template-css-1.4.2.tgz#a1baaa3d9835102752bef8e9b248f8599891c516"
-  integrity sha512-liKheG17H1Qw6gM4HHz3iIBbrNmw4lEn4+TVgrWeLF/YbeQHp2n1XcbtpYqZvtgbQp78YsTcHTAjPUMPnGuKew==
+template-css@^1.4.10:
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/template-css/-/template-css-1.4.10.tgz#c6d8dc76d86801960f044261d4421410d61919cd"
+  integrity sha512-s3cqXC4nA2xWVpoacqRvpuxM2kJTVyx+TAnP83o/3RV3no1tDU+vL0amPs48ae+hBrOWCM9Zggj3eIRgWZ6Y/w==
   dependencies:
     template-fn "^1.0.0"
 

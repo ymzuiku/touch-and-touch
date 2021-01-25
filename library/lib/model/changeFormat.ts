@@ -8,7 +8,7 @@ loadScriptList(
   "https://unpkg.com/prettier@2.2.1/parser-babel.js"
 );
 
-export const changeFormat = async (code: string = ""): Promise<any> => {
+export const changeFormat = async (code = ""): Promise<any> => {
   const prettier = await waitValue(() => (window as any).prettier, 1000 * 20);
   if (!prettier) {
     Message.error("Unload prettier, check the network, please.", {
