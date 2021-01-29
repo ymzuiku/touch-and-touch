@@ -49,11 +49,7 @@ export const Drag = ({
       Ele.style.left = state.x - 4 + "px";
       Ele.style.top = state.y - 20 + "px";
     }
-    if (state.onDrag) {
-      out.style.background = "rgba(0,0,0,0.1)";
-    } else {
-      out.style.background = "rgba(0,0,0,0)";
-    }
+
     if (localStorageKey) {
       if (saveTime) {
         clearTimeout(saveTime);

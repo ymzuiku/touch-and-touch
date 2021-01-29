@@ -13,6 +13,8 @@ import Pop from "vanilla-pop";
 import CodePlan from "./CodePlan";
 
 export const PlayList = () => {
+  let lastClick: any;
+  let lastClickTime: any;
   return aoife(
     "div",
     {
@@ -53,7 +55,15 @@ export const PlayList = () => {
               const show = await fixFilterCell(cell);
               return !show;
             },
-            onclick: () => changeSelectItem(item._id),
+            onclick: () => {
+              if (lastClick === item._id && Date.now() - lastClickTime < 400) {
+                changeInput(item._id);
+              } else {
+                changeSelectItem(item._id);
+              }
+              lastClick = item._id;
+              lastClickTime = Date.now();
+            },
           },
           aoife("input", {
             class: "input",
@@ -85,9 +95,6 @@ export const PlayList = () => {
             "div",
             {
               class: "label",
-              ondblclick: () => {
-                changeInput(item._id);
-              },
               hidden: () => {
                 const ui = state.ui.get();
                 return ui.showInputId === item._id;

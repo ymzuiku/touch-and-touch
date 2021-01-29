@@ -36,17 +36,17 @@ document.body.append(TouchAndTouch({ name: "example" }));
 
 除了以上元素，其他元素需要监听点击事件，需要满足以下情况之一：
 
-- ele.getAttribute("tat-btn") no void
+<!-- - ele.getAttribute("tat-btn") no void
 - ele.getAttribute("role") === "tab"
 - ele.getAttribute("role") === "menuitem"
 - ele.getAttribute("role") === "switch"
 - ele.getAttribute("role") === "button"
 - ele.getAttribute("type") === "submit"
-- ele.getAttribute("type") === "button"
+- ele.getAttribute("type") === "button" -->
 
 ## 录制元素标志
 
-只有具有 id 的元素才会被录制
+只有具有 tat 属性的元素才会被录制
 
 因为需要确保被录制的每个元素的唯一标识都是**唯一的**，**每次执行值为确定的**, 否则：
 
@@ -55,9 +55,9 @@ document.body.append(TouchAndTouch({ name: "example" }));
 
 touch-and-touch 在刚开始设计中，是可以自动拼接元素身上的属性进行捕获，但是这会带来一个致命缺点：在开发过程中由于元素的属性无可避免的会变化，若其中一个元素变化了，就会导致后续的录制无法被播放，从而反而影响了自动测试的复用性。
 
-相信作者的经验，使用唯一 id 作为录制标记，才是复用性最高的自动测试方案。
+相信作者的经验，使用唯一 tat 作为录制标记，才是复用性最高的自动测试方案。
 
-（不推荐）若对历史项目进行录制，某些页面不方便添加 id 标记，可以勾选 `自动标记` 的开关进行录制，它会尽可能的找到多个属性进行组合作为记录的 id。
+（不推荐）若对历史项目进行录制，某些页面不方便添加 tat 标记，可以勾选 `自动标记` 的开关进行录制，它会尽可能的找到多个属性进行组合作为记录的 id。
 
 ### 忽略录制
 

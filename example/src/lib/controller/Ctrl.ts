@@ -102,7 +102,7 @@ export const Ctrl = () => {
           "Record again",
         ],
       }),
-      aoife("span", { style: "flex:1" }),
+      // aoife("span", { style: "flex:1" }),
       ThePop({
         children: [
           aoife(AutoIdSvg, {
@@ -176,7 +176,7 @@ css`
     background: rgba(255, 255, 255, 0.1);
   }
   .tat-ctrl {
-    margin: 0px 10px;
+    margin-left: 6px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -185,6 +185,7 @@ css`
     width: 100%;
   }
   .tat-btn {
+    margin-left: 2px;
     height: 20px;
     width: 20px;
     padding: 1px;

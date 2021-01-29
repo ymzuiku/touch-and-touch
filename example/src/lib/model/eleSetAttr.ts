@@ -34,35 +34,9 @@ function setAttrId(ele: HTMLInputElement) {
   if (ele.closest("[tat-ignore]")) {
     return;
   }
-  if (ele.getAttribute("tat-key")) {
-    return;
-  }
+
   const tag = ele.nodeName.toLocaleLowerCase();
 
-  if (
-    tag === "div" &&
-    !ele.getAttribute("tat-btn") &&
-    ele.getAttribute("role") !== "tab" &&
-    ele.getAttribute("role") !== "menuitem" &&
-    ele.getAttribute("role") !== "switch" &&
-    ele.getAttribute("role") !== "button" &&
-    ele.getAttribute("type") !== "submit" &&
-    ele.getAttribute("type") !== "button" &&
-    ele.getAttribute("type") !== "combobox" &&
-    !ele.getAttribute("tabindex")
-  ) {
-    return;
-  }
-
-  const selfId = ele.getAttribute("id");
-  if (selfId) {
-    ele.setAttribute("tat-key", selfId);
-    return eleSetListen(ele as any);
-  }
-
-  // const eid = ele.getAttribute("id");
-  // const tatKey = [tag, eid && "id:" + eid].filter(Boolean).join(",");
-  // ele.setAttribute("tat-key", tatKey);
   if (initOpt.useAutoId) {
     const id = getAttrAndCloseAttr(ele, "id");
     const tid = getAttrAndCloseAttr(ele, "tat-id");
@@ -103,7 +77,7 @@ function setAttrId(ele: HTMLInputElement) {
     }
 
     attrKeys[tatKey] = 1;
-    ele.setAttribute("tat-key", tatKey);
+    ele.setAttribute("tat", tatKey);
   }
 
   eleSetListen(ele as any);

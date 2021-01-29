@@ -34,6 +34,9 @@ export const TouchAndTouch = (opt: InitOptions) => {
 };
 
 css`
+  .tat {
+    width: 190px;
+  }
   .tat *[hidden] {
     display: none !important;
   }
