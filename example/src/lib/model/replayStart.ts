@@ -79,16 +79,26 @@ async function emitInput(el: HTMLInputElement, item: RecordItem) {
     item.value = await Promise.resolve(fn(mockjs.Random, cache.set, cache.get));
   }
 
-  const inputEvent = new InputEvent(item.type, {
-    // inputType: "insertText",
+  el.value = (item && item.value) || "";
+  const inputEvent = new InputEvent("input", {
+    inputType: "insertText",
     data: item.value,
     view: window,
     bubbles: true,
     cancelable: true,
   });
 
-  el.value = (item && item.value) || "";
   el.dispatchEvent(inputEvent);
+
+  const changeEvent = new InputEvent(item.type, {
+    inputType: "insertText",
+    data: item.value,
+    view: window,
+    bubbles: true,
+    cancelable: true,
+  });
+
+  el.dispatchEvent(changeEvent);
 }
 
 function done(e: any) {

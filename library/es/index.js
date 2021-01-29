@@ -1050,7 +1050,7 @@ function emitClick(el) {
 }
 function emitInput(el, item) {
     return __awaiter(this, void 0, void 0, function () {
-        var nodeName, value, fn, _a, inputEvent;
+        var nodeName, value, fn, _a, inputEvent, changeEvent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -1074,15 +1074,23 @@ function emitInput(el, item) {
                     _a.value = _b.sent();
                     _b.label = 2;
                 case 2:
-                    inputEvent = new InputEvent(item.type, {
-                        // inputType: "insertText",
+                    el.value = (item && item.value) || "";
+                    inputEvent = new InputEvent("input", {
+                        inputType: "insertText",
                         data: item.value,
                         view: window,
                         bubbles: true,
                         cancelable: true,
                     });
-                    el.value = (item && item.value) || "";
                     el.dispatchEvent(inputEvent);
+                    changeEvent = new InputEvent(item.type, {
+                        inputType: "insertText",
+                        data: item.value,
+                        view: window,
+                        bubbles: true,
+                        cancelable: true,
+                    });
+                    el.dispatchEvent(changeEvent);
                     return [2 /*return*/];
             }
         });
