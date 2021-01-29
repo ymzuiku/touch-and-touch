@@ -146,7 +146,6 @@ function fixPosition(out, state) {
 }
 var Drag = function (_a) {
     var children = _a.children, clientX = _a.clientX, clientY = _a.clientY, _b = _a.query, query = _b === void 0 ? "[tat-base-drag]" : _b, localStorageKey = _a.localStorageKey, dragPadding = _a.dragPadding, style = _a.style, rest = __rest(_a, ["children", "clientX", "clientY", "query", "localStorageKey", "dragPadding", "style"]);
-    var moveEndTimer;
     var state = {
         onDrag: false,
         x: clientX || 0,
@@ -175,10 +174,6 @@ var Drag = function (_a) {
     };
     var onMove = function (e) {
         if (state.onDrag) {
-            if (moveEndTimer) {
-                clearTimeout(moveEndTimer);
-                moveEndTimer = null;
-            }
             // if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
             //   return;
             // }
@@ -190,10 +185,8 @@ var Drag = function (_a) {
         }
     };
     var onMoveEnd = function () {
-        moveEndTimer = setTimeout(function () {
-            state.onDrag = false;
-            update();
-        }, 40);
+        state.onDrag = false;
+        update();
     };
     window.addEventListener("resize", function () {
         requestAnimationFrame(function () {

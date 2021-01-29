@@ -32,7 +32,6 @@ export const Drag = ({
   style,
   ...rest
 }: DragProps) => {
-  let moveEndTimer: any;
   const state = {
     onDrag: false,
     x: clientX || 0,
@@ -62,10 +61,6 @@ export const Drag = ({
   };
   const onMove = (e: any) => {
     if (state.onDrag) {
-      if (moveEndTimer) {
-        clearTimeout(moveEndTimer);
-        moveEndTimer = null;
-      }
       // if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
       //   return;
       // }
@@ -77,10 +72,8 @@ export const Drag = ({
     }
   };
   const onMoveEnd = () => {
-    moveEndTimer = setTimeout(() => {
-      state.onDrag = false;
-      update();
-    }, 40);
+    state.onDrag = false;
+    update();
   };
 
   window.addEventListener("resize", () => {
