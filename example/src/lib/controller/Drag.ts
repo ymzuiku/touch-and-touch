@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-import css from "template-css";
 import { device } from "./device";
 interface DragProps extends IProps {
   dragPadding?: number;
@@ -59,6 +58,7 @@ export const Drag = ({
       }, 500);
     }
   };
+
   const onMove = (e: any) => {
     if (state.onDrag) {
       // if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
@@ -71,6 +71,7 @@ export const Drag = ({
       update();
     }
   };
+
   const onMoveEnd = () => {
     state.onDrag = false;
     update();

@@ -84,5 +84,32 @@ function setAttrId(ele: HTMLInputElement) {
 }
 
 export function eleSetAttr(parent: HTMLElement) {
+  const fater = parent.closest("[tat-auto]");
+  if (fater) {
+    const text = fater.getAttribute("tat-auto");
+    const detail = (fater.getAttribute("tat-auto-detail") ||
+      "textContent") as string;
+    const list = detail
+      .split(",")
+      .filter(Boolean)
+      .map((v) => v.trim());
+
+    if (text) {
+      fater.querySelectorAll(text).forEach((e: any) => {
+        if (!e.getAttribute("tat")) {
+          const key = [] as string[];
+          list.forEach((v: string) => {
+            const str = e[v] || e.getAttribute(v);
+            if (str) {
+              key.push(str);
+            }
+          });
+          if (key.length) {
+            e.setAttribute("tat", key.join(","));
+          }
+        }
+      });
+    }
+  }
   parent.querySelectorAll(listenTags.join(",")).forEach(setAttrId as any);
 }

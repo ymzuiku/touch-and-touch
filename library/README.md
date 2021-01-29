@@ -59,6 +59,41 @@ touch-and-touch 在刚开始设计中，是可以自动拼接元素身上的属�
 
 （不推荐）若对历史项目进行录制，某些页面不方便添加 tat 标记，可以勾选 `自动标记` 的开关进行录制，它会尽可能的找到多个属性进行组合作为记录的 id。
 
+## 自动使用内容作为标记
+
+若给一个元素添加 `tat-auto` 属性，会使用属性的值作为查找器查找子元素，并且将 textContent 设置为子元素 tat 值, 若要获取其他值作为 tat 值，可以定义 `tat-auto-detail` 属性
+
+例子 1, 使用 `tat-auto`
+
+```html
+<!-- 原始 DOM -->
+<div tat-auto=".dog">
+  <button class="dog">button-a</button>
+  <button>button-b</button>
+</div>
+<!-- 自动处理过的 DOM -->
+<div tat-auto-query=".dog">
+  <button tat="button-a" class="dog">button-a</button>
+  <button>button-b</button>
+  <div></div>
+</div>
+```
+
+例子 2, 使用 `tat-auto` + `tat-auto-detail`
+
+```html
+<div tat-auto-query=".dog" tat-auto-detail="textContent, class">
+  <button class="dog">button-a</button>
+  <button>button-b</button>
+</div>
+<!-- 自动处理过的 DOM -->
+<div tat-auto-query=".dog">
+  <button tat="button-a, dog" class="dog">button-a</button>
+  <button>button-b</button>
+  <div></div>
+</div>
+```
+
 ### 忽略录制
 
 若某个元素有：`tat-ignore` 属性，它及它的子元素的交互都不会被录制，例如我们的录制面板就是 `tat-ignore`。

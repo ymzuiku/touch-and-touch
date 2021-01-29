@@ -614,6 +614,32 @@ function setAttrId(ele) {
     eleSetListen(ele);
 }
 function eleSetAttr(parent) {
+    var fater = parent.closest("[tat-auto]");
+    if (fater) {
+        var text = fater.getAttribute("tat-auto");
+        var detail = (fater.getAttribute("tat-auto-detail") ||
+            "textContent");
+        var list_1 = detail
+            .split(",")
+            .filter(Boolean)
+            .map(function (v) { return v.trim(); });
+        if (text) {
+            fater.querySelectorAll(text).forEach(function (e) {
+                if (!e.getAttribute("tat")) {
+                    var key_1 = [];
+                    list_1.forEach(function (v) {
+                        var str = e[v] || e.getAttribute(v);
+                        if (str) {
+                            key_1.push(str);
+                        }
+                    });
+                    if (key_1.length) {
+                        e.setAttribute("tat", key_1.join(","));
+                    }
+                }
+            });
+        }
+    }
     parent.querySelectorAll(listenTags.join(",")).forEach(setAttrId);
 }
 

@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-import css from "template-css";
 import { device } from "./device";
 interface DragProps extends IProps {
   dragPadding?: number;
