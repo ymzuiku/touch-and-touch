@@ -121,6 +121,7 @@ css`
     top: 0px;
     right: 0px;
     padding: 14px;
+    font-size: 14px;
   }
   .tat-code-plan button {
     outline: none;
@@ -130,6 +131,12 @@ css`
     color: #fff;
     padding: 8px 16px;
     border-radius: 4px;
+    appearance: none;
+    outline: none;
+    border-width: 0;
+    border-style: solid;
+    border-color: currentColor;
+    -webkit-tap-highlight-color: transparent;
   }
   .tat-code-plan button:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

@@ -17,6 +17,7 @@ const dragAndCtrl = aoife(
     query: ".tat-root",
     "tat-ignore": true,
     localStorageKey: "tat-drag",
+    style: { transform: "translateX(3px)" },
     children: [DragSvg({})],
   }),
   Ctrl()
@@ -27,7 +28,8 @@ export const TouchAndTouch = (opt: InitOptions) => {
   return aoife(
     "div",
     { "tat-ignore": true, class: "tat tat-root" },
-    aoife("div", dragAndCtrl, plan)
+    dragAndCtrl,
+    plan
   );
 };
 

@@ -84,5 +84,11 @@ watcher.on("event", (event) => {
     if (!haveArgv("--watch", "-w")) {
       watcher.close();
     }
+
+    // 测试拷贝
+    fs.copySync(
+      "./es",
+      "/Users/pillar/Documents/work/hpv/hpv-client/node_modules/touch-and-touch/es"
+    );
   }
 });

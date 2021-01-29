@@ -176,6 +176,7 @@ css`
     background: rgba(255, 255, 255, 0.1);
   }
   .tat-ctrl {
+    margin: 0px 10px;
     display: flex;
     justify-content: flex-start;
     align-items: center;

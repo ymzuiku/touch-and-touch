@@ -161,7 +161,7 @@ css`
     margin: 2px;
     margin-bottom: 8px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: calc(100% - 3px);
+    width: calc(100% - 10px);
     outline: none;
   }
   .tat-play-list .edit {
