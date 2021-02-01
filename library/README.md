@@ -72,7 +72,7 @@ touch-and-touch 在刚开始设计中，是可以自动拼接元素身上的属�
   <button>button-b</button>
 </div>
 <!-- 自动处理过的 DOM -->
-<div tat-auto-query=".dog">
+<div tat-auto=".dog">
   <button tat="button-a" class="dog">button-a</button>
   <button>button-b</button>
   <div></div>
@@ -82,12 +82,12 @@ touch-and-touch 在刚开始设计中，是可以自动拼接元素身上的属�
 例子 2, 使用 `tat-auto` + `tat-auto-detail`
 
 ```html
-<div tat-auto-query=".dog" tat-auto-detail="textContent, class">
+<div tat-auto=".dog" tat-auto-detail="textContent, class">
   <button class="dog">button-a</button>
   <button>button-b</button>
 </div>
 <!-- 自动处理过的 DOM -->
-<div tat-auto-query=".dog">
+<div tat-auto=".dog">
   <button tat="button-a, dog" class="dog">button-a</button>
   <button>button-b</button>
   <div></div>
