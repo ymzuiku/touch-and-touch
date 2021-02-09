@@ -4,7 +4,6 @@ import mockjs from "mockjs";
 import { cache } from "./cache";
 import { initOpt } from "./init";
 import { state } from "./state";
-import { device } from "../controller/device";
 
 export const inputs = ["input"];
 export const submits = ["submit", "change"];
@@ -14,12 +13,6 @@ export const attrs = [...inputs, ...clicks, ...submits];
 export const eleSetListen = (ele: HTMLInputElement) => {
   // const attrList = attrs;
   attrs.forEach((e: string) => {
-    if (device().pc && e === "touchend") {
-      return;
-    }
-    if (device().phone && e === "mousedown") {
-      return;
-    }
     if ((ele as any)["tat-" + e]) {
       return;
     }
@@ -38,14 +31,12 @@ export const eleSetListen = (ele: HTMLInputElement) => {
       }
       if (clicks.indexOf(e) > -1) {
         setTimeout(() => {
-          const key = ele.getAttribute("tat");
-          if (key) {
-            recordItemAdd({
-              key,
-              type: e,
-              value: getEventVal(event),
-            });
-          }
+          recordItemAdd({
+            id: ele.id || "",
+            key: ele.getAttribute("tat-key")!,
+            type: e,
+            value: getEventVal(event),
+          });
         }, 20);
       } else {
         let value = getEventVal(event) as string;
@@ -60,14 +51,13 @@ export const eleSetListen = (ele: HTMLInputElement) => {
               fn(mockjs.Random, cache.set, cache.get)
             );
 
-            const key = ele.getAttribute("tat");
-            if (key) {
-              recordItemAdd({
-                key,
-                type: "change",
-                value: baseValue,
-              });
-            }
+            const key = ele.getAttribute("tat-key");
+            recordItemAdd({
+              ...(ele.id && { id: ele.id }),
+              ...(key && { key }),
+              type: "change",
+              value: baseValue,
+            });
 
             const inputEvent = new InputEvent("change", {
               data: value,
@@ -85,14 +75,13 @@ export const eleSetListen = (ele: HTMLInputElement) => {
 
         // 若 无useRecordInput，忽略 input 事件
         if (initOpt.useRecordInput || e !== "input") {
-          const key = ele.getAttribute("tat");
-          if (key) {
-            recordItemAdd({
-              key,
-              type: e,
-              value,
-            });
-          }
+          const key = ele.getAttribute("tat-key");
+          recordItemAdd({
+            ...(ele.id && { id: ele.id }),
+            ...(key && { key }),
+            type: e,
+            value,
+          });
         }
       }
     });

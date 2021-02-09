@@ -34,9 +34,35 @@ function setAttrId(ele: HTMLInputElement) {
   if (ele.closest("[tat-ignore]")) {
     return;
   }
-
+  if (ele.getAttribute("tat-key")) {
+    return;
+  }
   const tag = ele.nodeName.toLocaleLowerCase();
 
+  if (
+    tag === "div" &&
+    !ele.getAttribute("tat-btn") &&
+    ele.getAttribute("role") !== "tab" &&
+    ele.getAttribute("role") !== "menuitem" &&
+    ele.getAttribute("role") !== "switch" &&
+    ele.getAttribute("role") !== "button" &&
+    ele.getAttribute("type") !== "submit" &&
+    ele.getAttribute("type") !== "button" &&
+    ele.getAttribute("type") !== "combobox" &&
+    !ele.getAttribute("tabindex")
+  ) {
+    return;
+  }
+
+  const selfId = ele.getAttribute("id");
+  if (selfId) {
+    ele.setAttribute("tat-key", selfId);
+    return eleSetListen(ele as any);
+  }
+
+  // const eid = ele.getAttribute("id");
+  // const tatKey = [tag, eid && "id:" + eid].filter(Boolean).join(",");
+  // ele.setAttribute("tat-key", tatKey);
   if (initOpt.useAutoId) {
     const id = getAttrAndCloseAttr(ele, "id");
     const tid = getAttrAndCloseAttr(ele, "tat-id");
@@ -77,39 +103,12 @@ function setAttrId(ele: HTMLInputElement) {
     }
 
     attrKeys[tatKey] = 1;
-    ele.setAttribute("tat", tatKey);
+    ele.setAttribute("tat-key", tatKey);
   }
 
   eleSetListen(ele as any);
 }
 
 export function eleSetAttr(parent: HTMLElement) {
-  const fater = parent.closest("[tat-auto]");
-  if (fater) {
-    const text = fater.getAttribute("tat-auto");
-    const detail = (fater.getAttribute("tat-auto-detail") ||
-      "textContent") as string;
-    const list = detail
-      .split(",")
-      .filter(Boolean)
-      .map((v) => v.trim());
-
-    if (text) {
-      fater.querySelectorAll(text).forEach((e: any) => {
-        if (!e.getAttribute("tat")) {
-          const key = [] as string[];
-          list.forEach((v: string) => {
-            const str = e[v] || e.getAttribute(v);
-            if (str) {
-              key.push(str);
-            }
-          });
-          if (key.length) {
-            e.setAttribute("tat", key.join(","));
-          }
-        }
-      });
-    }
-  }
   parent.querySelectorAll(listenTags.join(",")).forEach(setAttrId as any);
 }

@@ -79,26 +79,16 @@ async function emitInput(el: HTMLInputElement, item: RecordItem) {
     item.value = await Promise.resolve(fn(mockjs.Random, cache.set, cache.get));
   }
 
+  const inputEvent = new InputEvent(item.type, {
+    // inputType: "insertText",
+    data: item.value,
+    view: window,
+    bubbles: true,
+    cancelable: true,
+  });
+
   el.value = (item && item.value) || "";
-  const inputEvent = new InputEvent("input", {
-    inputType: "insertText",
-    data: item.value,
-    view: window,
-    bubbles: true,
-    cancelable: true,
-  });
-
   el.dispatchEvent(inputEvent);
-
-  const changeEvent = new InputEvent(item.type, {
-    inputType: "insertText",
-    data: item.value,
-    view: window,
-    bubbles: true,
-    cancelable: true,
-  });
-
-  el.dispatchEvent(changeEvent);
 }
 
 function done(e: any) {
@@ -130,37 +120,26 @@ function waitGetCustomEvent(detail: string) {
   });
 }
 
-function fixEleIsShow(ele: HTMLElement) {
-  if (!ele) {
-    return false;
-  }
-  if (ele.hidden) {
-    return false;
-  }
-  const sty = window.getComputedStyle(ele);
-  if (sty.display === "none") {
-    return false;
-  }
-  if (sty.visibility === "hidden") {
-    return false;
-  }
-  const opa = Number(sty.opacity);
-  if (!isNaN(opa) && opa < 0.1) {
-    return false;
-  }
-  return true;
-}
-
 function waitGetElement(id: string, key: string): Promise<HTMLElement> {
   const t = Date.now();
   return new Promise(async (res, rej) => {
     const getEl = async () => {
       const ui = state.ui.get();
+      let e: HTMLElement;
       if (!ui.replaying) {
         return res(document.createElement("span"));
       }
-      const e = document.querySelector(`[tat="${key}"]`) as HTMLElement;
-      if (!fixEleIsShow(e)) {
+      if (ui.autoRecordId) {
+        e = document.querySelector(`[tat-key="${key}"]`) as HTMLElement;
+      } else {
+        e = document.getElementById(id) as HTMLElement;
+      }
+      if (
+        !e ||
+        e.hidden ||
+        e.style.display === "none" ||
+        e.style.visibility === "hidden"
+      ) {
         if (Date.now() - t < ui.waitTimeout) {
           requestAnimationFrame(getEl);
         } else {
@@ -227,8 +206,6 @@ const startReplay = async (items: RecordItem[]) => {
       } else {
         window.location.href = item.href;
       }
-    } else if (i === 2) {
-      await sleep(500);
     }
 
     if (item.type === "mclick") {

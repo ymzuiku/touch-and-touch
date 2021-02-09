@@ -1,4 +1,3 @@
-import css from "template-css";
 import { changeCellData } from "../model/changeCellData";
 import { changeFormat } from "../model/changeFormat";
 import { findCellDate } from "../model/findCellDate";
@@ -96,61 +95,56 @@ export default ({ id }: { id: string }) => {
   return ele;
 };
 
-css`
-  .tat-textarea {
-    font-family: Menlo, Monaco, "Courier New", monospace;
-    font-size: 13px;
-  }
-  .tat-code-plan {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100vw;
-    height: 100vh;
-    z-index: 15010;
-  }
-  .tat-code-plan .plan {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: flex-start;
-  }
-  .tat-code-plan .button-plan {
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    padding: 14px;
-    font-size: 14px;
-  }
-  .tat-code-plan button {
-    outline: none;
-    cursor: pointer;
-    margin: 6px;
-    background: #77f;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    appearance: none;
-    outline: none;
-    border-width: 0;
-    border-style: solid;
-    border-color: currentColor;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .tat-code-plan button:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  .tat-code-plan button:active {
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    background: #55f;
-  }
-  .tat-code-plan textarea {
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 14px;
-    flex: 1;
-    border: none;
-    background: #fff;
-  }
+const css = `
+.tat-textarea {
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  font-size: 13px;
+}
+.tat-code-plan {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 15010;
+}
+.tat-code-plan .plan {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+}
+.tat-code-plan .button-plan {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  padding: 14px;
+}
+.tat-code-plan button {
+  outline: none;
+  cursor: pointer;
+  margin: 6px;
+  background: #77f;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+.tat-code-plan button:hover {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.tat-code-plan button:active {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  background: #55f;
+}
+.tat-code-plan textarea {
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 14px;
+  flex: 1;
+  border: none;
+  background: #fff;
+}
 `;
+
+document.head.append(aoife("style", { innerHTML: css }));

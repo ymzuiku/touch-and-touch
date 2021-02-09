@@ -1,5 +1,4 @@
 import { state } from "../model/state";
-import css from "template-css";
 import { CodeSvg, CopySvg, DeleteSvg, EditorSvg, ThinMoreSvg } from "./svg";
 import { changeInput } from "../model/changeInput";
 import { rename } from "../model/rename";
@@ -13,8 +12,6 @@ import Pop from "vanilla-pop";
 import CodePlan from "./CodePlan";
 
 export const PlayList = () => {
-  let lastClick: any;
-  let lastClickTime: any;
   return aoife(
     "div",
     {
@@ -55,15 +52,7 @@ export const PlayList = () => {
               const show = await fixFilterCell(cell);
               return !show;
             },
-            onclick: () => {
-              if (lastClick === item._id && Date.now() - lastClickTime < 400) {
-                changeInput(item._id);
-              } else {
-                changeSelectItem(item._id);
-              }
-              lastClick = item._id;
-              lastClickTime = Date.now();
-            },
+            onclick: () => changeSelectItem(item._id),
           },
           aoife("input", {
             class: "input",
@@ -95,6 +84,9 @@ export const PlayList = () => {
             "div",
             {
               class: "label",
+              ondblclick: () => {
+                changeInput(item._id);
+              },
               hidden: () => {
                 const ui = state.ui.get();
                 return ui.showInputId === item._id;
@@ -157,7 +149,7 @@ export const PlayList = () => {
   );
 };
 
-css`
+const css = `
   .tat-play-list {
     font-size: 14px;
     width: 100%;
@@ -168,7 +160,7 @@ css`
     margin: 2px;
     margin-bottom: 8px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    width: calc(100% - 10px);
+    width: calc(100% - 3px);
     outline: none;
   }
   .tat-play-list .edit {
@@ -230,3 +222,5 @@ css`
     opacity: 0.7;
   }
 `;
+
+document.head.append(aoife("style", css));

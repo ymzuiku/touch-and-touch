@@ -1,5 +1,4 @@
 import { state } from "../model/state";
-import css from "template-css";
 
 export const Step = () => {
   return aoife(
@@ -23,7 +22,7 @@ export const Step = () => {
   );
 };
 
-css`
+const css = `
   .tat-step {
     // color: #fff;
     // background: rgb(188 172 202);
@@ -36,3 +35,5 @@ css`
     // margin-bottom: 2px;
   }
 `;
+
+document.head.append(aoife("style", css));

@@ -1,5 +1,4 @@
 import Pop from "vanilla-pop";
-import css from "template-css";
 import { recordContinue } from "../model/recordContinue";
 import { recordStop } from "../model/recordStop";
 import { state } from "../model/state";
@@ -151,7 +150,7 @@ export const Ctrl = () => {
   });
 };
 
-css`
+const css = `
   .tat-row {
     width: 100%;
     display: flex;
@@ -176,16 +175,14 @@ css`
     background: rgba(255, 255, 255, 0.1);
   }
   .tat-ctrl {
-    margin-left: 6px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
     height: 30px;
-    width: 100%;
+    width: 190px;
   }
   .tat-btn {
-    margin-left: 2px;
     height: 20px;
     width: 20px;
     padding: 1px;
@@ -211,3 +208,5 @@ css`
     transform: rotate(-90deg);
   }
 `;
+
+document.head.append(aoife("style", css));

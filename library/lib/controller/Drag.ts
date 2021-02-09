@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-import { device } from "./device";
 interface DragProps extends IProps {
   dragPadding?: number;
   localStorageKey?: string;
@@ -47,7 +45,6 @@ export const Drag = ({
       Ele.style.left = state.x - 4 + "px";
       Ele.style.top = state.y - 20 + "px";
     }
-
     if (localStorageKey) {
       if (saveTime) {
         clearTimeout(saveTime);
@@ -60,9 +57,9 @@ export const Drag = ({
   };
   const onMove = (e: any) => {
     if (state.onDrag) {
-      // if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
-      //   return;
-      // }
+      if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
+        return;
+      }
       state.x = e.clientX - state.startX;
       state.y = e.clientY - state.startY;
       fixPosition(dragPadding, state);
@@ -72,7 +69,6 @@ export const Drag = ({
   };
   const onMoveEnd = () => {
     state.onDrag = false;
-    update();
   };
 
   window.addEventListener("resize", () => {
@@ -85,17 +81,12 @@ export const Drag = ({
       update();
     });
   });
-
-  if (device().pc) {
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onMoveEnd);
-  } else {
-    window.addEventListener("touchmove", (e) => {
-      onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
-    });
-    window.addEventListener("touchend", onMoveEnd);
-  }
-
+  window.addEventListener("mousemove", onMove);
+  window.addEventListener("touchmove", (e) => {
+    onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+  });
+  window.addEventListener("mouseup", onMoveEnd);
+  window.addEventListener("touchend", onMoveEnd);
   if (localStorageKey) {
     const old = localStorage.getItem(localStorageKey);
     if (old) {
@@ -114,34 +105,25 @@ export const Drag = ({
     update();
   });
 
-  const out = aoife(
+  return aoife(
     "div",
     {
       "tat-base-dray": 1,
-      style: {
-        cursor: "move",
-        ...(style as any),
+      style: { cursor: "move", ...(style as any) },
+      onmousedown: (e) => {
+        state.onDrag = true;
+        state.startX = e.offsetX;
+        state.startX = e.offsetX;
       },
-      onmousedown: device().pc
-        ? (e: any) => {
-            state.onDrag = true;
-            state.startX = e.offsetX;
-            state.startX = e.offsetX;
-          }
-        : void 0,
-      ontouchstart: device().phone
-        ? (e: any) => {
-            state.onDrag = true;
-            if (e.touches && e.touches[0]) {
-              state.startX = e.touches[0].clientX - state.x;
-              state.startY = e.touches[0].clientY - state.y;
-            }
-          }
-        : void 0,
+      ontouchstart: (e: any) => {
+        state.onDrag = true;
+        if (e.touches && e.touches[0] && e.touches[0].target) {
+          state.startX = e.touches[0].target.offsetLeft;
+          state.startY = e.touches[0].target.offsetHeight;
+        }
+      },
       ...rest,
     },
     children
   );
-
-  return out;
 };

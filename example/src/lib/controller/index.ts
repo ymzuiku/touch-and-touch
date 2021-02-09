@@ -1,6 +1,5 @@
 import { Drag } from "./Drag";
 import { Ctrl } from "./Ctrl";
-import css from "template-css";
 import { init, initOpt, InitOptions } from "../model/init";
 import { DragSvg } from "./svg";
 import { PlayList } from "./PlayList";
@@ -17,28 +16,42 @@ const dragAndCtrl = aoife(
     query: ".tat-root",
     "tat-ignore": true,
     localStorageKey: "tat-drag",
-    style: { transform: "translateX(3px)" },
-    children: [DragSvg({})],
+    children: [
+      aoife(
+        "div",
+        { style: "width:30px; height:24px" },
+        aoife(
+          "div",
+          { style: "pointer-events:none; transform:translate(7px,2px)" },
+          DragSvg({})
+        )
+      ),
+    ],
   }),
   Ctrl()
 );
 
 export const TouchAndTouch = (opt: InitOptions) => {
   init(opt);
-  return aoife(
+
+  const out = aoife(
     "div",
-    { "tat-ignore": true, class: "tat tat-root" },
+    { "tat-ignore": true, class: "tat tat-root", style: { display: "none" } },
     dragAndCtrl,
     plan
   );
+  setTimeout(() => {
+    out.style.display = "block";
+  }, 30);
+  return out;
 };
 
-css`
-  .tat {
-    width: 190px;
-  }
+const css = `
   .tat *[hidden] {
     display: none !important;
+  }
+  .tat-root {
+    width:200px;
   }
 
   .tat-head-row {
@@ -79,3 +92,5 @@ css`
     font-size: 11px;
   }
 `;
+
+document.head.append(aoife("style", css));

@@ -1,6 +1,5 @@
 import 'aoife';
 import Pop from 'vanilla-pop';
-import css from 'template-css';
 import Message from 'vanilla-message';
 import MicoDb from 'mico-db';
 import mockjs from 'mockjs';
@@ -91,43 +90,6 @@ function __spreadArrays() {
             r[k] = a[j];
     return r;
 }
-function __makeTemplateObject(cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-}
-
-var _device;
-var device = function () {
-    if (_device) {
-        return _device;
-    }
-    var ua = navigator.userAgent.toLocaleLowerCase();
-    var android = /(?:android)/.test(ua);
-    // const isAndroid = true;
-    var firefox = /(?:firefox)/.test(ua);
-    var chrome = /(?:chrome|crios)/.test(ua);
-    var safari = /(safari)/.test(ua);
-    var tablet = /(?:ipad|playbook)/.test(ua) ||
-        (android && !/(?:mobile)/.test(ua)) ||
-        (firefox && /(?:tablet)/.test(ua));
-    var ios = /(?:iphone)/.test(ua) && !tablet;
-    var pc = !ios && !android;
-    var phone = !pc;
-    var wechat = phone && /(micromessenger|wechat)/.test(ua);
-    // 获取是否是 ios 或 android
-    _device = {
-        android: android,
-        firefox: firefox,
-        chrome: chrome,
-        tablet: tablet,
-        ios: ios,
-        wechat: wechat,
-        pc: pc,
-        phone: phone,
-        safari: safari,
-    };
-    return _device;
-};
 
 function fixPosition(out, state) {
     if (out === void 0) { out = 100; }
@@ -174,9 +136,9 @@ var Drag = function (_a) {
     };
     var onMove = function (e) {
         if (state.onDrag) {
-            // if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
-            //   return;
-            // }
+            if (e.clientX - state.startX < 20 && e.clientY - state.startY < 20) {
+                return;
+            }
             state.x = e.clientX - state.startX;
             state.y = e.clientY - state.startY;
             fixPosition(dragPadding, state);
@@ -186,7 +148,6 @@ var Drag = function (_a) {
     };
     var onMoveEnd = function () {
         state.onDrag = false;
-        update();
     };
     window.addEventListener("resize", function () {
         requestAnimationFrame(function () {
@@ -198,16 +159,12 @@ var Drag = function (_a) {
             update();
         });
     });
-    if (device().pc) {
-        window.addEventListener("mousemove", onMove);
-        window.addEventListener("mouseup", onMoveEnd);
-    }
-    else {
-        window.addEventListener("touchmove", function (e) {
-            onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
-        });
-        window.addEventListener("touchend", onMoveEnd);
-    }
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchmove", function (e) {
+        onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+    });
+    window.addEventListener("mouseup", onMoveEnd);
+    window.addEventListener("touchend", onMoveEnd);
     if (localStorageKey) {
         var old = localStorage.getItem(localStorageKey);
         if (old) {
@@ -226,22 +183,17 @@ var Drag = function (_a) {
         ele.style.position = "fixed";
         update();
     });
-    var out = aoife("div", __assign({ "tat-base-dray": 1, style: __assign({ cursor: "move" }, style), onmousedown: device().pc
-            ? function (e) {
-                state.onDrag = true;
-                state.startX = e.offsetX;
-                state.startX = e.offsetX;
+    return aoife("div", __assign({ "tat-base-dray": 1, style: __assign({ cursor: "move" }, style), onmousedown: function (e) {
+            state.onDrag = true;
+            state.startX = e.offsetX;
+            state.startX = e.offsetX;
+        }, ontouchstart: function (e) {
+            state.onDrag = true;
+            if (e.touches && e.touches[0] && e.touches[0].target) {
+                state.startX = e.touches[0].target.offsetLeft;
+                state.startY = e.touches[0].target.offsetHeight;
             }
-            : void 0, ontouchstart: device().phone
-            ? function (e) {
-                state.onDrag = true;
-                if (e.touches && e.touches[0]) {
-                    state.startX = e.touches[0].clientX - state.x;
-                    state.startY = e.touches[0].clientY - state.y;
-                }
-            }
-            : void 0 }, rest), children);
-    return out;
+        } }, rest), children);
 };
 
 var db = MicoDb("mico-db");
@@ -572,7 +524,30 @@ function setAttrId(ele) {
     if (ele.closest("[tat-ignore]")) {
         return;
     }
+    if (ele.getAttribute("tat-key")) {
+        return;
+    }
     var tag = ele.nodeName.toLocaleLowerCase();
+    if (tag === "div" &&
+        !ele.getAttribute("tat-btn") &&
+        ele.getAttribute("role") !== "tab" &&
+        ele.getAttribute("role") !== "menuitem" &&
+        ele.getAttribute("role") !== "switch" &&
+        ele.getAttribute("role") !== "button" &&
+        ele.getAttribute("type") !== "submit" &&
+        ele.getAttribute("type") !== "button" &&
+        ele.getAttribute("type") !== "combobox" &&
+        !ele.getAttribute("tabindex")) {
+        return;
+    }
+    var selfId = ele.getAttribute("id");
+    if (selfId) {
+        ele.setAttribute("tat-key", selfId);
+        return eleSetListen(ele);
+    }
+    // const eid = ele.getAttribute("id");
+    // const tatKey = [tag, eid && "id:" + eid].filter(Boolean).join(",");
+    // ele.setAttribute("tat-key", tatKey);
     if (initOpt.useAutoId) {
         var id = getAttrAndCloseAttr(ele, "id");
         var tid = getAttrAndCloseAttr(ele, "tat-id");
@@ -609,37 +584,11 @@ function setAttrId(ele) {
             tatKey += "_" + num;
         }
         attrKeys[tatKey] = 1;
-        ele.setAttribute("tat", tatKey);
+        ele.setAttribute("tat-key", tatKey);
     }
     eleSetListen(ele);
 }
 function eleSetAttr(parent) {
-    var fater = parent.closest("[tat-auto]");
-    if (fater) {
-        var text = fater.getAttribute("tat-auto");
-        var detail = (fater.getAttribute("tat-auto-detail") ||
-            "textContent");
-        var list_1 = detail
-            .split(",")
-            .filter(Boolean)
-            .map(function (v) { return v.trim(); });
-        if (text) {
-            fater.querySelectorAll(text).forEach(function (e) {
-                if (!e.getAttribute("tat")) {
-                    var key_1 = [];
-                    list_1.forEach(function (v) {
-                        var str = e[v] || e.getAttribute(v);
-                        if (str) {
-                            key_1.push(str);
-                        }
-                    });
-                    if (key_1.length) {
-                        e.setAttribute("tat", key_1.join(","));
-                    }
-                }
-            });
-        }
-    }
     parent.querySelectorAll(listenTags.join(",")).forEach(setAttrId);
 }
 
@@ -862,12 +811,6 @@ var attrs = __spreadArrays(inputs, clicks, submits);
 var eleSetListen = function (ele) {
     // const attrList = attrs;
     attrs.forEach(function (e) {
-        if (device().pc && e === "touchend") {
-            return;
-        }
-        if (device().phone && e === "mousedown") {
-            return;
-        }
         if (ele["tat-" + e]) {
             return;
         }
@@ -889,14 +832,12 @@ var eleSetListen = function (ele) {
                             }
                             if (!(clicks.indexOf(e) > -1)) return [3 /*break*/, 1];
                             setTimeout(function () {
-                                var key = ele.getAttribute("tat");
-                                if (key) {
-                                    recordItemAdd({
-                                        key: key,
-                                        type: e,
-                                        value: getEventVal(event),
-                                    });
-                                }
+                                recordItemAdd({
+                                    id: ele.id || "",
+                                    key: ele.getAttribute("tat-key"),
+                                    type: e,
+                                    value: getEventVal(event),
+                                });
                             }, 20);
                             return [3 /*break*/, 6];
                         case 1:
@@ -913,14 +854,8 @@ var eleSetListen = function (ele) {
                             return [4 /*yield*/, Promise.resolve(fn(mockjs.Random, cache.set, cache.get))];
                         case 3:
                             value = _a.sent();
-                            key = ele.getAttribute("tat");
-                            if (key) {
-                                recordItemAdd({
-                                    key: key,
-                                    type: "change",
-                                    value: baseValue,
-                                });
-                            }
+                            key = ele.getAttribute("tat-key");
+                            recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: "change", value: baseValue }));
                             inputEvent = new InputEvent("change", {
                                 data: value,
                                 view: window,
@@ -937,14 +872,8 @@ var eleSetListen = function (ele) {
                         case 5:
                             // 若 无useRecordInput，忽略 input 事件
                             if (initOpt.useRecordInput || e !== "input") {
-                                key = ele.getAttribute("tat");
-                                if (key) {
-                                    recordItemAdd({
-                                        key: key,
-                                        type: e,
-                                        value: value,
-                                    });
-                                }
+                                key = ele.getAttribute("tat-key");
+                                recordItemAdd(__assign(__assign(__assign({}, (ele.id && { id: ele.id })), (key && { key: key })), { type: e, value: value }));
                             }
                             _a.label = 6;
                         case 6: return [2 /*return*/];
@@ -1076,7 +1005,7 @@ function emitClick(el) {
 }
 function emitInput(el, item) {
     return __awaiter(this, void 0, void 0, function () {
-        var nodeName, value, fn, _a, inputEvent, changeEvent;
+        var nodeName, value, fn, _a, inputEvent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -1100,23 +1029,15 @@ function emitInput(el, item) {
                     _a.value = _b.sent();
                     _b.label = 2;
                 case 2:
+                    inputEvent = new InputEvent(item.type, {
+                        // inputType: "insertText",
+                        data: item.value,
+                        view: window,
+                        bubbles: true,
+                        cancelable: true,
+                    });
                     el.value = (item && item.value) || "";
-                    inputEvent = new InputEvent("input", {
-                        inputType: "insertText",
-                        data: item.value,
-                        view: window,
-                        bubbles: true,
-                        cancelable: true,
-                    });
                     el.dispatchEvent(inputEvent);
-                    changeEvent = new InputEvent(item.type, {
-                        inputType: "insertText",
-                        data: item.value,
-                        view: window,
-                        bubbles: true,
-                        cancelable: true,
-                    });
-                    el.dispatchEvent(changeEvent);
                     return [2 /*return*/];
             }
         });
@@ -1161,26 +1082,6 @@ function waitGetCustomEvent(detail) {
         });
     }); });
 }
-function fixEleIsShow(ele) {
-    if (!ele) {
-        return false;
-    }
-    if (ele.hidden) {
-        return false;
-    }
-    var sty = window.getComputedStyle(ele);
-    if (sty.display === "none") {
-        return false;
-    }
-    if (sty.visibility === "hidden") {
-        return false;
-    }
-    var opa = Number(sty.opacity);
-    if (!isNaN(opa) && opa < 0.1) {
-        return false;
-    }
-    return true;
-}
 function waitGetElement(id, key) {
     var _this = this;
     var t = Date.now();
@@ -1197,8 +1098,16 @@ function waitGetElement(id, key) {
                             if (!ui.replaying) {
                                 return [2 /*return*/, res(document.createElement("span"))];
                             }
-                            e = document.querySelector("[tat=\"" + key + "\"]");
-                            if (!fixEleIsShow(e)) {
+                            if (ui.autoRecordId) {
+                                e = document.querySelector("[tat-key=\"" + key + "\"]");
+                            }
+                            else {
+                                e = document.getElementById(id);
+                            }
+                            if (!e ||
+                                e.hidden ||
+                                e.style.display === "none" ||
+                                e.style.visibility === "hidden") {
                                 if (Date.now() - t < ui.waitTimeout) {
                                     requestAnimationFrame(getEl);
                                 }
@@ -1253,98 +1162,91 @@ var startReplay = function (items) { return __awaiter(void 0, void 0, void 0, fu
                 _i = 0, items_1 = items;
                 _a.label = 1;
             case 1:
-                if (!(_i < items_1.length)) return [3 /*break*/, 19];
+                if (!(_i < items_1.length)) return [3 /*break*/, 16];
                 item = items_1[_i];
                 ui = state.ui.get();
                 i++;
                 if (!ui.replaying) {
-                    return [3 /*break*/, 19];
+                    return [3 /*break*/, 16];
                 }
                 if (i < ui.step) {
-                    return [3 /*break*/, 18];
+                    return [3 /*break*/, 15];
                 }
                 state.ui.merge({ step: i });
                 aoife.next(".tat-step");
-                if (!item.href) return [3 /*break*/, 2];
-                if (item.href.indexOf("#/") > -1 &&
-                    getHref(window.location.href) === item.href) {
-                    window.location.href = item.href;
-                    if (Date.now() - lastReloadTime < 100) {
-                        reloadNum += 1;
+                if (item.href) {
+                    if (item.href.indexOf("#/") > -1 &&
+                        getHref(window.location.href) === item.href) {
+                        window.location.href = item.href;
+                        if (Date.now() - lastReloadTime < 100) {
+                            reloadNum += 1;
+                        }
+                        else {
+                            reloadNum = 0;
+                        }
+                        if (reloadNum < 3) {
+                            lastReloadTime = Date.now();
+                            window.location.reload();
+                        }
                     }
                     else {
-                        reloadNum = 0;
-                    }
-                    if (reloadNum < 3) {
-                        lastReloadTime = Date.now();
-                        window.location.reload();
+                        window.location.href = item.href;
                     }
                 }
-                else {
-                    window.location.href = item.href;
-                }
-                return [3 /*break*/, 4];
-            case 2:
-                if (!(i === 2)) return [3 /*break*/, 4];
-                return [4 /*yield*/, sleep(500)];
-            case 3:
-                _a.sent();
-                _a.label = 4;
-            case 4:
-                if (!(item.type === "mclick")) return [3 /*break*/, 6];
+                if (!(item.type === "mclick")) return [3 /*break*/, 3];
                 return [4 /*yield*/, sleep(120)];
-            case 5:
+            case 2:
                 _a.sent();
                 mouseClick(item);
-                return [3 /*break*/, 18];
-            case 6:
-                if (!(item.type === "customEvent" && item.value)) return [3 /*break*/, 8];
+                return [3 /*break*/, 15];
+            case 3:
+                if (!(item.type === "customEvent" && item.value)) return [3 /*break*/, 5];
                 return [4 /*yield*/, waitGetCustomEvent(item.value)];
-            case 7:
+            case 4:
                 _a.sent();
-                return [3 /*break*/, 18];
-            case 8:
-                if (!item.key) return [3 /*break*/, 18];
+                return [3 /*break*/, 15];
+            case 5:
+                if (!item.key) return [3 /*break*/, 15];
                 return [4 /*yield*/, waitGetElement(item.id, item.key)];
-            case 9:
+            case 6:
                 el = _a.sent();
-                if (!(el.nodeName !== "FORM" && el.nodeName !== "DIV")) return [3 /*break*/, 11];
+                if (!(el.nodeName !== "FORM" && el.nodeName !== "DIV")) return [3 /*break*/, 8];
                 scrollIntoView(el);
                 return [4 /*yield*/, sleep(16)];
-            case 10:
+            case 7:
                 _a.sent();
-                _a.label = 11;
-            case 11:
-                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 14];
-                if (!(el.nodeName !== "DIV")) return [3 /*break*/, 13];
+                _a.label = 8;
+            case 8:
+                if (!(clicks.indexOf(item.type) > -1)) return [3 /*break*/, 11];
+                if (!(el.nodeName !== "DIV")) return [3 /*break*/, 10];
                 getEleCenter(el, item);
                 mouseClick(item);
                 return [4 /*yield*/, sleep(80)];
+            case 9:
+                _a.sent();
+                _a.label = 10;
+            case 10:
+                emitClick(el);
+                return [3 /*break*/, 15];
+            case 11:
+                if (!(state.ui.get().lastFocus !== el)) return [3 /*break*/, 13];
+                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 13];
+                getEleCenter(el, item);
+                mouseMove(item);
+                return [4 /*yield*/, sleep(16)];
             case 12:
                 _a.sent();
                 _a.label = 13;
             case 13:
-                emitClick(el);
-                return [3 /*break*/, 18];
-            case 14:
-                if (!(state.ui.get().lastFocus !== el)) return [3 /*break*/, 16];
-                if (!(el.nodeName !== "FORM")) return [3 /*break*/, 16];
-                getEleCenter(el, item);
-                mouseMove(item);
-                return [4 /*yield*/, sleep(16)];
-            case 15:
-                _a.sent();
-                _a.label = 16;
-            case 16:
                 emitInput(el, item);
                 return [4 /*yield*/, sleep(16)];
-            case 17:
+            case 14:
                 _a.sent();
-                _a.label = 18;
-            case 18:
+                _a.label = 15;
+            case 15:
                 _i++;
                 return [3 /*break*/, 1];
-            case 19: return [2 /*return*/];
+            case 16: return [2 /*return*/];
         }
     });
 }); };
@@ -1376,11 +1278,11 @@ var Step = function () {
         });
     }); });
 };
-css(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  .tat-step {\n    // color: #fff;\n    // background: rgb(188 172 202);\n    // border-radius: 40px;\n    padding: 4px;\n    font-size: 12px !important;\n    cursor: pointer;\n    width: calc(100% - 8px);\n    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n    // margin-bottom: 2px;\n  }\n"], ["\n  .tat-step {\n    // color: #fff;\n    // background: rgb(188 172 202);\n    // border-radius: 40px;\n    padding: 4px;\n    font-size: 12px !important;\n    cursor: pointer;\n    width: calc(100% - 8px);\n    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n    // margin-bottom: 2px;\n  }\n"])));
-var templateObject_1;
+var css = "\n  .tat-step {\n    // color: #fff;\n    // background: rgb(188 172 202);\n    // border-radius: 40px;\n    padding: 4px;\n    font-size: 12px !important;\n    cursor: pointer;\n    width: calc(100% - 8px);\n    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n    // margin-bottom: 2px;\n  }\n";
+document.head.append(aoife("style", css));
 
 var CodeSvg = Svg("\n<svg t=\"1609439023623\" class=\"icon\" viewBox=\"0 0 1097 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"3732\" width=\"200\" height=\"200\"><path d=\"M352.585143 799.414857l-28.562286 28.562286a18.285714 18.285714 0 0 1-26.294857 0L31.451429 561.700571a18.285714 18.285714 0 0 1 0-26.294857l266.276571-266.276571a18.285714 18.285714 0 0 1 26.294857 0l28.562286 28.562286a18.285714 18.285714 0 0 1 0 26.294857L128 548.571429l224.585143 224.585142a18.285714 18.285714 0 0 1 0 26.294858z m337.700571-609.718857l-213.138285 737.718857a18.139429 18.139429 0 0 1-22.272 12.580572l-35.437715-9.728a18.505143 18.505143 0 0 1-12.580571-22.857143L619.995429 169.691429a18.139429 18.139429 0 0 1 22.272-12.580572l35.437714 9.728a18.505143 18.505143 0 0 1 12.580571 22.857143z m375.442286 372.004571L799.451429 827.977143a18.285714 18.285714 0 0 1-26.294858 0l-28.562285-28.562286a18.285714 18.285714 0 0 1 0-26.294857l224.585143-224.585143-224.585143-224.585143a18.285714 18.285714 0 0 1 0-26.294857l28.562285-28.562286a18.285714 18.285714 0 0 1 26.294858 0l266.276571 266.276572a18.285714 18.285714 0 0 1 0 26.294857z\" fill=\"\" p-id=\"3733\"></path></svg>\n");
-var DragSvg = Svg("\n<svg t=\"1608724287002\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2814\" width=\"200\" height=\"200\"><path d=\"M362.666667 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2815\"></path><path d=\"M661.333333 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2816\"></path><path d=\"M362.666667 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2817\"></path><path d=\"M661.333333 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2818\"></path><path d=\"M362.666667 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2819\"></path><path d=\"M661.333333 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2820\"></path></svg>");
+var DragSvg = Svg("\n<svg t=\"1608724287002\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2814\" width=\"200\" height=\"200\"><path d=\"M362.666667 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2815\"></path><path d=\"M661.333333 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2816\"></path><path d=\"M362.666667 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2817\"></path><path d=\"M661.333333 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2818\"></path><path d=\"M362.666667 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2819\"></path><path d=\"M661.333333 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z\" p-id=\"2820\"></path></svg>\n");
 var EditorSvg = Svg("\n<svg t=\"1608542607404\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1140\" width=\"1em\" height=\"1em\"><path d=\"M896 801.216V864H128v-62.784h768z m-204.288-678.4l155.36 155.36-463.136 463.136-156.864 1.504 1.504-156.864L691.712 122.816z m-0.864 89.632L291.712 611.584l-0.64 67.232 67.2-0.64L757.44 279.04l-66.56-66.56z\" fill=\"#f00\" p-id=\"1141\"></path></svg>\n");
 var RecordAgainSvg = Svg("<svg t=\"1608542641961\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1886\" width=\"200px\" height=\"200px\"><path d=\"M512 1024c282.833455 0 512-229.166545 512-512S794.833455 0 512 0 0 229.166545 0 512s229.166545 512 512 512z\" fill=\"#f00\"  p-id=\"1887\"></path></svg>");
 var RecordContinueSvg = Svg("<svg t=\"1610822202969\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"19676\" width=\"200\" height=\"200\"><path d=\"M512 85.333333c235.637333 0 426.666667 191.029333 426.666667 426.666667S747.637333 938.666667 512 938.666667 85.333333 747.637333 85.333333 512 276.362667 85.333333 512 85.333333z m0 234.666667a32 32 0 0 0-32 32v128H352a32 32 0 0 0 0 64h128v128a32 32 0 0 0 64 0V544h128a32 32 0 0 0 0-64H544V352a32 32 0 0 0-32-32z\" p-id=\"19677\"></path></svg>", "1.21em", "1.21em");
@@ -1604,8 +1506,8 @@ var Ctrl = function () {
         });
     }); });
 };
-css(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObject(["\n  .tat-row {\n    width: 100%;\n    display: flex;\n    justify-content: start;\n    flex-direction: row;\n    align-items: center;\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    margin-left: 6px;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    margin-left: 2px;\n    height: 20px;\n    width: 20px;\n    padding: 1px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"], ["\n  .tat-row {\n    width: 100%;\n    display: flex;\n    justify-content: start;\n    flex-direction: row;\n    align-items: center;\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    margin-left: 6px;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 100%;\n  }\n  .tat-btn {\n    margin-left: 2px;\n    height: 20px;\n    width: 20px;\n    padding: 1px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n"])));
-var templateObject_1$1;
+var css$1 = "\n  .tat-row {\n    width: 100%;\n    display: flex;\n    justify-content: start;\n    flex-direction: row;\n    align-items: center;\n  }\n  .tat-more-item {\n    cursor: pointer;\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    background: rgba(255, 255, 255, 0);\n    padding: 4px;\n  }\n  .tat-more-item:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-more-item:active {\n    background: rgba(255, 255, 255, 0.1);\n  }\n  .tat-ctrl {\n    display: flex;\n    justify-content: flex-start;\n    align-items: center;\n    flex-direction: row;\n    height: 30px;\n    width: 190px;\n  }\n  .tat-btn {\n    height: 20px;\n    width: 20px;\n    padding: 1px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: row;\n  }\n  .tat-btn:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-btn:active {\n    background: rgba(0, 0, 128, 0.2);\n  }\n  .tat-show-list-icon {\n    display: block;\n    transition: all 0.3s ease-out;\n  }\n  .tat-show-list {\n    transform: rotate(-90deg);\n  }\n";
+document.head.append(aoife("style", css$1));
 
 var changeInput = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -1890,12 +1792,10 @@ var CodePlan = (function (_a) {
     })));
     return ele;
 });
-css(templateObject_1$2 || (templateObject_1$2 = __makeTemplateObject(["\n  .tat-textarea {\n    font-family: Menlo, Monaco, \"Courier New\", monospace;\n    font-size: 13px;\n  }\n  .tat-code-plan {\n    position: fixed;\n    top: 0px;\n    left: 0px;\n    width: 100vw;\n    height: 100vh;\n    z-index: 15010;\n  }\n  .tat-code-plan .plan {\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n    justify-content: start;\n    align-items: flex-start;\n  }\n  .tat-code-plan .button-plan {\n    position: fixed;\n    top: 0px;\n    right: 0px;\n    padding: 14px;\n    font-size: 14px;\n  }\n  .tat-code-plan button {\n    outline: none;\n    cursor: pointer;\n    margin: 6px;\n    background: #77f;\n    color: #fff;\n    padding: 8px 16px;\n    border-radius: 4px;\n    appearance: none;\n    outline: none;\n    border-width: 0;\n    border-style: solid;\n    border-color: currentColor;\n    -webkit-tap-highlight-color: transparent;\n  }\n  .tat-code-plan button:hover {\n    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);\n  }\n  .tat-code-plan button:active {\n    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);\n    background: #55f;\n  }\n  .tat-code-plan textarea {\n    box-sizing: border-box;\n    width: 100%;\n    font-size: 14px;\n    flex: 1;\n    border: none;\n    background: #fff;\n  }\n"], ["\n  .tat-textarea {\n    font-family: Menlo, Monaco, \"Courier New\", monospace;\n    font-size: 13px;\n  }\n  .tat-code-plan {\n    position: fixed;\n    top: 0px;\n    left: 0px;\n    width: 100vw;\n    height: 100vh;\n    z-index: 15010;\n  }\n  .tat-code-plan .plan {\n    height: 100%;\n    display: flex;\n    flex-direction: column;\n    justify-content: start;\n    align-items: flex-start;\n  }\n  .tat-code-plan .button-plan {\n    position: fixed;\n    top: 0px;\n    right: 0px;\n    padding: 14px;\n    font-size: 14px;\n  }\n  .tat-code-plan button {\n    outline: none;\n    cursor: pointer;\n    margin: 6px;\n    background: #77f;\n    color: #fff;\n    padding: 8px 16px;\n    border-radius: 4px;\n    appearance: none;\n    outline: none;\n    border-width: 0;\n    border-style: solid;\n    border-color: currentColor;\n    -webkit-tap-highlight-color: transparent;\n  }\n  .tat-code-plan button:hover {\n    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);\n  }\n  .tat-code-plan button:active {\n    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);\n    background: #55f;\n  }\n  .tat-code-plan textarea {\n    box-sizing: border-box;\n    width: 100%;\n    font-size: 14px;\n    flex: 1;\n    border: none;\n    background: #fff;\n  }\n"])));
-var templateObject_1$2;
+var css$2 = "\n.tat-textarea {\n  font-family: Menlo, Monaco, \"Courier New\", monospace;\n  font-size: 13px;\n}\n.tat-code-plan {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  width: 100vw;\n  height: 100vh;\n  z-index: 15010;\n}\n.tat-code-plan .plan {\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  justify-content: start;\n  align-items: flex-start;\n}\n.tat-code-plan .button-plan {\n  position: fixed;\n  top: 0px;\n  right: 0px;\n  padding: 14px;\n}\n.tat-code-plan button {\n  outline: none;\n  cursor: pointer;\n  margin: 6px;\n  background: #77f;\n  color: #fff;\n  padding: 8px 16px;\n  border-radius: 4px;\n}\n.tat-code-plan button:hover {\n  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);\n}\n.tat-code-plan button:active {\n  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);\n  background: #55f;\n}\n.tat-code-plan textarea {\n  box-sizing: border-box;\n  width: 100%;\n  font-size: 14px;\n  flex: 1;\n  border: none;\n  background: #fff;\n}\n";
+document.head.append(aoife("style", { innerHTML: css$2 }));
 
 var PlayList = function () {
-    var lastClick;
-    var lastClickTime;
     return aoife("div", {
         class: "tat-update, tat-play-list",
         hidden: function () {
@@ -1947,16 +1847,7 @@ var PlayList = function () {
                                         }
                                     });
                                 }); },
-                                onclick: function () {
-                                    if (lastClick === item._id && Date.now() - lastClickTime < 400) {
-                                        changeInput(item._id);
-                                    }
-                                    else {
-                                        changeSelectItem(item._id);
-                                    }
-                                    lastClick = item._id;
-                                    lastClickTime = Date.now();
-                                },
+                                onclick: function () { return changeSelectItem(item._id); },
                             }, aoife("input", {
                                 class: "input",
                                 onclick: function (e) { return e.stopPropagation(); },
@@ -1994,6 +1885,9 @@ var PlayList = function () {
                                 placeholder: "请输入title",
                             }), aoife("div", {
                                 class: "label",
+                                ondblclick: function () {
+                                    changeInput(item._id);
+                                },
                                 hidden: function () {
                                     var ui = state.ui.get();
                                     return ui.showInputId === item._id;
@@ -2053,23 +1947,28 @@ var PlayList = function () {
         });
     }); }));
 };
-css(templateObject_1$3 || (templateObject_1$3 = __makeTemplateObject(["\n  .tat-play-list {\n    font-size: 14px;\n    width: 100%;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 2px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 10px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    flex: 1;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 80px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    word-break: break-all;\n  }\n  .tat-play-list .cell {\n    border-left: 1px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-play-list .cell-selected {\n    /* border-left: 1px solid rgba(0, 0, 0, 0.5) !important; */\n    border-radius: 0px 2px 2px 0px !important;\n    background: rgba(0, 0, 0, 0.08) !important;\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.04);\n  }\n  .tat-play-list .cell:active {\n    opacity: 0.7;\n  }\n"], ["\n  .tat-play-list {\n    font-size: 14px;\n    width: 100%;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 2px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 10px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    flex: 1;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 80px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    word-break: break-all;\n  }\n  .tat-play-list .cell {\n    border-left: 1px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-play-list .cell-selected {\n    /* border-left: 1px solid rgba(0, 0, 0, 0.5) !important; */\n    border-radius: 0px 2px 2px 0px !important;\n    background: rgba(0, 0, 0, 0.08) !important;\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.04);\n  }\n  .tat-play-list .cell:active {\n    opacity: 0.7;\n  }\n"])));
-var templateObject_1$3;
+var css$3 = "\n  .tat-play-list {\n    font-size: 14px;\n    width: 100%;\n  }\n  .tat-play-list .filter {\n    height: 20px;\n    font-size: 12px;\n    margin: 2px;\n    margin-bottom: 8px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    width: calc(100% - 3px);\n    outline: none;\n  }\n  .tat-play-list .edit {\n    width: 18px;\n    height: 18px;\n    padding: 2px 2px;\n    margin-right: 2px;\n    font-size: 12px;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n  }\n  .tat-play-list .input {\n    height: 20px;\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    flex: 1;\n    outline: none;\n  }\n  .tat-play-list .cells {\n    width: 100%;\n    height: 80px;\n    overflow-y: auto;\n  }\n  .tat-play-list .edit:hover {\n    background: rgba(0, 0, 0, 0.1);\n  }\n  .tat-play-list .label {\n    font-size: 12px;\n    border: 1px solid rgba(0, 0, 0, 0);\n    flex: 1;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    word-break: break-all;\n  }\n  .tat-play-list .cell {\n    border-left: 1px solid rgba(0, 0, 0, 0);\n    height: 20px;\n    font-size: 12px;\n    padding: 4px 0px 4px 4px;\n    border-radius: 2px;\n    cursor: pointer;\n    user-select: none;\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-play-list .cell-selected {\n    /* border-left: 1px solid rgba(0, 0, 0, 0.5) !important; */\n    border-radius: 0px 2px 2px 0px !important;\n    background: rgba(0, 0, 0, 0.08) !important;\n  }\n  .tat-play-list .cell:hover {\n    background: rgba(0, 0, 0, 0.04);\n  }\n  .tat-play-list .cell:active {\n    opacity: 0.7;\n  }\n";
+document.head.append(aoife("style", css$3));
 
 var plan = aoife("div", { class: "tat-plan tat-update", "tat-ignore": true }, PlayList());
 var dragAndCtrl = aoife("div", { class: "tat-row tat-head-center", "tat-ignore": true }, Drag({
     query: ".tat-root",
     "tat-ignore": true,
     localStorageKey: "tat-drag",
-    style: { transform: "translateX(3px)" },
-    children: [DragSvg({})],
+    children: [
+        aoife("div", { style: "width:30px; height:24px" }, aoife("div", { style: "pointer-events:none; transform:translate(7px,2px)" }, DragSvg({}))),
+    ],
 }), Ctrl());
 var TouchAndTouch = function (opt) {
     init(opt);
-    return aoife("div", { "tat-ignore": true, class: "tat tat-root" }, dragAndCtrl, plan);
+    var out = aoife("div", { "tat-ignore": true, class: "tat tat-root", style: { display: "none" } }, dragAndCtrl, plan);
+    setTimeout(function () {
+        out.style.display = "block";
+    }, 30);
+    return out;
 };
-css(templateObject_1$4 || (templateObject_1$4 = __makeTemplateObject(["\n  .tat {\n    width: 190px;\n  }\n  .tat *[hidden] {\n    display: none !important;\n  }\n\n  .tat-head-row {\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-head-center {\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 14px;\n  }\n  .tat {\n    font-size: 14px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #000;\n    z-index: 15000;\n    padding: 5px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"], ["\n  .tat {\n    width: 190px;\n  }\n  .tat *[hidden] {\n    display: none !important;\n  }\n\n  .tat-head-row {\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-head-center {\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 14px;\n  }\n  .tat {\n    font-size: 14px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #000;\n    z-index: 15000;\n    padding: 5px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n"])));
-var templateObject_1$4;
+var css$4 = "\n  .tat *[hidden] {\n    display: none !important;\n  }\n  .tat-root {\n    width:200px;\n  }\n\n  .tat-head-row {\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-head-center {\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    align-items: center;\n  }\n  .tat-drag-line {\n    height: 1px;\n    width: 100%;\n    background: rgba(0, 0, 0, 0.5);\n  }\n  .tat *,\n  .tat-fm {\n    font-family: \"SF Pro SC\", \"SF Pro Display\", \"SF Pro Icons\", \"PingFang SC\",\n      \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n    font-size: 14px;\n  }\n  .tat {\n    font-size: 14px;\n    backdrop-filter: blur(9px);\n    background: rgba(255, 255, 255, 0.85);\n    color: #000;\n    z-index: 15000;\n    padding: 5px;\n    border: 1px solid rgba(0, 0, 0, 0.13);\n    border-radius: 4px;\n  }\n  .tat-title {\n    user-select: none;\n    font-size: 11px;\n  }\n";
+document.head.append(aoife("style", css$4));
 
 export default TouchAndTouch;
 //# sourceMappingURL=index.js.map
