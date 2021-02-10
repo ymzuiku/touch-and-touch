@@ -40,12 +40,9 @@ export const PlayList = () => {
           "div",
           {
             id: item._id,
-            classPick: async () => {
+            class: async () => {
               const id = state.ui().nowCellId;
-              return {
-                cell: 1,
-                "cell-selected": item._id === id,
-              };
+              return ["cell", item._id === id && "cell-selected"];
             },
             hidden: async () => {
               const cell = await state.recordList.index(i);

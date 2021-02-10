@@ -1823,14 +1823,11 @@ var PlayList = function () {
                     return [2 /*return*/, list.map(function (item, i) {
                             return aoife("div", {
                                 id: item._id,
-                                classPick: function () { return __awaiter(void 0, void 0, void 0, function () {
+                                class: function () { return __awaiter(void 0, void 0, void 0, function () {
                                     var id;
                                     return __generator(this, function (_a) {
                                         id = state.ui().nowCellId;
-                                        return [2 /*return*/, {
-                                                cell: 1,
-                                                "cell-selected": item._id === id,
-                                            }];
+                                        return [2 /*return*/, ["cell", item._id === id && "cell-selected"]];
                                     });
                                 }); },
                                 hidden: function () { return __awaiter(void 0, void 0, void 0, function () {

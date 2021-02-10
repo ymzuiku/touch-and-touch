@@ -1,6 +1,6 @@
 {
   "name": "touch-and-touch",
-  "version": "0.5.30",
+  "version": "0.5.31",
   "main": "es/index.js",
   "types": "es/index.d.ts",
   "description": "无负担的 UI 自动化测试工具",
@@ -36,7 +36,7 @@
   },
   "homepage": "git+https://github.com/ymzuiku/touch-and-touch.git",
   "dependencies": {
-    "aoife": "^1.6.7",
+    "aoife": "^1.6.28",
     "dayjs": "^1.9.7",
     "localfile": "^1.0.0",
     "mico-db": "^1.4.18",
